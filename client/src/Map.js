@@ -92,13 +92,10 @@ class Map extends Component {
       this.requestRoute(start, end);
   }
 
-  // make call to directions API
+  // make call to directions API - make sure server is running first!
   requestRoute(start, end) {
     const map = this.state.map;
-    // make a directions request using driving profile
-    var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + 
-      '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
-
+    var url = 'http://localhost:8000/api/directions/' + start[0] + ',' + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
     var req = new XMLHttpRequest();
     req.open('GET', url, true);
