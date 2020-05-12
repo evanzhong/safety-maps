@@ -14,7 +14,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "dev": "(cd ../server && npm run start) & npm run start"
+    "dev": "(cd ../server && npm run start) & npm run start",
+    "install-all": "npm install && (cd ../server && npm install)"
   },
   "browserslist": {
     "production": [
