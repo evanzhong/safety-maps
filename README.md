@@ -22,3 +22,10 @@ cd ./server
 npm start
 ```
 This runs `node index.js` and will start listening at localhost:8000
+
+Alternatively, you can cd into either the client or server folder, and then run:
+```
+npm run install-all
+npm run dev
+```
+This will install all node dependencies and run both the client and the server.
