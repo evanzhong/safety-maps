@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js & node connect.js",
     "dev": "npm run start & (cd ../client && npm run start)",
-    "installs": "npm install && (cd ../client && npm install)"
+    "install-all": "npm install && (cd ../client && npm install)"
   },
   "author": "David Deng, Ray Huang, Rishi Sankar, Evan Zhong",
   "license": "ISC",
