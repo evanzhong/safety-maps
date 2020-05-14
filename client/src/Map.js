@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Map.css';
 import mapboxgl from 'mapbox-gl';
 
+import DirectionSidebar from './DirectionSidebar';
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
 class Map extends Component {
@@ -147,9 +149,10 @@ class Map extends Component {
   render() {
     return (
       <div>
-        <div className='sidebarStyle'>
+        <DirectionSidebar map = {this.state.map} />
+        {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
-        </div>
+        </div> */}
         <div ref={el => this.mapContainer = el} className='mapContainer' />
       </div>
     )
