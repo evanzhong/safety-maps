@@ -3,6 +3,7 @@ import './Map.css';
 import mapboxgl from 'mapbox-gl';
 
 import DirectionSidebar from './DirectionSidebar';
+import ProfileSidebar from './ProfileSidebar';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
@@ -153,6 +154,9 @@ class Map extends Component {
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}
+
+        <ProfileSidebar />
+
         <div ref={el => this.mapContainer = el} className='mapContainer' />
       </div>
     )

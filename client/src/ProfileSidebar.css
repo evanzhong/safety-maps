@@ -1,0 +1,123 @@
+.profile_sidebar_wrapper {
+    position: absolute;
+    z-index: 1 !important;
+    margin: 0;
+    padding: 0;
+    top: 25px;
+    right: 40px;
+}
+
+.login_button {
+    width: 80px;
+    height: 30px;
+    border: 0px;
+    background-color: #3495eb;
+    color: white;
+    outline: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.login_button:active {
+    background-color: #347deb;
+}
+
+/*
+POPUP WIDTH, HEIGHT, BORDER
+DEFINED IN ProfileSidebar.js
+*/
+
+.login_popup {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.login_popup.register {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.login_popup h1 {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.login_form {
+    width: 80%;
+    height: 100%;
+    display: inline-block;
+}
+
+.login_prompt {
+    width: 100%;
+    color: #37383b;
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.login_prompt.register {
+    margin-bottom: 18px;
+}
+
+.login_form_input {
+    color: black;
+    outline: none;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ced2d9;
+}
+
+.login_form_input.name {
+    width: 37%;
+}
+.login_form_input.first {
+    margin-right: 8%;
+}
+
+.login_form_input.register {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.login_form_input::placeholder {
+    color: #686a70;
+}
+
+.login_form_submit {
+    width: 100%;
+    height: 40px;
+    background-color: #4c74ed;
+    outline: none;
+    color: white;
+    font-size: 13px;
+    border-radius: 5px;
+    margin-bottom: 3px;
+}
+
+.login_form_submit:hover {
+    cursor: pointer;
+}
+
+.login_form_submit:active {
+    background-color: #3e6af0;
+}
+
+.login_form_switch_screen {
+    font-size: 11px;
+    color: #37383b;
+    text-decoration: none;
+    outline: none;
+    border: none;
+}
+
+.login_form_switch_screen:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
