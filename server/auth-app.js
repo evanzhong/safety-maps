@@ -1,20 +1,27 @@
 const express = require('express');
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const app = express();
-const UserModel = require('./model/model');
+const UserModel = require('./auth/model');
+const dotenv = require('dotenv');
+dotenv.config();
 
-mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt', { useMongoClient : true });
+const dbString = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + 
+    "@crimedata-pebxn.mongodb.net/" + process.env.DB_NAME + "?retryWrites=true&w=majority";
+mongoose.connect(dbString, {useNewUrlParser: true});
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
+
 
 require('./auth/auth');
 
 app.use( bodyParser.urlencoded({ extended : false }) );
 
 const routes = require('./routes/routes');
-const secureRoute = require('./routes/secure-route');
+const secureRoute = require('./routes/secure-routes');
 
 app.use('/', routes);
 //We plugin our jwt strategy as a middleware so only verified users can access this route
