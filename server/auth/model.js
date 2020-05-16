@@ -11,6 +11,14 @@ const UserSchema = new Schema({
   password : {
     type : String,
     required : true
+  },
+  first_name : {
+    type : String,
+    required : true
+  },
+  last_name : {
+    type : String,
+    required : true
   }
 });
 
@@ -19,8 +27,7 @@ const UserSchema = new Schema({
 UserSchema.pre('save', async function(next){
     //'this' refers to the current document about to be saved
     const user = this;
-    //Hash the password with a salt round of 10, the higher the rounds the more secure, but the slower
-    //your application becomes.
+    //Hash the password with a salt round of 10
     const hash = await bcrypt.hash(this.password, 10);
     //Replace the plain text password with the hash and then store it
     this.password = hash;
@@ -28,7 +35,7 @@ UserSchema.pre('save', async function(next){
     next();
 });
   
-//We'll use this later on to make sure that the user trying to log in has the correct credentials
+//Make sure that the user trying to log in has the correct credentials
 UserSchema.methods.isValidPassword = async function(password){
     const user = this;
     //Hashes the password sent by the user for login and checks if the hashed password stored in the

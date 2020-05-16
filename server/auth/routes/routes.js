@@ -22,11 +22,9 @@ router.post('/login', async (req, res, next) => {
             }
             req.login(user, { session : false }, async (error) => {
                 if( error ) return next(error)
-                //We don't want to store the sensitive information such as the
-                //user password in the token so we pick only the email and id
-                const body = { _id : user._id, email : user.email };
+                const body = { _id : user._id, email : user.email, first_name : user.first_name, last_name : user.last_name };
                 //Sign the JWT token and populate the payload with the user email and id
-                const token = jwt.sign({ user : body },'top_secret');
+                const token = jwt.sign({ user : body },process.env.JWT_SECRET_KEY);
                 //Send back the token to the user
                 return res.json({ token });
             });     

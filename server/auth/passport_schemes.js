@@ -1,19 +1,31 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const UserModel = require('./model');
+var validator = require("email-validator");
 
 //Create a passport middleware to handle user registration
 passport.use('signup', new localStrategy({
         usernameField : 'email',
-        passwordField : 'password'
-    }, async (email, password, done) => {
+        passwordField : 'password',
+        passReqToCallback : true
+    }, async (req, email, password, done) => {
         try {
-        //Save the information provided by the user to the the database
-        const user = await UserModel.create({ email, password });
-        //Send the user information to the next middleware
-        return done(null, user);
+            //Save the information provided by the user to the the database
+            const first_name = req.query.first_name;
+            const last_name = req.query.last_name;
+            if (!validator.validate(email)) {
+                return done("Invalid email");
+            } else if (!first_name || !last_name || first_name.length == 0 
+                || first_name.length > 32 || last_name.length == 0 || last_name.length > 32) {
+                return done("Invalid name");
+            } else if (password.length < 8 || password.length > 32) {
+                return done("Invalid password");
+            }
+            const user = await UserModel.create({ email, password, first_name, last_name });
+            //Send the user information to the next middleware
+            return done(null, user);
         } catch (error) {
-        done(error);
+            done(error);
         }
     }
 ));
@@ -51,7 +63,7 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 passport.use(new JWTstrategy(
     {
         //secret we used to sign our JWT
-        secretOrKey : 'top_secret',
+        secretOrKey : process.env.JWT_SECRET_KEY,
         //we expect the user to send the token as a query parameter with the name 'secret_token'
         jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
     }, async (token, done) => {
