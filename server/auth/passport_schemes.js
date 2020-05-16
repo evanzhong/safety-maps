@@ -57,7 +57,16 @@ passport.use('login', new localStrategy({
 
 const JWTstrategy = require('passport-jwt').Strategy;
 //We use this to extract the JWT sent by the user
-const ExtractJWT = require('passport-jwt').ExtractJwt;
+//const ExtractJWT = require('passport-jwt').ExtractJwt;
+
+var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies)
+    {
+        token = req.cookies['safety_maps_auth_jwt'];
+    }
+    return token;
+};
 
 //This verifies that the token sent by the user is valid
 passport.use(new JWTstrategy(
@@ -65,7 +74,8 @@ passport.use(new JWTstrategy(
         //secret we used to sign our JWT
         secretOrKey : process.env.JWT_SECRET_KEY,
         //we expect the user to send the token as a query parameter with the name 'secret_token'
-        jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+        //jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+        jwtFromRequest : cookieExtractor
     }, async (token, done) => {
         try {
             //Pass the user details to the next middleware
