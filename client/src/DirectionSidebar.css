@@ -29,6 +29,23 @@
 
 .direction-button
 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 20px;
+
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    width: 50%;
+    padding: 10px;
+
+    border: none;
+    border-radius: 5px;
+    background-color: lightgray;
+    cursor: pointer;
+}
+.direction-button:hover
+{
+    background-color: gainsboro;
 }
 
 hr.line
