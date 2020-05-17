@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Authentication Tester</title>
+</head>
+<body>
+
+<center>
+
+<h2 style="margin-top: 30px;">Login Authentication Cookie Tester</h2> 
+<form method="post" action="http://localhost:8000/auth/login" style="margin-top: 20px;">
+    <input name="email" placeholder="email" autocomplete="off"/><br/><br/>
+    <input name="password" type="password" placeholder="password"/><br/><br/>
+    <button type="submit">Submit</button>
+</form>
+
+<h2 style="margin-top: 30px;">API Endpoints</h2> 
+<a href="http://localhost:8000/auth/logout">Logout</a><br/><br/>
+<a href="http://localhost:8000/auth/secure/profile">View profile</a>
+
+</center>
+
+</body>
+</html>

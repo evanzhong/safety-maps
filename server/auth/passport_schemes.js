@@ -11,15 +11,31 @@ passport.use('signup', new localStrategy({
     }, async (req, email, password, done) => {
         try {
             //Save the information provided by the user to the the database
-            const first_name = req.query.first_name;
-            const last_name = req.query.last_name;
+            if (req.query.first_name === undefined) {
+                first_name = req.body.first_name;
+            } else {
+                first_name = req.query.first_name;
+            }
+            if (req.query.last_name === undefined) {
+                last_name = req.body.last_name;
+            } else {
+                last_name = req.query.last_name;
+            }
+            regexName = "^[a-zA-Z,.'-]+$";
+            if (!(first_name.match(regexName) && last_name.match(regexName))) {
+                return done("Name has invalid characters");
+            }
+            regexPassword = "^[a-zA-Z0-9@$!%*#?&]+$"
+            if (!(password.match(regexPassword))) {
+                return done("Password has invalid characters");
+            }
             if (!validator.validate(email)) {
-                return done("Invalid email");
+                return done("Invalid email address");
             } else if (!first_name || !last_name || first_name.length == 0 
                 || first_name.length > 32 || last_name.length == 0 || last_name.length > 32) {
                 return done("Invalid name");
             } else if (password.length < 8 || password.length > 32) {
-                return done("Invalid password");
+                return done("Passwords must be 8-32 characters long");
             }
             const user = await UserModel.create({ email, password, first_name, last_name });
             //Send the user information to the next middleware
@@ -57,7 +73,16 @@ passport.use('login', new localStrategy({
 
 const JWTstrategy = require('passport-jwt').Strategy;
 //We use this to extract the JWT sent by the user
-const ExtractJWT = require('passport-jwt').ExtractJwt;
+//const ExtractJWT = require('passport-jwt').ExtractJwt;
+
+var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies)
+    {
+        token = req.cookies['safety_maps_auth_jwt'];
+    }
+    return token;
+};
 
 //This verifies that the token sent by the user is valid
 passport.use(new JWTstrategy(
@@ -65,7 +90,8 @@ passport.use(new JWTstrategy(
         //secret we used to sign our JWT
         secretOrKey : process.env.JWT_SECRET_KEY,
         //we expect the user to send the token as a query parameter with the name 'secret_token'
-        jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+        //jwtFromRequest : ExtractJWT.fromUrlQueryParameter('secret_token')
+        jwtFromRequest : cookieExtractor
     }, async (token, done) => {
         try {
             //Pass the user details to the next middleware

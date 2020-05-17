@@ -26,12 +26,23 @@ router.post('/login', async (req, res, next) => {
                 //Sign the JWT token and populate the payload with the user email and id
                 const token = jwt.sign({ user : body },process.env.JWT_SECRET_KEY);
                 //Send back the token to the user
-                return res.json({ token });
+                res.cookie('safety_maps_auth_jwt', token,
+                    {
+                        maxAge: 86400000, //1 day in milliseconds
+                        httpOnly: true
+                    }
+                );
+                return res.json({ "Success": true });
             });     
         } catch (error) {
             return next(error);
         }
     })(req, res, next);
+});
+
+router.get('/logout', function(req, res) {
+    res.clearCookie('safety_maps_auth_jwt');
+    return res.sendStatus(200);
 });
   
 module.exports = router;
