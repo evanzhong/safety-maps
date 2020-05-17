@@ -20,11 +20,15 @@ class DirectionSidebar extends Component {
         return (
             <div className = 'direction-container'>
                 <div className="direction-box">
-                    <h className="direction-text">From: </h>
-                    <Geocoder map = {this.props.map} />
+                    <div id="from-wrapper">
+                        <h className="direction-text">From: </h>
+                        <Geocoder map = {this.props.map} />
+                    </div>
                     <hr className="line"/>
-                    <h className="direction-text">To: </h>
-                    <Geocoder map = {this.props.map} />
+                    <div id="to-wrapper">
+                        <h className="direction-text">To: </h>
+                        <Geocoder map = {this.props.map} />
+                    </div>
  
                     <button className="direction-button" onClick={this.sendGeo}>
                         Get Direction
