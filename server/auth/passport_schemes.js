@@ -25,12 +25,16 @@ passport.use('signup', new localStrategy({
             if (!(first_name.match(regexName) && last_name.match(regexName))) {
                 return done("Name has invalid characters");
             }
+            regexPassword = "^[a-zA-Z0-9@$!%*#?&]+$"
+            if (!(password.match(regexPassword))) {
+                return done("Password has invalid characters");
+            }
             if (!validator.validate(email)) {
                 return done("Invalid email address");
             } else if (!first_name || !last_name || first_name.length == 0 
                 || first_name.length > 32 || last_name.length == 0 || last_name.length > 32) {
                 return done("Invalid name");
-            } else if (password.length < 8 || password.length > 32) { //maybe add password regex later..
+            } else if (password.length < 8 || password.length > 32) {
                 return done("Passwords must be 8-32 characters long");
             }
             const user = await UserModel.create({ email, password, first_name, last_name });
