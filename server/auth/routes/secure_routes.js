@@ -11,4 +11,8 @@ router.get('/profile', (req, res, next) => {
     })
 });
 
+router.get('/', (req, res) => {
+    res.sendStatus(200);
+});
+
 module.exports = router;

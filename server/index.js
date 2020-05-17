@@ -9,9 +9,13 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Credentials', true);
   next();
 });
+
+process.title="safety-maps-server";
  
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET_KEY));
 app.use(bodyParser.urlencoded({ extended : false }) );

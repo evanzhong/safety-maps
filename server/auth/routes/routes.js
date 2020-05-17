@@ -14,6 +14,10 @@ router.post('/signup', passport.authenticate('signup', { session : false }) , as
 });
 
 router.post('/login', async (req, res, next) => {
+    // console.log(req.params);
+    // console.log(req.query);
+    // console.log(req.body);
+    // console.log(req.cookies);
     passport.authenticate('login', async (err, user, info) => {     
         try {
             if(err || !user){
@@ -28,7 +32,7 @@ router.post('/login', async (req, res, next) => {
                 //Send back the token to the user
                 res.cookie('safety_maps_auth_jwt', token,
                     {
-                        maxAge: 86400, //1 day in seconds
+                        maxAge: 86400000, //1 day in milliseconds
                         httpOnly: true
                     }
                 );

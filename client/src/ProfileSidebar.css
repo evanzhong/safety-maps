@@ -121,3 +121,9 @@ DEFINED IN ProfileSidebar.js
     text-decoration: underline;
     cursor: pointer;
 }
+
+.login_error_msg {
+    text-align: left;
+    font-size: 11px;
+    color: red;
+}
