@@ -4,7 +4,7 @@
 NOTE: currently this is set to my (David's) local Postgres, where the OSM data is stored in.
 This script provides a way of accessing that data as long as it's present in a database called "osm" in Postgres.
 Make sure that you have the module psycopg2 installed.
-If you're having some problems on Mac, try adding the line "export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/" to your ~/.zshrc file. 
+If you're having some problems on Mac installing psycopg2, try adding the line "export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/" to your ~/.zshrc file. 
 Store username and password for database account as your own environment variables. 
 '''
 
@@ -63,7 +63,6 @@ names_in_way = ways_df['tags']
 #        print (names_in_way[0][i+1])
 #        break
 
-
 #list to hold all the street names
 street_names = [] 
 
@@ -72,7 +71,7 @@ for item in names_in_way.iteritems():
     #array should be the second element of the tuple returned by iteritems, which is what arr is set to
     arr = item[1]
 
-    #checks that there exists an array to iterate through
+    #checks that there exists a list to iterate through
     if isinstance(arr, list) == False:
         street_names.append(None)
         continue
@@ -93,8 +92,45 @@ street_names = pd.Series(street_names)
 ways_df['name'] = street_names
 
 #ditch ways without a name, since they're clearly not streets
-ways_df = ways_df.dropna()
-print (ways_df)
+streets_df = ways_df.dropna()
+
+#convert all street nodes to lat-long coordinates 
+nodes_in_way = streets_df['nodes']
+
+#list to store lists of all lat-longs of nodes 
+node_lists = []
+
+#loop through all the nodes
+for item in nodes_in_way.iteritems():
+    #again, the array should be the second item of the tuple returned by iteritems
+    arr = item[1]
+
+    #create a list to store the individual lat-longs of a way in 
+    cur_way_coords = []
+
+    if isinstance(arr, list) == False:
+        node_lists.append(None)
+        continue
+
+    for i in range (len(arr)):
+        #gets the information about a node from the nodes dataframe 
+        node = nodes_df.loc[nodes_df['id'] == arr[i]]
+        
+        #lat = node.at[0, 'lat']
+        #lon = node.at[0, 'lon']
+
+        #get the lat lon values of each node 
+        lat = node.iloc[0]['lat']
+        lon = node.iloc[0]['lon']
+        
+        #store the lat lon information in the form of a tuple
+        coords = (lat, lon)
+        cur_way_coords.append(coords)
+
+    node_lists.append(cur_way_coords)
+
+streets_df['coords'] = node_lists
+print (streets_df)
 
 #closes all connections 
 cursor.close()
