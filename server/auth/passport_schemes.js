@@ -21,7 +21,7 @@ passport.use('signup', new localStrategy({
             } else {
                 last_name = req.query.last_name;
             }
-            regexName = "/^[a-z ,.'-]+$/i";
+            regexName = "^[a-zA-Z,.'-]+$";
             if (!(first_name.match(regexName) && last_name.match(regexName))) {
                 return done("Name has invalid characters");
             }
