@@ -11,15 +11,23 @@ passport.use('signup', new localStrategy({
     }, async (req, email, password, done) => {
         try {
             //Save the information provided by the user to the the database
-            const first_name = req.query.first_name;
-            const last_name = req.query.last_name;
+            if (req.query.first_name === undefined) {
+                first_name = req.body.first_name;
+            } else {
+                first_name = req.query.first_name;
+            }
+            if (req.query.last_name === undefined) {
+                last_name = req.body.last_name;
+            } else {
+                last_name = req.query.last_name;
+            }
             if (!validator.validate(email)) {
-                return done("Invalid email");
+                return done("Invalid email address");
             } else if (!first_name || !last_name || first_name.length == 0 
                 || first_name.length > 32 || last_name.length == 0 || last_name.length > 32) {
                 return done("Invalid name");
             } else if (password.length < 8 || password.length > 32) {
-                return done("Invalid password");
+                return done("Passwords must be 8-32 characters long");
             }
             const user = await UserModel.create({ email, password, first_name, last_name });
             //Send the user information to the next middleware

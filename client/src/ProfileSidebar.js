@@ -129,22 +129,21 @@ class LoginScreen extends Component {
 
         this.loginSubmit = this.loginSubmit.bind(this);
         this.emailChange = this.emailChange.bind(this);
-        this.pwChange = this.pwChange.bind(this);
+        this.passwordChange = this.passwordChange.bind(this);
     }
 
     loginSubmit(event) {
         event.preventDefault();
         //validate parameters...
         this.setState({loading: true});
-        fetch("http://localhost:8000/auth/login?email=" + this.state.email + "&password=" + this.state.password, {
+        fetch("http://localhost:8000/auth/login", {
             method: 'post',
-            mode: 'cors',
             credentials: 'include',
-            // headers: {'Content-Type': 'application/json'},
-            // body: JSON.stringify({
-            //     "email": this.state.email,
-            //     "password": this.state.password
-            // })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                "email": this.state.email,
+                "password": this.state.password
+            })
         }).then(
             (result) => {
                 this.setState({
@@ -170,7 +169,7 @@ class LoginScreen extends Component {
         this.setState({email: event.target.value});
     }
 
-    pwChange(event) {
+    passwordChange(event) {
         this.setState({password: event.target.value});
     }
 
@@ -196,13 +195,13 @@ class LoginScreen extends Component {
                         Email Address <br/>
                         <input className="login_form_input" type="text" name="email"
                             placeholder="Type your email address" autoComplete="off" 
-                            value={this.state.email} onChange={this.emailChange} />
+                            value={this.state.email} onChange={this.emailChange} required/>
                     </div>
                     <div className="login_prompt">
                         Password <br/>
                         <input className="login_form_input" type="password" 
                             name="password" placeholder="Type your password" 
-                            value={this.state.password} onChange={this.pwChange} />
+                            value={this.state.password} onChange={this.passwordChange} required />
                     </div>
                     <button className="login_form_submit" type="submit" style={this.state.loading ? cursorLoading : cursorButton}>
                         LOGIN
@@ -218,45 +217,170 @@ class LoginScreen extends Component {
     }
 }
 
-function RegisterScreen(props) {
-    return (
-        <div className="login_popup register">
-            <h1>Register</h1>
-            
-            <form className="login_form">
-                <center>
-                <div className="login_prompt register">
-                    Full Name <br/>
-                    <input className="login_form_input register name first" type="text" name="first_name"
-                        placeholder="First" autoComplete="off"/>
-                    <input className="login_form_input register name" type="text" name="last_name"
-                        placeholder="Last" autoComplete="off"/>
-                </div>
-                <div className="login_prompt register">
-                    Email Address <br/>
-                    <input className="login_form_input register" type="text" name="email"
-                        placeholder="Type your email address" autoComplete="off"/>
-                </div>
-                <div className="login_prompt register">
-                    Password <br/>
-                    <input className="login_form_input register" type="password" 
-                        name="password" placeholder="Type your password"/>
-                </div>
-                <div className="login_prompt register">
-                    Confirm Password <br/>
-                    <input className="login_form_input register" type="password" 
-                        name="confirm_password" placeholder="Confirm your password"/>
-                </div>
-                <button className="login_form_submit" type="submit">
-                    Register
-                </button> <br/>
-                <button className="login_form_switch_screen" onClick={props.switchScreen}>
-                    Already have an account? Log in
-                </button>
-                </center>
-            </form>
-        </div>
-    )
+class RegisterScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            first_name: "",
+            last_name: "",
+            email: "",
+            password: "",
+            confirm_password: "",
+            loading: false,
+            errorRegister: false,
+            errorMessage: "Error processing signup"
+        }
+
+        this.registerSubmit = this.registerSubmit.bind(this);
+        this.emailChange = this.emailChange.bind(this);
+        this.passwordChange = this.passwordChange.bind(this);
+        this.confirmPassChange = this.confirmPassChange.bind(this);
+        this.firstNameChange = this.firstNameChange.bind(this);
+        this.lastNameChange = this.lastNameChange.bind(this);
+        this.generateErrorMsg = this.generateErrorMsg.bind(this);
+    }
+
+    generateErrorMsg(msg) {
+        this.setState({
+            errorRegister: true,
+            errorMessage: msg
+        });
+        console.log(msg);
+    }
+
+    registerSubmit(event) {
+        event.preventDefault();
+        //validate parameters... (still need to add more checks both here and backend)
+        if (this.state.password !== this.state.confirm_password) {
+            this.generateErrorMsg("Passwords don't match");
+            return null;
+        }
+        this.setState({loading: true});
+        fetch("http://localhost:8000/auth/signup", {
+            method: 'post',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                "email": this.state.email,
+                "password": this.state.password,
+                "first_name": this.state.first_name,
+                "last_name": this.state.last_name
+            })
+        }).then(
+            (result) => {
+                this.setState({
+                    loading: false
+                });
+                if (result.status === 200) {
+                    //Success - perhaps add auto-login?
+                    window.location.reload();
+                    return null;
+                }
+                window.array = []
+                var that = this;
+                result.json().then(function(jsonResponse){
+                    // users is now our actual variable parsed from the json, so we can use it
+                    if ("error" in jsonResponse) {
+                        var errMsg = jsonResponse["error"];
+                        console.log(jsonResponse);
+                        window.array.push(jsonResponse);
+                        console.log(jsonResponse["error"]);
+                        if (typeof errMsg === 'string' || errMsg instanceof String) {
+                            that.generateErrorMsg(errMsg);
+                            return null;
+                        }
+                        that.generateErrorMsg("Email address already in use.");
+                        return null;
+                    }
+                  });
+                //Shouldn't get here..
+                this.generateErrorMsg("Unexpected error occurred.")
+                return null;
+            },
+            // Handle error
+            (error) => {
+                console.error("Failed to connect to register endpoint");
+            }
+        )
+    }
+
+    emailChange(event) {
+        this.setState({email: event.target.value});
+    }
+
+    passwordChange(event) {
+        this.setState({password: event.target.value});
+    }
+    
+    confirmPassChange(event) {
+        this.setState({confirm_password: event.target.value});
+    }
+
+    firstNameChange(event) {
+        this.setState({first_name: event.target.value});
+    }
+
+    lastNameChange(event) {
+        this.setState({last_name: event.target.value});
+    }
+
+    render() {
+        var cursorLoading = {"cursor": "progress"};
+        var cursorButton = {"cursor": "pointer"};
+        if (this.state.errorRegister) {
+            cursorButton = {
+                "cursor": "pointer",
+                "border": "2px solid red"
+            }
+        }
+        var errorMsgDefault = {"display": "none"};
+        var errorMsg = {"display": "initial"};
+
+        return (
+            <div className="login_popup register">
+                <h1>Register</h1>
+                
+                <form className="login_form" onSubmit={this.registerSubmit}>
+                    <center>
+                    <div className="login_prompt register">
+                        Full Name <br/>
+                        <input className="login_form_input register name first" type="text" name="first_name"
+                            placeholder="First" autoComplete="off" 
+                            value={this.state.first_name} onChange={this.firstNameChange} required />
+                        <input className="login_form_input register name" type="text" name="last_name"
+                            placeholder="Last" autoComplete="off" 
+                            value={this.state.last_name} onChange={this.lastNameChange} required />
+                    </div>
+                    <div className="login_prompt register">
+                        Email Address <br/>
+                        <input className="login_form_input register" type="text" name="email"
+                            placeholder="Type your email address" autoComplete="off" 
+                            value={this.state.email} onChange={this.emailChange} required />
+                    </div>
+                    <div className="login_prompt register">
+                        Password <br/>
+                        <input className="login_form_input register" type="password" 
+                            name="password" placeholder="Type your password" 
+                            value={this.state.password} onChange={this.passwordChange} required />
+                    </div>
+                    <div className="login_prompt register">
+                        Confirm Password <br/>
+                        <input className="login_form_input register" type="password" 
+                            name="confirm_password" placeholder="Confirm your password" 
+                            value={this.state.confirm_password} onChange={this.confirmPassChange} required />
+                    </div>
+                    <button className="login_form_submit" type="submit" style={this.state.loading ? cursorLoading : cursorButton}>
+                        Register
+                    </button> <br/>
+                    <span className="login_error_msg" style={this.state.errorRegister ? errorMsg : errorMsgDefault } >{this.state.errorMessage}</span><br/>
+                    <button className="login_form_switch_screen" onClick={this.props.switchScreen}>
+                        Already have an account? Log in
+                    </button>
+                    </center>
+                </form>
+            </div>
+        )
+    }
 }
 
 export default ProfileSidebar;

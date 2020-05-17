@@ -19,6 +19,7 @@ process.title="safety-maps-server";
  
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET_KEY));
 app.use(bodyParser.urlencoded({ extended : false }) );
+app.use(bodyParser.json());
 
 //Authentication Routing
 require("./auth/auth_connect");
