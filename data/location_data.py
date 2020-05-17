@@ -29,7 +29,7 @@ try:
     #prints out the query result 
     #print (results)
 
-    print ("connected")
+    #print ("connected")
     
 #catch errors
 except (Exception, psycopg2.Error) as error :
