@@ -87,21 +87,13 @@
 
 /* Suggestions */
 .mapboxgl-ctrl-geocoder .suggestions {
-  position: absolute !important; /* Not sure why it is not absolute */
   margin: 0;
   padding: 0;
   left: 0;
-  top: 137px !important;
-  /* top: 110%; fallback */
-  background-color: #fff;
   border-radius: 4px;
-  left: 0;
 
+  background-color: #FFF;
   list-style: none;
-
-  width: 100%;
-
-  z-index: 1000;
   overflow: hidden;
   font-size: 15px;
 }
