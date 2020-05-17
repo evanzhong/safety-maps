@@ -13,4 +13,5 @@
 *.DS_Store
 *.env
 *npm-debug.log*
-
+*__pycache__/
+.gitignore~

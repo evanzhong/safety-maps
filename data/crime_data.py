@@ -17,15 +17,13 @@ client = Socrata("data.lacity.org", None)
 #                  userame="user@example.com",                                                                            
 #                  password="AFakePassword")                                                                              
 
-# Returns limit number of results, returned as JSON from API / converted to Python list of                                             
-# dictionaries by sodapy.                                                                                                 
+#function by default will return 100 elements of the crime data, can pass in your own value in as a parameter
+#note: 2114179 is the maximum number to extract 
+def get_crime_data(num=1000):
+    #results are returned as a JSON from the API and then converted to a list of dictionaries by sodapy
+    results = client.get("63jg-8b9z", limit=num)
 
-#following line gets all the crime data
-#results = client.get("63jg-8b9z", limit=2114179)
-
-results = client.get("63jg-8b9z", limit=1000)
-
-# Convert to pandas DataFrame                                                                                             
-results_df = pd.DataFrame.from_records(results)
-
-print (results_df)
+    #convert to dataframe
+    results_df = pd.DataFrame.from_records(results)
+    return results_df
+                                                                                              

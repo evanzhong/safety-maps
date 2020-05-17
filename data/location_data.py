@@ -40,99 +40,106 @@ def create_dataframe(query, database=connection):
     #query should be a SQL query, pandas takes care of the dataframe transformation
     return pd.read_sql_query(query, database)
 
-ways_query = "SELECT * FROM planet_osm_ways"
-ways_df = create_dataframe(ways_query)
 
-print (ways_df.shape)
+#will return dataframe with street and corresponding geocoords associated with it
+def get_location_data():
 
-nodes_query = "SELECT * FROM planet_osm_nodes"
-nodes_df = create_dataframe(nodes_query)
+    ways_query = "SELECT * FROM planet_osm_ways"
+    ways_df = create_dataframe(ways_query)
 
-print (nodes_df.shape)
+    print (ways_df.shape)
 
-#Series object that contains all the metainformation about the way, including the na,e which is what we're after
-names_in_way = ways_df['tags']
+    nodes_query = "SELECT * FROM planet_osm_nodes"
+    nodes_df = create_dataframe(nodes_query)
 
-#checking the type of the resulting object (it's a series)
-#print (names_in_way, type(names_in_way))
+    print (nodes_df.shape)
 
-#print (names_in_way[0])
+    #Series object that contains all the metainformation about the way, including the na,e which is what we're after
+    names_in_way = ways_df['tags']
 
-#for i in range (len(names_in_way[0])):
-#    if names_in_way[0][i] == 'name':
-#        print (names_in_way[0][i+1])
-#        break
+    #checking the type of the resulting object (it's a series)
+    #print (names_in_way, type(names_in_way))
 
-#list to hold all the street names
-street_names = [] 
+    #print (names_in_way[0])
 
-#loop through all the ways
-for item in names_in_way.iteritems():
-    #array should be the second element of the tuple returned by iteritems, which is what arr is set to
-    arr = item[1]
+    #for i in range (len(names_in_way[0])):
+    #    if names_in_way[0][i] == 'name':
+    #        print (names_in_way[0][i+1])
+    #        break
 
-    #checks that there exists a list to iterate through
-    if isinstance(arr, list) == False:
-        street_names.append(None)
-        continue
-    #loop through the elements of this array to gather the name
-    for i in range (len(arr)):
-        #since the name of the street always follows after 'name' in the list, we add the element after name to the list and break the loop
-        if arr[i] == 'name':
-            street_names.append(arr[i + 1])
-            break
+    #list to hold all the street names
+    street_names = [] 
 
-        #append none if there is no name (the way isn't a street)
-        if i == len(arr) - 1:
+    #loop through all the ways
+    for item in names_in_way.iteritems():
+        #array should be the second element of the tuple returned by iteritems, which is what arr is set to
+        arr = item[1]
+
+        #checks that there exists a list to iterate through
+        if isinstance(arr, list) == False:
             street_names.append(None)
+            continue
+        #loop through the elements of this array to gather the name
+        for i in range (len(arr)):
+            #since the name of the street always follows after 'name' in the list, we add the element after name to the list and break the loop
+            if arr[i] == 'name':
+                street_names.append(arr[i + 1])
+                break
 
-street_names = pd.Series(street_names)        
+            #append none if there is no name (the way isn't a street)
+            if i == len(arr) - 1:
+                street_names.append(None)
 
-#append the names to the ways dataframe
-ways_df['name'] = street_names
+    street_names = pd.Series(street_names)        
 
-#ditch ways without a name, since they're clearly not streets
-streets_df = ways_df.dropna()
+    #append the names to the ways dataframe
+    ways_df['name'] = street_names
 
-#convert all street nodes to lat-long coordinates 
-nodes_in_way = streets_df['nodes']
+    #ditch ways without a name, since they're clearly not streets
+    streets_df = ways_df.dropna()
 
-#list to store lists of all lat-longs of nodes 
-node_lists = []
+    #convert all street nodes to lat-long coordinates 
+    nodes_in_way = streets_df['nodes']
 
-#loop through all the nodes
-for item in nodes_in_way.iteritems():
-    #again, the array should be the second item of the tuple returned by iteritems
-    arr = item[1]
+    #list to store lists of all lat-longs of nodes 
+    node_lists = []
 
-    #create a list to store the individual lat-longs of a way in 
-    cur_way_coords = []
+    #loop through all the nodes
+    for item in nodes_in_way.iteritems():
+        #again, the array should be the second item of the tuple returned by iteritems
+        arr = item[1]
 
-    if isinstance(arr, list) == False:
-        node_lists.append(None)
-        continue
+        #create a list to store the individual lat-longs of a way in 
+        cur_way_coords = []
 
-    for i in range (len(arr)):
-        #gets the information about a node from the nodes dataframe 
-        node = nodes_df.loc[nodes_df['id'] == arr[i]]
-        
-        #lat = node.at[0, 'lat']
-        #lon = node.at[0, 'lon']
+        if isinstance(arr, list) == False:
+            node_lists.append(None)
+            continue
 
-        #get the lat lon values of each node 
-        lat = node.iloc[0]['lat']
-        lon = node.iloc[0]['lon']
-        
-        #store the lat lon information in the form of a tuple
-        coords = (lat, lon)
-        cur_way_coords.append(coords)
+        for i in range (len(arr)):
+            #gets the information about a node from the nodes dataframe 
+            node = nodes_df.loc[nodes_df['id'] == arr[i]]
+            
+            #lat = node.at[0, 'lat']
+            #lon = node.at[0, 'lon']
 
-    node_lists.append(cur_way_coords)
+            #get the lat lon values of each node 
+            lat = node.iloc[0]['lat']
+            lon = node.iloc[0]['lon']
+            
+            #store the lat lon information in the form of a tuple
+            coords = (lat, lon)
+            cur_way_coords.append(coords)
 
-streets_df['coords'] = node_lists
-print (streets_df)
+        node_lists.append(cur_way_coords)
 
-#closes all connections 
-cursor.close()
-connection.close()
-print ("closed")
+    streets_df['coords'] = node_lists
+    print (streets_df)
+
+    #closes all connections 
+    cursor.close()
+    connection.close()
+    print ("closed")
+
+    return streets_df
+
