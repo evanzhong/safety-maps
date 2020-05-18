@@ -43,6 +43,7 @@
     background-color: lightgray;
     cursor: pointer;
 }
+
 .direction-button:hover
 {
     background-color: gainsboro;

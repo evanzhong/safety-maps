@@ -19,6 +19,7 @@ class Map extends Component {
     };
     //For testing purposes - delete later
     window.map = this;
+    this.renderRoute = this.renderRoute.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +37,6 @@ class Map extends Component {
         zoom: map.getZoom().toFixed(2)
       });
     });
-
     this.setState({map: map});
   }
 
@@ -86,6 +86,8 @@ class Map extends Component {
   // For testing purposes: try in Chrome console:
   // map.renderRoute([-122.1230542,37.4322595],[-122.15,37.45]);
   renderRoute(start, end) {
+    console.log(start)
+    console.log(end)
     const map = this.state.map;
     var canvas = map.getCanvasContainer();
       canvas.style.cursor = '';
@@ -97,7 +99,7 @@ class Map extends Component {
 
   // make call to directions API - make sure server is running first!
   requestRoute(start, end) {
-    const map = this.state.map;
+     const map = this.state.map;
     var url = 'http://localhost:8000/directions/' + start[0] + ',' + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
     var req = new XMLHttpRequest();
@@ -146,11 +148,11 @@ class Map extends Component {
     };
     req.send();
   }
-
+  
   render() {
     return (
       <div>
-        <DirectionSidebar map = {this.state.map} />
+        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}/>
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}
