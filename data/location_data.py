@@ -124,8 +124,8 @@ def get_location_data():
             #lon = node.at[0, 'lon']
 
             #get the lat lon values of each node 
-            lat = node.iloc[0]['lat']
-            lon = node.iloc[0]['lon']
+            lat = node.iloc[0]['lat'] / float(10000000)
+            lon = node.iloc[0]['lon'] / float(10000000)
             
             #store the lat lon information in the form of a tuple
             coords = (lat, lon)

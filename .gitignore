@@ -9,6 +9,10 @@
 # production
 */build
 
+#big data files
+*/pickle_files
+*.pkl
+
 # misc
 *.DS_Store
 *.env
@@ -16,3 +20,4 @@
 *__pycache__/
 .gitignore~
 .vscode/
+
