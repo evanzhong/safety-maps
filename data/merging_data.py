@@ -77,21 +77,59 @@ def nearest_neighbor(input_points, crime_points):
     test_input = [input_radians_coords[i][0] for i in range(len(input_radians_coords))]
     test_input = np.array(test_input)
     
+    #get_nearest returns a list of lists of 10 distances from the nearest crimes from the locations in test_input
+    #dist should have the same length as the number of streets in our input 
     dist = get_nearest(test_input, crime_radians_coords)
+    print (len(dist))
 
     #converts 10 nearest neighbors into an average distance from crime 
     avg_dist = np.array([np.mean(dist[i]) for i in range(len(dist))])
 
+    #calling the function to generate lists of values for the coordinates
+    print (input_radians_coords[0])
+
+    #list to hold a list of the average crime score for each point on a street segment 
+    result_crime_coefficients = []
+
+    #loop through and get comprehensive crime ratings for each geocoord
+    for i in range(len(input_radians_coords)):
+        temp = np.array(input_radians_coords[i])
+        values = get_nearest(temp, crime_radians_coords)
+        avg_values = [np.mean(values[i]) for i in range(len(values))]
+        avg_values = np.array(avg_values)
+        result_crime_coefficients.append(avg_values)
+
+    #result_crime_coefficients = np.array(result_crime_coefficients)
+
     #print (avg_dist)
+    #print (result_crime_coefficients)
 
-    return avg_dist
+    return avg_dist, result_crime_coefficients
 
+#customScaler uses min and max values found through iterating through each result 
+def customScaler(X, x_min=1.7839205773861564e-07, x_max=6.636897359387062e-05):
+    return ((X - x_min) / (x_max - x_min)) 
 
+#scale the distances to be a value between 0 and 1, with 1 being the furthest away from crime and 0 being the closest 
 scaler = MinMaxScaler()
-dist = nearest_neighbor(final_loc_data, final_crime_data)
-scaled_dist = scaler.fit_transform(dist.reshape(-1, 1))
-final_loc_data['dist_from_crime'] = scaled_dist
 
+#dist_total currently contains a numpy array of lists of crime coefficients
+dist_single, dist_total = nearest_neighbor(final_loc_data, final_crime_data)
+scaled_dist_single = scaler.fit_transform(dist_single.reshape(-1, 1))
+
+#find the min and max values in dist_total
+print (np.min([np.min(arr) for arr in dist_total]))
+print (np.max([np.max(arr) for arr in dist_total]))
+
+#scale using custom scaler
+scaled_dist_total = [customScaler(arr) for arr in dist_total]
+
+#add scaled results to dataframe
+final_loc_data['dist_from_crime_single_val'] = scaled_dist_single
+final_loc_data['dist_from_crime_all_vals'] = scaled_dist_total
+
+#drop unnecessary columns 
+final_loc_data = final_loc_data.drop(['index'], axis=1)
 print (final_loc_data)
 
-
+final_loc_data.to_pickle("final_data.pkl")
