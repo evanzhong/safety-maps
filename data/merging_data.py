@@ -122,7 +122,7 @@ print (np.min([np.min(arr) for arr in dist_total]))
 print (np.max([np.max(arr) for arr in dist_total]))
 
 #scale using custom scaler
-scaled_dist_total = [customScaler(arr) for arr in dist_total]
+scaled_dist_total = [customScaler(arr).tolist() for arr in dist_total]
 
 #add scaled results to dataframe
 final_loc_data['dist_from_crime_single_val'] = scaled_dist_single
