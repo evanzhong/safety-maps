@@ -21,8 +21,8 @@ const express = require('express')
 const app = express()
 
 app.get('/', function (req, res) {
-    console.log(Router.data[0]);
-    res.send('Hello World')
+    console.log(Router.data);
+    res.send(Router.data);
 });
 
 app.listen(4000, () => {
