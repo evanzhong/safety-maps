@@ -46,14 +46,44 @@ class ProfileSidebar extends Component {
     render() {
         if (this.state.loading) {
             return null;
-        } return (
+        } 
+        const user = {
+            "first_name": this.state.first_name,
+            "last_name": this.state.last_name,
+            "email": this.state.email,
+        }
+        return (
             <div className="profile_sidebar_wrapper">
-                {this.state.logged_in ? <LogoutButton/> : <LoginPopup/> }
+                {this.state.logged_in ? <UserProfile user={user}/> : <LoginPopup/> }
             </div>
         )
     }
 }
 
+class UserProfile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: null
+        }
+    }
+
+    componentDidMount(){
+        this.setState({user: this.props.user})
+    }
+
+    render() {
+        if(!this.state.user){ //wait for the user object to update
+            return null;
+        }
+        return (
+            <div id="user-profile-wrapper">
+                <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
+                <LogoutButton/>
+            </div>
+        )
+    }
+}
 class LogoutButton extends Component {
     logout() {
         fetch("http://localhost:8000/auth/logout/", {
