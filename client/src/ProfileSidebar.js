@@ -64,12 +64,24 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            isMainHidden: null,
         }
     }
 
     componentDidMount(){
-        this.setState({user: this.props.user})
+        this.setState({
+            user: this.props.user,
+            isMainHidden: false,
+        })
+    }
+    
+    minimizeProfileMain(){
+        const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
+        const wrapperDisplayCss = this.state.isMainHidden ? "width:auto" : "";
+        document.getElementById("user-profile-main").style = mainDisplayCss;
+        document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
+        this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
     }
 
     render() {
@@ -78,8 +90,16 @@ class UserProfile extends Component {
         }
         return (
             <div id="user-profile-wrapper">
-                <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
-                <LogoutButton/>
+                <div id="user-profile-mini-bar">
+                    <button onClick={() => this.minimizeProfileMain()}>minimize</button>
+                </div>
+                <div id="user-profile-main">
+                    <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
+                    <p>View Recent Routes</p>
+                    <p>My Favorite Routes</p>
+                    <p>Fastest time: </p>
+                </div>
+                    <LogoutButton/>
             </div>
         )
     }
