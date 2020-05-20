@@ -6,6 +6,11 @@ function deg2rad(deg) {
   return deg * PI / 180;
 }
 
+function switchOrder(str) {
+  var tmp = str.split(",");
+  return tmp[1] + "," + tmp[0];
+}
+
 class Router {
   constructor() {
     this.dataset = {}; // keys: coords, values: list of adjacent coords
@@ -62,15 +67,27 @@ class Router {
 
       //If reached end coord
       if (current === end) {
-        var result = []
+        //Semi colon-separated string (for Mapbox Map Matching API)
+        // (https://docs.mapbox.com/api/navigation/#map-matching)
+        // Max 100 coordinates per request - if more, need to split into batches
+        var result = [];
+        var result_str = "";
+        var count = 1;
         while (current !== start) {
-          result.unshift(current)
+          if (count < 2) {
+            result_str = ";" + switchOrder(current) + result_str;
+            ++count;
+          } else {
+            result_str = switchOrder(current) + result_str;
+            result.unshift(result_str);
+            count = 1;
+            result_str = "";
+          }
           current = came_from[current];
         }
-        result.unshift(start);
-        return {
-          "Route Found" : result
-        };
+        result_str = switchOrder(start) + result_str;
+        result.unshift(result_str);
+        return result;
       }
 
       //Process neighbors of current coord
@@ -94,8 +111,8 @@ class Router {
   // For now, we just use Euclidean Distance in kilometers
   heuristic(coord1, coord2) {
     const earthRadiusKm = 6371.0;
-    var coord1split = coord1.split(" ");
-    var coord2split = coord2.split(" ");
+    var coord1split = coord1.split(",");
+    var coord2split = coord2.split(",");
     var c1lat = parseFloat(coord1split[0]);
     var c1long = parseFloat(coord1split[1]);
     var c2lat = parseFloat(coord2split[0]);
@@ -110,6 +127,11 @@ class Router {
     var v = Math.sin((lon2r - lon1r) / 2);
 
     return 2.0 * earthRadiusKm * Math.asin(Math.sqrt(u * u + Math.cos(lat1r) * Math.cos(lat2r) * v * v));
+  }
+
+  closestValidCoord(coord) {
+    //temporary
+    return Object.keys(this.dataset)[0];
   }
 
   get data() {
