@@ -4,8 +4,8 @@
     position: absolute;
     z-index: 1;
     width: 100%;
-    top: 27px;
-    margin-left: 100px;
+    top: 30px;
+    margin-left: 70px;
 }
 .mapboxgl-ctrl-geocoder {
     min-width: 100%;
@@ -31,11 +31,11 @@
   position: relative;
   background-color: #fff;
   width: 100%;
-  min-width: 400px; /* Change this to change search box width  */
+  min-width: 415px; /* Change this to change search box width  */
   z-index: 1;
   border-radius: 4px;
   transition: width .25s, min-width .25s;
-  margin-bottom: 40px !important;
+  margin-bottom: 50px !important;
 }
 
 .mapboxgl-ctrl-geocoder--input {
@@ -87,9 +87,14 @@
 
 /* Suggestions */
 .mapboxgl-ctrl-geocoder .suggestions {
-  margin: 0;
-  padding: 0;
+  /* position: absolute;
   left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0; */
+  /* transform: translateY(50%); */
+  margin-top: 15px;
+  
   border-radius: 4px;
 
   background-color: #FFF;

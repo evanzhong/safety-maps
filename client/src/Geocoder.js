@@ -27,22 +27,14 @@ class Geocoder extends Component {
                     this.props.result(coord);
                     console.log(geopoint);
                     return geopoint.place_name;
-                }
+                },
+                placeholder: this.props.placeHolder,
             });
             document.getElementById('geocoder').appendChild(geocoder.onAdd(props.map))
             num++;
             this.setState({num: num});
         }        
     }
-    
-    // componentDidMount(props) {
-    //     var geocoder = new MapboxGeocoder({
-    //         accessToken: mapboxgl.accessToken,
-    //         mapboxgl: mapboxgl
-    //     });
-    //     console.log(props.map);
-    //     document.getElementById('geocoder').appendChild(geocoder.onAdd(props.map))
-    // }
     
     render() {
         return(
