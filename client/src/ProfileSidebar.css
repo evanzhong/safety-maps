@@ -5,6 +5,18 @@
     padding: 0;
     top: 25px;
     right: 40px;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+#user-profile-wrapper{
+    background-color: gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
 }
 
 .login_button {
