@@ -25,7 +25,6 @@ class Geocoder extends Component {
                     var long = geopoint.geometry.coordinates[1];
                     var coord = [lat, long];
                     this.props.result(coord);
-                    console.log(geopoint);
                     return geopoint.place_name;
                 },
                 placeholder: this.props.placeHolder,
