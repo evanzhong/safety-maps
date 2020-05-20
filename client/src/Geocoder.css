@@ -1,12 +1,24 @@
+.direction-container div svg {
+  width: 23px !important;
+}
+
+#from-wrapper {
+  width: 100%;
+}
 
 /* Geocoder */
 .geocoder {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    top: 30px;
-    margin-left: 70px;
+  display: inline-block;
+  position: absolute;
+  z-index: 1;
+  margin-left: 10px;
+  margin-top: 12px;
 }
+
+#geocoder_from {
+  z-index: 2 !important;
+}
+
 .mapboxgl-ctrl-geocoder {
     min-width: 100%;
 }
@@ -25,17 +37,17 @@
 }
 
 .mapboxgl-ctrl-geocoder {
+  position: relative;
   font-size: 18px;
   line-height: 24px;
   font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
-  position: relative;
   background-color: #fff;
   width: 100%;
   min-width: 415px; /* Change this to change search box width  */
   z-index: 1;
   border-radius: 4px;
   transition: width .25s, min-width .25s;
-  margin-bottom: 50px !important;
+
 }
 
 .mapboxgl-ctrl-geocoder--input {

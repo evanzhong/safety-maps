@@ -47,12 +47,12 @@ class DirectionSidebar extends Component {
             <div className = 'direction-container'>
                 <div id="from-wrapper">
                     <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} result={this.handleFrom} placeHolder="Enter your starting point"/>
+                    <Geocoder map = {this.state.map} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
                 </div>
                 <hr className="line"/>
                 <div id="to-wrapper">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} result={this.handleTo} placeHolder="Enter your destination"/>
+                    <Geocoder map = {this.state.map} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                 </div>
                 <button className="direction-button" onClick={this.sendGeo}>
                     Get Direction

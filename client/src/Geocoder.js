@@ -30,7 +30,7 @@ class Geocoder extends Component {
                 },
                 placeholder: this.props.placeHolder,
             });
-            document.getElementById('geocoder').appendChild(geocoder.onAdd(props.map))
+            document.getElementById(this.props.geocoder_identifier).appendChild(geocoder.onAdd(props.map))
             num++;
             this.setState({num: num});
         }        
@@ -38,9 +38,7 @@ class Geocoder extends Component {
     
     render() {
         return(
-            <div>
-                <div id= "geocoder" className="geocoder"></div>
-            </div>
+            <div id={this.props.geocoder_identifier} className="geocoder"></div>
         )
     }
 }
