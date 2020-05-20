@@ -11,11 +11,14 @@ class Router {
       for (j = 0; j < coords.length; ++j) {
         var coord = coords[j].toString(); //keys are forced to be strings, may as well make everything a string 
         if (!(coord in this.dataset)) {
-          this.dataset[coord] = [];
+          this.dataset[coord] = {
+            "crime": data[i]["dist_from_crime_all_vals"][j],
+            "adj": []
+          };
         }
         if (prev !== null) {
-          this.dataset[prev].push(coord);
-          this.dataset[coord].push(prev);
+          this.dataset[prev]["adj"].push(coord);
+          this.dataset[coord]["adj"].push(prev);
         }
         prev = coord;
       }
