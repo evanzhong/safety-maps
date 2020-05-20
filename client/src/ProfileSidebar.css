@@ -1,13 +1,15 @@
 .profile_sidebar_wrapper {
     position: absolute;
     z-index: 1 !important;
-    margin: 0;
-    padding: 0;
     top: 25px;
     right: 40px;
+    
     display: flex;
     justify-content: center;
-    background-color: white;
+    
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
 }
 
 #user-profile-wrapper{
@@ -17,7 +19,9 @@
     
     width: 300px;
     padding: 15px;
-    background-color: gold;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 2px gainsboro;
 }
 
 .login_button {

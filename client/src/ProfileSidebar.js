@@ -78,7 +78,7 @@ class UserProfile extends Component {
     
     minimizeProfileMain(){
         const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
-        const wrapperDisplayCss = this.state.isMainHidden ? "width:auto" : "";
+        const wrapperDisplayCss = this.state.isMainHidden ? "width:auto;margin-left:120px;margin-right:120px;" : "";
         document.getElementById("user-profile-main").style = mainDisplayCss;
         document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
         this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
