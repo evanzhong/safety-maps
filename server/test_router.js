@@ -25,6 +25,11 @@ app.get('/', function (req, res) {
     res.send(Router.data);
 });
 
+//Example: http://localhost:4000/34.0699698,-118.4396255/34.0707474,-118.4380684
+app.get('/:start/:finish', function (req, res) {
+    res.send(Router.generatePath(req.params.start, req.params.finish));
+});
+
 app.listen(4000, () => {
     console.log('Router test server started!')
 });
