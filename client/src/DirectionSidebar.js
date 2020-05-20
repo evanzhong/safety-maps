@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { faMapPin, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Toggle from 'react-toggle'
 
 import './DirectionSidebar.css';
 
@@ -45,6 +46,17 @@ class DirectionSidebar extends Component {
     render() {
         return (
             <div className = 'direction-container'>
+                <div className= "toggle-container">
+                    <label>
+                        <Toggle
+                            defaultChecked={this.state.toggleDefault}
+                            icons={{
+                            checked: "Exercise",
+                            unchecked: "Trip",
+                            }}
+                        onChange={this.toggleChanged} />
+                    </label>
+                </div>
                 <div id="from-wrapper">
                     <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
                     <Geocoder map = {this.state.map} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
@@ -54,11 +66,14 @@ class DirectionSidebar extends Component {
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
                     <Geocoder map = {this.state.map} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                 </div>
-                <button className="direction-button" onClick={this.sendGeo}>
-                    Get Direction
-                </button>
-            </div>
-            
+                <div className="button-container">
+                    <div className="center">
+                        <button className="button" onClick={this.sendGeo}>   
+                            Calculate Route
+                        </button>
+                    </div>
+                </div>
+            </div>   
         )
     }
 }
