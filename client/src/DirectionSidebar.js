@@ -18,6 +18,7 @@ class DirectionSidebar extends Component {
             to: [],
             toFilled: false,
             fromFilled: false,
+            isDisplayTrip: true,
         }
         this.sendGeo = this.sendGeo.bind(this);
     }
@@ -68,17 +69,37 @@ class DirectionSidebar extends Component {
                             checked: "Exercise",
                             unchecked: "Trip",
                             }}
-                        onChange={this.toggleChanged} />
+                        onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
                     </label>
                 </div>
-                <div id="from-wrapper">
-                    <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
+                    <div id="from-wrapper">
+                        <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
+                        <Geocoder map = {this.state.map} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                    </div>
+                    <hr className="line"/>
+                    <div id="to-wrapper">
+                        <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
+                        <Geocoder map = {this.state.map} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
+                    </div>
                 </div>
-                <hr className="line"/>
-                <div id="to-wrapper">
-                    <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
+                <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
+                    <h1>How much time do you have?</h1>
+                    <input/>
+                    <div>
+                        <div>
+                            <label>Walk</label>
+                            <input type="radio"/>
+                        </div>
+                        <div>
+                            <label>Run</label>
+                            <input type="radio"/>
+                        </div>
+                        <div>
+                            <label>Bike</label>
+                            <input type="radio"/>
+                        </div>
+                    </div>
                 </div>
             </div>   
         )
