@@ -9,7 +9,7 @@ var Router = require('./navigation/router').Router;
 MongoClient.connect(dbString, {"useUnifiedTopology": true}, function(err, db) {
     if (err) throw err;
     var dbo = db.db("data");
-    dbo.collection("Crime_Data").find({}).toArray(function(err, result) {
+    dbo.collection("new_crime_data").find({}).toArray(function(err, result) {
         if (err) throw err;
         db.close();
         Router.loadData(result);
@@ -39,8 +39,11 @@ app.get('/', function (req, res) {
 // Working Example: http://localhost:4000/34.0699698,-118.4396255/34.0696565,-118.4393282
 app.get('/directions/:start/:end', function (req, res) {
     var data = Router.generatePath(req.params.start, req.params.end);
-    if (req.query.mapbox === "off") {
-        res.send(data);
+    res.send({routes: data});
+
+    // for connecting to mapbox api - perhaps unnecessary...
+    /*if (req.query.mapbox === "off") {
+        res.send({routes: data});
         return;
     }
     if (typeof(data) === "string" || data instanceof String) {
@@ -49,6 +52,7 @@ app.get('/directions/:start/:end', function (req, res) {
         var endlen = data.length;
         function makeRequest(return_list, i) {
             var url = "https://api.mapbox.com/matching/v5/mapbox/walking/" + data[i] + "?access_token=" + req.query.access_token;
+            console.log(url);
             request(url, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     return_list.push(JSON.parse(body));
@@ -59,14 +63,17 @@ app.get('/directions/:start/:end', function (req, res) {
                         makeRequest(return_list, i);
                     }
                 } else {
-                    console.log(error);
-                    return res.status(500).json({ type: 'error', message: "Error occurred" });
+                    return res.status(500).json({ type: 'error', message: body });
                 }
             });
         }
         makeRequest([], 0);
-        
     }
+    */
+});
+
+app.get('/test/:start/:end', function (req, res) {
+    res.send (Router.closestValidCoord([parseFloat(req.params.start),parseFloat(req.params.end)]));
 });
 
 app.listen(4000, () => {
