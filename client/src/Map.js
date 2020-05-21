@@ -86,14 +86,12 @@ class Map extends Component {
   // For testing purposes: try in Chrome console:
   // map.renderRoute([-122.1230542,37.4322595],[-122.15,37.45]);
   renderRoute(start, end) {
-    console.log(start)
-    console.log(end)
     const map = this.state.map;
     var canvas = map.getCanvasContainer();
       canvas.style.cursor = '';
       this.labelPoint('end', end);
       this.labelPoint('start', start);
-      
+    
       this.requestRoute(start, end, false);
   }
 
