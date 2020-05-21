@@ -16,6 +16,8 @@ class DirectionSidebar extends Component {
             result2: null,
             from: [],
             to: [],
+            toFilled: false,
+            fromFilled: false,
         }
         this.sendGeo = this.sendGeo.bind(this);
     }
@@ -24,6 +26,18 @@ class DirectionSidebar extends Component {
         // Not sure if it needs to guarantee that this runs only once
         const map = props.map;
         this.setState({map: map});
+    }
+
+    fillFrom = () => {
+        this.setState({
+            fromFilled: true,
+        })
+    }
+
+    fillTo = () => {
+        this.setState({
+            toFilled: true,
+        })
     }
 
     handleFrom = (from) => {
@@ -59,19 +73,12 @@ class DirectionSidebar extends Component {
                 </div>
                 <div id="from-wrapper">
                     <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                    <Geocoder map = {this.state.map} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
                 </div>
                 <hr className="line"/>
                 <div id="to-wrapper">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
-                    <Geocoder map = {this.state.map} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
-                </div>
-                <div className="button-container">
-                    <div className="center">
-                        <button className="button" onClick={this.sendGeo}>   
-                            Calculate Route
-                        </button>
-                    </div>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
+                    <Geocoder map = {this.state.map} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                 </div>
             </div>   
         )
