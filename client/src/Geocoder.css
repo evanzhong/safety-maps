@@ -40,7 +40,6 @@
   position: relative;
   font-size: 18px;
   line-height: 24px;
-  font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
   background-color: #fff;
   width: 100%;
   min-width: 415px; /* Change this to change search box width  */
@@ -99,18 +98,15 @@
 
 /* Suggestions */
 .mapboxgl-ctrl-geocoder .suggestions {
-  /* position: absolute;
-  left: 0;
-  top: 0;
-  margin: 0;
-  padding: 0; */
-  /* transform: translateY(50%); */
-  margin-top: 15px;
-  
+  background-color: #fff;
   border-radius: 4px;
-
-  background-color: #FFF;
+  left: 0;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
   overflow: hidden;
   font-size: 15px;
 }
