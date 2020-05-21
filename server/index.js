@@ -40,8 +40,8 @@ app.get('/', function (req, res) {
 
 //Example API Call: (route from [-122.1230542,37.4322595] to [-122.15,37.45])
 // localhost:8000/api/directions/-122.1230542,37.4322595/-122.15,37.45?access_token=...
-app.get('/directions/:start/:end', function (req, res) {
-  var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + req.params.start + ';' + req.params.end + 
+app.get('/old_directions/:start/:end', function (req, res) {
+  var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + req.params.start + ';' + req.params.end + 
     '?steps=true&geometries=geojson&access_token=' + req.query.access_token;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -51,6 +51,40 @@ app.get('/directions/:start/:end', function (req, res) {
     }
   })
 })
+
+// ------------------ New Routing API
+
+var MongoClient = require('mongodb').MongoClient;
+const dbString = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@crimedata-pebxn.mongodb.net/";
+var Router = require('./navigation/router').Router;
+MongoClient.connect(dbString, {"useUnifiedTopology": true}, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("data");
+    dbo.collection("new_crime_data").find({}).toArray(function(err, result) {
+        if (err) throw err;
+        db.close();
+        Router.loadData(result);
+    });
+});
+
+app.get('/router_data', function (req, res) {
+  console.log(Router.data);
+  res.send(Router.data);
+});
+
+//Example: http://localhost:8000/34.0699698,-118.4396255/34.0707474,-118.4380684
+// Working Example: http://localhost:8000/34.0699698,-118.4396255/34.0696565,-118.4393282
+app.get('/directions/:start/:end', function (req, res) {
+  var data = Router.generatePath(req.params.start, req.params.end);
+  res.send({coords: data});
+});
+
+app.get('/test/:start/:end', function (req, res) {
+  res.send (Router.closestValidCoord([parseFloat(req.params.start),parseFloat(req.params.end)]));
+});
+
+
+// ------------------ End of new routing API
 
 //Handle errors
 app.use(function(err, req, res, next) {
