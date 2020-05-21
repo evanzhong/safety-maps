@@ -59,6 +59,18 @@ hr.line {
     margin-bottom: 1rem;
 }
 
+.distance-input {
+  float: right;
+  width: 220px;
+  margin-top: 0.35rem;
+  margin-right: 1rem;
+}
+
+.distance-miles {
+  float: right;
+  line-height: 0rem;
+}
+
 /* Toggle */
 .react-toggle {
     color: white;

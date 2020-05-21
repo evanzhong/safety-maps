@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { faMapPin, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faMapMarkerAlt, faWalking, faRunning, faBiking } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Toggle from 'react-toggle'
 
@@ -84,8 +84,9 @@ class DirectionSidebar extends Component {
                     </div>
                 </div>
                 <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
-                    <h1>How much time do you have?</h1>
-                    <input/>
+                    <p className="distance-miles">miles</p>
+                    <input className="distance-input"/>
+                    <h2>Goal Distance: </h2>
                     <div>
                         <div>
                             <label>Walk</label>
