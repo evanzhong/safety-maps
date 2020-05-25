@@ -80,7 +80,7 @@ class Router {
     /*if (!(start in this.dataset && end in this.dataset)) {
       return "Bad coord";
     }*/
-    if (!(start_kd_obj[1]< 0.2) && end_kd_obj[1] < 0.2) {
+    if (!(start_kd_obj[1]< 0.2 && end_kd_obj[1] < 0.2)) {
       return "Bad coord";
     }
 

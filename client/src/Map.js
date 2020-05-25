@@ -16,7 +16,7 @@ class Map extends Component {
       lng: -118.4473698,
       lat: 34.0689254,
       zoom: 13,
-      coord_list: null,
+      direction_list: null,
     };
     //For testing purposes - delete later
     window.map = this;
@@ -108,7 +108,7 @@ class Map extends Component {
     req.open('GET', url, true);
     req.onload = function() {
       var json = JSON.parse(req.response);
-      var route;
+      /*var route;
       if (useMapbox) {
         var data = json.routes[0];
         route = data.geometry.coordinates;
@@ -122,8 +122,16 @@ class Map extends Component {
           return;
         }
         console.log(route);
+      }*/
+      if (!(json.success) && !(useMapbox)) {
+        console.log("Routing produced error.");
+        console.log("Falling back to mapbox API");
+        that.requestRoute(start, end, true);
+        return;
       }
-      that.setState({coord_list: route});
+      that.setState({direction_list: json["turn-by-turn-directions"]});
+      console.log(that.state.direction_list);
+      var route = json.coordinates;
       var geojson = {
         type: 'Feature',
         properties: {},
@@ -168,7 +176,7 @@ class Map extends Component {
   render() {
     return (
       <div>
-        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute} coord_list={this.state.coord_list} />
+        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute} direction_list={this.state.direction_list} />
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}

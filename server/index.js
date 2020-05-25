@@ -38,14 +38,16 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 });
 
+var process_dirs = require("./navigation/process_directions");
+
 //Example API Call: (route from [-122.1230542,37.4322595] to [-122.15,37.45])
-// localhost:8000/api/directions/-122.1230542,37.4322595/-122.15,37.45?access_token=...
+// localhost:8000/old_directions/-122.1230542,37.4322595/-122.15,37.45?access_token=...
 app.get('/old_directions/:start/:end', function (req, res) {
   var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + req.params.start + ';' + req.params.end + 
-    '?steps=true&banner_instructions=true&geometries=geojson&access_token=' + req.query.access_token;
+    '?steps=true&geometries=geojson&access_token=' + req.query.access_token;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      res.json(JSON.parse(body));
+      res.json(process_dirs.mapbox(JSON.parse(body)));
     } else {
       return res.status(500).json({ type: 'error', message: "Error occurred" });
     }
@@ -76,7 +78,8 @@ app.get('/router_data', function (req, res) {
 // Working Example: http://localhost:8000/34.0699698,-118.4396255/34.0696565,-118.4393282
 app.get('/directions/:start/:end', function (req, res) {
   var data = Router.generatePath(req.params.start, req.params.end);
-  res.send({coords: data});
+  //res.send({coords: data});
+  res.json(process_dirs.safetymaps(data));
 });
 
 app.get('/test/:start/:end', function (req, res) {
