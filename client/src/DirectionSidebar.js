@@ -61,6 +61,27 @@ class DirectionSidebar extends Component {
         console.log("success");
     }
 
+    // EXERCISE MODE:
+    handleExerciseInputChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        if (target.name === "choice") {
+            this.setState({exerciseChoice: value});
+        }
+        else{
+            this.setState({exerciseDuration: value});
+        }
+    }
+    
+    sendExercise = () => {
+        if (this.state.exerciseChoice === null || this.state.exerciseDuration === null) {
+            console.log("Error! You must select both a duration of exercise and a choice of exercise")
+            return;
+        }
+        // EVAN TODO: Send request to server
+        console.log(this.state.exerciseDuration, this.state.exerciseChoice);
+    }
+    
     render() {
         return (
             <div className = 'direction-container'>
@@ -75,6 +96,7 @@ class DirectionSidebar extends Component {
                         onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
                     </label>
                 </div>
+                {/* TRAVEL MODE */}
                 <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
                     <div id="from-wrapper">
                         <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
@@ -86,33 +108,35 @@ class DirectionSidebar extends Component {
                         <Geocoder map = {this.state.map} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                     </div>
                 </div>
+     
+                {/* EXERCISE MODE */}
                 <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
                     <h2>Let SafetyMaps generate an exercise route for you!</h2>
-                    <input id="amount-time" placeholder="How much time do you have? (minutes)"/>
+                    <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
                     <div id="movement-mode-wrapper">
                         <div className="exercise-choice">
-                            <input type="radio" id="walk" name="choice"/>
+                            <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
                             <label for="walk">
                                 Walk
                                 <FontAwesomeIcon icon={faWalking} className="exercise-icon"/> 
                             </label>
                         </div>
                         <div className="exercise-choice">
-                            <input type="radio" id="run" name="choice"/>
+                            <input type="radio" id="run" name="choice" value="run" onChange={this.handleExerciseInputChange}/>
                             <label for="run">
                                 Run
                                 <FontAwesomeIcon icon={faRunning} className="exercise-icon"/> 
                             </label>
                         </div>
                         <div className="exercise-choice">
-                            <input type="radio" id="bike" name="choice"/>
+                            <input type="radio" id="bike" name="choice" value="bike" onChange={this.handleExerciseInputChange}/>
                             <label for="bike">
                                 Bike
                                 <FontAwesomeIcon icon={faBiking} className="exercise-icon"/> 
                             </label>
                         </div>
                     </div>
-                    <input id="generate-exercise-route" type="submit" value="Generate Route"/>
+                    <input id="generate-exercise-route" type="submit" value="Generate Route" onClick={this.sendExercise}/>
                 </div>
                 <DirectionList coords={this.props.coord_list} />
             </div>   
