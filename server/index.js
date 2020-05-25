@@ -42,7 +42,7 @@ app.get('/', function (req, res) {
 // localhost:8000/api/directions/-122.1230542,37.4322595/-122.15,37.45?access_token=...
 app.get('/old_directions/:start/:end', function (req, res) {
   var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + req.params.start + ';' + req.params.end + 
-    '?steps=true&geometries=geojson&access_token=' + req.query.access_token;
+    '?steps=true&banner_instructions=true&geometries=geojson&access_token=' + req.query.access_token;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       res.json(JSON.parse(body));

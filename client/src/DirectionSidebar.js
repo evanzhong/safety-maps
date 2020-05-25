@@ -6,6 +6,7 @@ import Toggle from 'react-toggle'
 import './DirectionSidebar.css';
 
 import Geocoder from "./Geocoder"
+import DirectionList from "./DirectionList"
 
 class DirectionSidebar extends Component {
     constructor(props) {
@@ -101,6 +102,7 @@ class DirectionSidebar extends Component {
                         </div>
                     </div>
                 </div>
+                <DirectionList coords={this.props.coord_list} />
             </div>   
         )
     }
