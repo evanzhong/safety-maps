@@ -77,7 +77,9 @@ app.get('/router_data', function (req, res) {
 //Example: http://localhost:8000/34.0699698,-118.4396255/34.0707474,-118.4380684
 // Working Example: http://localhost:8000/34.0699698,-118.4396255/34.0696565,-118.4393282
 app.get('/directions/:start/:end', function (req, res) {
-  var data = Router.generatePath(req.params.start, req.params.end);
+  var start_split = req.params.start.split(",");
+  var end_split = req.params.end.split(",");
+  var data = Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0]);
   //res.send({coords: data});
   res.json(process_dirs.safetymaps(data));
 });

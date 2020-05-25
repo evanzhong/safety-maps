@@ -99,9 +99,10 @@ class Map extends Component {
   // make call to directions API - make sure server is running first!
   requestRoute(start, end, useMapbox) {
     const map = this.state.map;
-    var mapboxURL = 'http://localhost:8000/old_directions/' + start[0] + ',' + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
-    var newURL = 'http://localhost:8000/directions/' + start[1] + ',' + start[0] + '/' + end[1] + ',' + end[0] + '?access_token=' + mapboxgl.accessToken;
-    var url = useMapbox ? mapboxURL : newURL;
+    var mapboxEndpoint = "old_directions"
+    var smEndpoint = "directions"
+    var url = 'http://localhost:8000/' + (useMapbox ? mapboxEndpoint : smEndpoint) + '/' + start[0] + ',' 
+      + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     var that = this;
     // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
     var req = new XMLHttpRequest();
