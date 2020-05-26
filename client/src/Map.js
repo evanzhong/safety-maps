@@ -125,13 +125,12 @@ class Map extends Component {
         console.log(route);
       }*/
       if (!(json.success) && !(useMapbox)) {
-        console.log("Routing produced error.");
+        console.log("Routing produced error: " + json.error);
         console.log("Falling back to mapbox API");
         that.requestRoute(start, end, true);
         return;
       }
       that.setState({direction_list: json["turn-by-turn-directions"]});
-      console.log(that.state.direction_list);
       var route = json.coordinates;
       var geojson = {
         type: 'Feature',

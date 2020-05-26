@@ -87,6 +87,10 @@ class Router {
     start = start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
     end = end_kd_obj[0]["lat"] + "," + end_kd_obj[0]["long"];
 
+    if (start === end) {
+      return "Bad coord";
+    }
+
     var pq = new PriorityQueue();
 
     pq.enqueue(start, 0.0);
