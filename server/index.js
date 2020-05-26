@@ -41,8 +41,8 @@ app.get('/', function (req, res) {
 var process_dirs = require("./navigation/process_directions");
 
 //Example API Call: (route from [-122.1230542,37.4322595] to [-122.15,37.45])
-// localhost:8000/old_directions/-122.1230542,37.4322595/-122.15,37.45?access_token=...
-app.get('/old_directions/:start/:end', function (req, res) {
+// localhost:8000/directions/mapbox/-122.1230542,37.4322595/-122.15,37.45?access_token=...
+app.get('/directions/mapbox/:start/:end', function (req, res) {
   var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + req.params.start + ';' + req.params.end + 
     '?steps=true&geometries=geojson&access_token=' + req.query.access_token;
   request(url, function (error, response, body) {
@@ -74,9 +74,9 @@ app.get('/router_data', function (req, res) {
   res.send(Router.data);
 });
 
-//Example: http://localhost:8000/34.0699698,-118.4396255/34.0707474,-118.4380684
-// Working Example: http://localhost:8000/34.0699698,-118.4396255/34.0696565,-118.4393282
-app.get('/directions/:start/:end', async function (req, res) {
+// Example: http://localhost:8000/directions/safetymaps/34.0699698,-118.4396255/34.0707474,-118.4380684?access_token=...
+// Working Example: http://localhost:8000/directions/safetymaps/34.0699698,-118.4396255/34.0696565,-118.4393282?access_token=...
+app.get('/directions/safetymaps/:start/:end', async function (req, res) {
   var start_split = req.params.start.split(",");
   var end_split = req.params.end.split(",");
   var data = Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0]);
