@@ -11,14 +11,12 @@
     width: 440px;
 
     background-color: white;
-    border-top-left-radius: 1vw;
-    border-top-right-radius: 1vw;
+    border-radius: 1vw;
 }
 
 .user-dir-container {
   padding: 20px;
-  border-top-left-radius: 1vw;
-  border-top-right-radius: 1vw;
+  border-radius: 1vw;
   padding-bottom: 35px;
 }
 
@@ -28,7 +26,7 @@
 
 .direction_list-container {
   height: auto;
-  max-height: 25vw;
+  max-height: 55vh;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 10px;
@@ -52,17 +50,19 @@
 }
 
 .address-container {
-  padding-left: 63px;
+  padding-left: 25px;
+  width: 80%;
+  font-size: 0.8rem;
+  margin-bottom: 17px;
+  margin-top: 8px;
+  color: #303030;
 }
 
 .main-address {
+  margin: 0;
   line-height: 20px;
-  margin-bottom: -5px;
-}
-
-.sub-address {
-  width: 85%;
-  font-size: 0.8rem;
+  font-size: 16px;
+  color: black;
 }
 
 .direction-text

@@ -29,8 +29,15 @@ class DirectionList extends Component {
                     <ol>
                         {instr.map((instruction,index) => 
                             <li key={index}>
-                                <p className="instruction">{instruction.label}</p>
-                                <p className="distance">{this.formatDistance(instruction.distance)}</p>
+                                <div className="instruction-wrapper">
+                                    <div className="instruction-img-wrapper">
+                                        <img className="instruction-icon" src="https://image.flaticon.com/icons/svg/633/633705.svg"/><br/>
+                                        <span className="instruction-distance">{this.formatDistance(instruction.distance)}</span>
+                                    </div>
+                                    <div className="instruction-text">
+                                        {instruction.label}
+                                    </div>
+                                </div>
                             </li>    
                         )}
                     </ol>
