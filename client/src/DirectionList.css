@@ -1,3 +1,36 @@
 .direction-list-wrapper {
     z-index: 1 !important;
 }
+
+.no-route {
+    margin-left: 63px;
+}
+
+.list ol {
+    font-size: 15px;
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.list ol li {
+    background-image: url("https://image.flaticon.com/icons/svg/633/633705.svg");
+    background-repeat: no-repeat;
+    background-position: center left;
+    background-size: 50px 30px;
+
+    border-bottom: #777 1px solid ;
+    padding-left: 63px;
+}
+
+.list ol li:first-child {
+    border-top: black 3px solid;
+}
+
+.list ol li:last-child {
+    border-bottom: black 3px solid;
+}
+
+.instruction {
+    font-weight: bold;
+}
