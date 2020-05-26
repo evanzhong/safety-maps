@@ -7,17 +7,23 @@ class DirectionList extends Component {
     formattedInstructions() {
         var instr = this.props.instructions;
         if (instr === null) {
-            return "No Route Loaded";
+            return (
+            <div className="no-route">
+                <h2>No Route Loaded</h2>
+            </div>
+            )
         } else {
             return (
-                <ol>
-                    {instr.map((instruction,index) => 
-                        <li key={index}>
-                            {instruction.label}<br/>
-                            {instruction.distance}
-                        </li>    
-                    )}
-                </ol>
+                <div className="list">
+                    <ol>
+                        {instr.map((instruction,index) => 
+                            <li key={index}>
+                                <p className="instruction">{instruction.label}</p>
+                                <p className="distance">For {instruction.distance} feet</p> {/* Not sure what the distance is in */}
+                            </li>    
+                        )}
+                    </ol>
+                </div>
             )
         }
     }
