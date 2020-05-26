@@ -3,15 +3,30 @@ import React, { Component } from 'react';
 import './DirectionList.css';
 
 class DirectionList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+
+    formattedInstructions() {
+        var instr = this.props.instructions;
+        if (instr === null) {
+            return "No Route Loaded";
+        } else {
+            return (
+                <ol>
+                    {instr.map((instruction,index) => 
+                        <li key={index}>
+                            {instruction.label}<br/>
+                            {instruction.distance}
+                        </li>    
+                    )}
+                </ol>
+            )
         }
     }
 
     render() {
         return (
-            <div className="direction-list-wrapper">{this.props.coords == null ? "No Route" : "Route"}</div>
+            <div className="direction-list-wrapper">
+                {this.formattedInstructions()}
+            </div>
         )
     }
 }

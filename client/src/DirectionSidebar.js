@@ -56,7 +56,6 @@ class DirectionSidebar extends Component {
 
     sendGeo = () => {
         this.props.renderRoute(this.state.from, this.state.to);
-        console.log("success");
     }
 
     render() {
@@ -102,7 +101,7 @@ class DirectionSidebar extends Component {
                         </div>
                     </div>
                 </div>
-                <DirectionList coords={this.props.coord_list} />
+                <DirectionList instructions={this.props.direction_list} />
             </div>   
         )
     }
