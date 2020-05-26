@@ -16,6 +16,7 @@ class Map extends Component {
       lng: -118.4473698,
       lat: 34.0689254,
       zoom: 13,
+      direction_list: null,
     };
     //For testing purposes - delete later
     window.map = this;
@@ -98,20 +99,21 @@ class Map extends Component {
   // make call to directions API - make sure server is running first!
   requestRoute(start, end, useMapbox) {
     const map = this.state.map;
-    var mapboxURL = 'http://localhost:8000/old_directions/' + start[0] + ',' + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
-    var newURL = 'http://localhost:8000/directions/' + start[1] + ',' + start[0] + '/' + end[1] + ',' + end[0] + '?access_token=' + mapboxgl.accessToken;
-    var url = useMapbox ? mapboxURL : newURL;
+    var url = 'http://localhost:8000/directions/' + (useMapbox ? "mapbox" : "safetymaps") + '/' + start[0] + ',' 
+      + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     var that = this;
     // make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
     var req = new XMLHttpRequest();
     req.open('GET', url, true);
     req.onload = function() {
       var json = JSON.parse(req.response);
+      /*var route;
       if (useMapbox) {
         var data = json.routes[0];
-        var route = data.geometry.coordinates;
+        route = data.geometry.coordinates;
+        console.log(data);
       } else {
-        var route = json.coords;
+        route = json.coords;
         if (typeof(route) === 'string' || route instanceof String) {
           console.log("Routing produced error: " + route);
           console.log("Falling back to mapbox API");
@@ -119,7 +121,18 @@ class Map extends Component {
           return;
         }
         console.log(route);
+      }*/
+      if (!(json.success) && !(useMapbox)) {
+        console.log("Routing produced error: " + json.error);
+        console.log("Falling back to mapbox API");
+        that.requestRoute(start, end, true);
+        return;
       }
+      if (!useMapbox) {
+        console.log("Routing using SafetyMaps router")
+      }
+      that.setState({direction_list: json["turn-by-turn-directions"]});
+      var route = json.coordinates;
       var geojson = {
         type: 'Feature',
         properties: {},
@@ -164,7 +177,7 @@ class Map extends Component {
   render() {
     return (
       <div>
-        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}/>
+        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute} direction_list={this.state.direction_list} />
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}
