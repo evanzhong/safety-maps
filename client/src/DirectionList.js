@@ -4,6 +4,17 @@ import './DirectionList.css';
 
 class DirectionList extends Component {
 
+    formatDistance(dist) {
+        //dist starts off in m;
+        dist = dist * 3.281; //convert to ft
+        if (dist >= 528) { //0.1 miles
+            dist /= 5280; //convert to miles
+            return Math.round(dist * 10) / 10 + " mi"; //round to one decimal pt
+        } else {
+            return Math.round(dist) + " ft";
+        }
+    }
+
     formattedInstructions() {
         var instr = this.props.instructions;
         if (instr === null) {
@@ -18,8 +29,15 @@ class DirectionList extends Component {
                     <ol>
                         {instr.map((instruction,index) => 
                             <li key={index}>
-                                <p className="instruction">{instruction.label}</p>
-                                <p className="distance">For {instruction.distance} feet</p> {/* Not sure what the distance is in */}
+                                <div className="instruction-wrapper">
+                                    <div className="instruction-img-wrapper">
+                                        <img className="instruction-icon" src="https://image.flaticon.com/icons/svg/633/633705.svg"/><br/>
+                                        <span className="instruction-distance">{this.formatDistance(instruction.distance)}</span>
+                                    </div>
+                                    <div className="instruction-text">
+                                        {instruction.label}
+                                    </div>
+                                </div>
                             </li>    
                         )}
                     </ol>
