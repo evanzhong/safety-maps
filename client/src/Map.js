@@ -128,7 +128,9 @@ class Map extends Component {
         that.requestRoute(start, end, true);
         return;
       }
-      console.log("Routing using SafetyMaps router")
+      if (!useMapbox) {
+        console.log("Routing using SafetyMaps router")
+      }
       that.setState({direction_list: json["turn-by-turn-directions"]});
       var route = json.coordinates;
       var geojson = {
