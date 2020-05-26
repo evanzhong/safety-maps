@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { faMapPin, faMapMarkerAlt, faWalking, faRunning, faBiking } from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faMapMarkerAlt/*, faWalking, faRunning, faBiking*/ } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Toggle from 'react-toggle'
 
@@ -87,50 +87,53 @@ class DirectionSidebar extends Component {
     render() {
         return (
             <div className = 'direction-container'>
-                <div className= "toggle-container">
-                    <label>
-                        <Toggle
-                            defaultChecked={this.state.toggleDefault}
-                            icons={{
-                            checked: "Exercise",
-                            unchecked: "Trip",
-                            }}
-                        onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
-                    </label>
-                </div>
-                <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
-                    <div id="from-wrapper">
-                        <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                        <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                <div className = "user-dir-container">
+                    <div className= "toggle-container">
+                        <label>
+                            <Toggle
+                                defaultChecked={this.state.toggleDefault}
+                                icons={{
+                                checked: "Exercise",
+                                unchecked: "Trip",
+                                }}
+                            onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
+                        </label>
                     </div>
-                    <hr className="line"/>
-                    <div id="to-wrapper">
-                        <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
-                        <Geocoder map = {this.state.map} getAddress={this.getToAddress} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
-                    </div>
-                </div>
-                <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
-                    <p className="distance-miles">miles</p>
-                    <input className="distance-input"/>
-                    <h2>Goal Distance: </h2>
-                    <div>
-                        <div>
-                            <label>Walk</label>
-                            <input type="radio"/>
+                    <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
+                        <div id="from-wrapper">
+                            <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
+                            <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
                         </div>
-                        <div>
-                            <label>Run</label>
-                            <input type="radio"/>
-                        </div>
-                        <div>
-                            <label>Bike</label>
-                            <input type="radio"/>
+                        <hr className="line"/>
+                        <div id="to-wrapper">
+                            <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
+                            <Geocoder map = {this.state.map} getAddress={this.getToAddress} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                         </div>
                     </div>
+                    <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
+                        <p className="distance-miles">miles</p>
+                        <input className="distance-input"/>
+                        <h2>Goal Distance: </h2>
+                        <div>
+                            <div>
+                                <label>Walk</label>
+                                <input type="radio"/>
+                            </div>
+                            <div>
+                                <label>Run</label>
+                                <input type="radio"/>
+                            </div>
+                            <div>
+                                <label>Bike</label>
+                                <input type="radio"/>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="direction-title">
+                        <h2>Direction</h2>
+                    </div> */}
                 </div>
-                {/* <div className="direction-title">
-                    <h2>Direction</h2>
-                </div> */}
+                {this.props.direction_list !== null ?
                 <div className="direction_list-container">
                     <div className="address-container">
                         <h3 className="main-address">{this.state.from_address1}</h3>
@@ -142,6 +145,7 @@ class DirectionSidebar extends Component {
                         <p className="sub-address">{this.state.to_address2}</p>
                     </div>
                 </div>
+                :""}
             </div>   
         )
     }

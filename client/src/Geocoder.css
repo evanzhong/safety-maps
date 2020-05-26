@@ -11,17 +11,14 @@
   display: inline-block;
   position: absolute;
   z-index: 1;
-  margin-left: 10px;
-  margin-top: 12px;
+  margin-left: 15px;
+  margin-top: 0px;
 }
 
 #geocoder_from {
   z-index: 2 !important;
 }
 
-.mapboxgl-ctrl-geocoder {
-    min-width: 100%;
-}
 #map {
     margin-top: 75px;
 }
@@ -39,10 +36,10 @@
 .mapboxgl-ctrl-geocoder {
   position: relative;
   font-size: 18px;
-  line-height: 24px;
+  line-height: 20px;
   background-color: #fff;
+  min-width: 340px;
   width: 100%;
-  min-width: 415px; /* Change this to change search box width  */
   z-index: 1;
   border-radius: 4px;
   transition: width .25s, min-width .25s;
