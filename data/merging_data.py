@@ -7,14 +7,16 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
 #load all data files 
-loc_data = pd.read_pickle("./pickle_files/location_data.pkl")
+#loc_data = pd.read_pickle("./pickle_files/location_data.pkl")
+loc_data = pd.read_pickle("./pickle_files/new_bigger_location_data.pkl")
 cleaned_crime_data = pd.read_pickle("./pickle_files/cleaned_crime_data.pkl")
 
 #resets index of crime data
 final_crime_data = cleaned_crime_data.reset_index()
 
 #drops duplicated streets: need to check if this is allowed, and resets the index 
-final_loc_data = loc_data.drop_duplicates('name').reset_index()
+#final_loc_data = loc_data.drop_duplicates('name').reset_index()
+final_loc_data = loc_data
 
 #grabs only the coordinates from the final location data
 loc_coords = final_loc_data['coords']
@@ -65,8 +67,12 @@ def nearest_neighbor(input_points, crime_points):
     #street data conversions
     input_radians_coords = []
 
+    n = 0
+
     #goes through each list of coordinates and converts them into radians
     for coord in input_points['coords'].iteritems():
+        print (n)
+        n = n + 1
         coord_list = coord[1]
         converted = [(elem[0] * np.pi / 180, elem[1] * np.pi / 180) for elem in coord_list]
         input_radians_coords.append(converted)
@@ -91,8 +97,12 @@ def nearest_neighbor(input_points, crime_points):
     #list to hold a list of the average crime score for each point on a street segment 
     result_crime_coefficients = []
 
+    n = 0
+
     #loop through and get comprehensive crime ratings for each geocoord
     for i in range(len(input_radians_coords)):
+        print (n)
+        n = n + 1
         temp = np.array(input_radians_coords[i])
         values = get_nearest(temp, crime_radians_coords)
         avg_values = [np.mean(values[i]) for i in range(len(values))]
@@ -107,7 +117,7 @@ def nearest_neighbor(input_points, crime_points):
     return avg_dist, result_crime_coefficients
 
 #customScaler uses min and max values found through iterating through each result 
-def customScaler(X, x_min=1.7839205773861564e-07, x_max=6.636897359387062e-05):
+def customScaler(X, x_min, x_max):
     return ((X - x_min) / (x_max - x_min)) 
 
 #scale the distances to be a value between 0 and 1, with 1 being the furthest away from crime and 0 being the closest 
@@ -118,18 +128,18 @@ dist_single, dist_total = nearest_neighbor(final_loc_data, final_crime_data)
 scaled_dist_single = scaler.fit_transform(dist_single.reshape(-1, 1))
 
 #find the min and max values in dist_total
-print (np.min([np.min(arr) for arr in dist_total]))
-print (np.max([np.max(arr) for arr in dist_total]))
+x_min = (np.min([np.min(arr) for arr in dist_total]))
+x_max = (np.max([np.max(arr) for arr in dist_total]))
 
 #scale using custom scaler
-scaled_dist_total = [customScaler(arr).tolist() for arr in dist_total]
+scaled_dist_total = [customScaler(arr, x_min, x_max).tolist() for arr in dist_total]
 
 #add scaled results to dataframe
 final_loc_data['dist_from_crime_single_val'] = scaled_dist_single
 final_loc_data['dist_from_crime_all_vals'] = scaled_dist_total
 
 #drop unnecessary columns 
-final_loc_data = final_loc_data.drop(['index'], axis=1)
+#final_loc_data = final_loc_data.drop(['index'], axis=1)
 print (final_loc_data)
 
-final_loc_data.to_pickle("final_data.pkl")
+final_loc_data.to_pickle("May25_data_merged.pkl")
