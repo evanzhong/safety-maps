@@ -17,6 +17,10 @@ class DirectionList extends Component {
 
     formattedInstructions() {
         var instr = this.props.instructions;
+
+        var total = 0;
+        instr.forEach(element => total = total + element.distance);
+
         if (instr === null) {
             return (
             <div className="no-route">
@@ -27,6 +31,10 @@ class DirectionList extends Component {
             return (
                 <div className="list">
                     <ol>
+                        <div className="total-distance"> 
+                            <span className="total-time-value">{Math.round(total * 60.0 / (1000 * 5))} min </span> 
+                            <span className="total-distance-value">({this.formatDistance(total)})</span>
+                        </div>
                         {instr.map((instruction,index) => 
                             <li key={index}>
                                 <div className="instruction-wrapper">
@@ -41,6 +49,7 @@ class DirectionList extends Component {
                             </li>    
                         )}
                     </ol>
+                    
                 </div>
             )
         }
