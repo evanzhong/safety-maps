@@ -89,11 +89,13 @@ class Map extends Component {
   renderRoute(start, end) {
     const map = this.state.map;
     var canvas = map.getCanvasContainer();
-      canvas.style.cursor = '';
-      this.labelPoint('end', end);
-      this.labelPoint('start', start);
-    
-      this.requestRoute(start, end, false);
+
+    canvas.style.cursor = '';
+
+    this.labelPoint('start', start);
+    this.labelPoint('end', end);
+
+    this.requestRoute(start, end, false);
   }
 
   // make call to directions API - make sure server is running first!
@@ -170,6 +172,10 @@ class Map extends Component {
           }
         });
       }
+      //zoom oo the whole route
+      map.fitBounds([start,end],
+        {padding: {left: 500, right: 45, top: 45, bottom: 45}} //container: left margin(15) + width(440) = 455 -> 500-455 = 45px
+      );
     };
     req.send();
   }
