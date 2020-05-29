@@ -70,7 +70,6 @@ MongoClient.connect(dbString, {"useUnifiedTopology": true}, function(err, db) {
 });
 
 app.get('/router_data', function (req, res) {
-  console.log(Router.data);
   res.send(Router.data);
 });
 

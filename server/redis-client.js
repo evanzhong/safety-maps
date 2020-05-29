@@ -5,4 +5,4 @@ client.on('connect', function() {
     console.log("[Redis] Connected!")
 });
 
-module.exports = client
+module.exports = client;
