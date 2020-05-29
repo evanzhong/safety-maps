@@ -31,9 +31,17 @@ function kdDistance(a, b) {
   return 2.0 * earthRadiusKm * Math.asin(Math.sqrt(u * u + Math.cos(lat1r) * Math.cos(lat2r) * v * v));
 }
 
+var client = require('./redis-client');
+
 class Router {
   constructor() {
     this.dataset = {}; // keys: coords, values: list of adjacent coords
+    
+    client.get('temp_test_redis', function(err, reply) {
+      console.log(reply);
+      console.log(err);
+      client.set('temp_test_redis', 'this is a test');
+    });
   }
 
   loadData(data) {
@@ -60,6 +68,11 @@ class Router {
     }
     this.kdTree = new kdTreeJS.kdTree(kdPoints, kdDistance, ["lat", "long"]);
     console.log("[Router] Data loaded!");
+    client.get('temp_test_redis', function(err, reply) {
+      console.log(reply);
+      console.log(err);
+      client.set('temp_test_redis', 'this is a test 2');
+    });
   }
 
   generatePath(start, end) {
