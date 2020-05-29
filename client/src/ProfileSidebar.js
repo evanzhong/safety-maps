@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './ProfileSidebar.css';
 import Popup from "reactjs-popup";
 
+import { faSignInAlt, faSignOutAlt, faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 class ProfileSidebar extends Component {
     constructor(props) {
         super(props);
@@ -78,7 +81,7 @@ class UserProfile extends Component {
     
     minimizeProfileMain(){
         const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
-        const wrapperDisplayCss = this.state.isMainHidden ? "width:auto;margin-left:120px;margin-right:120px;" : "";
+        const wrapperDisplayCss = this.state.isMainHidden ? "width:300px;height:20px;" : "";
         document.getElementById("user-profile-main").style = mainDisplayCss;
         document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
         this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
@@ -90,8 +93,10 @@ class UserProfile extends Component {
         }
         return (
             <div id="user-profile-wrapper">
+                <LogoutButton/>
                 <div id="user-profile-mini-bar">
-                    <button onClick={() => this.minimizeProfileMain()}>minimize</button>
+                    <FontAwesomeIcon onClick={() => this.minimizeProfileMain()} icon={faBars} className="minbar-icon"/>
+                    {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
                 </div>
                 <div id="user-profile-main">
                     <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
@@ -99,7 +104,7 @@ class UserProfile extends Component {
                     <p>My Favorite Routes</p>
                     <p>Fastest time: </p>
                 </div>
-                    <LogoutButton/>
+                    
             </div>
         )
     }
@@ -121,7 +126,8 @@ class LogoutButton extends Component {
     }
 
     render() {
-        return <button className="login_button" onClick={this.logout}>Logout</button>
+        return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
+        //<button className="login_button" onClick={this.logout}>Logout</button>
     }
 }
 
@@ -135,7 +141,9 @@ class LoginPopup extends Component {
             <Popup
                 modal={true}
                 trigger={open => (
-                    <button className="login_button">Login</button>
+                    // <button className="login_button">Login</button>
+                    // Icon Button
+                    <FontAwesomeIcon icon={faSignInAlt} className="icon"/>
                 )}
                 closeOnDocumentClick
                 contentStyle={popupStyle}
