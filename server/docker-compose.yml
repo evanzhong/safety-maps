@@ -1,0 +1,24 @@
+safety-maps-redis:
+    image: redis
+    container_name: safety-maps-redis
+    working_dir: /data/safety-maps-redis
+    volumes:
+        - ./redis.conf:/data/safety-maps-redis/redis.conf
+    expose:
+        - 6379
+    command: [ "redis-server", "/data/safety-maps-redis/redis.conf" ]
+
+safety-maps-backend:
+    build: ./
+    volumes:
+        - ./:/var/www/safety-maps-backend
+    ports:
+        - 8000:8000
+    links:
+        - safety-maps-redis
+    environment:
+        - REDIS_URL=redis://safety-maps-redis
+        - NODE_ENV=development
+        - PORT=8000
+    command:
+        sh -c 'npm i && npm start'
