@@ -43,13 +43,13 @@ class RedisRouter {
         }
     }
 
-    getCrime(point) {
-        return;
-    }
+    // getCrime(point) {
+    //     return;
+    // }
 
-    getAdjacent(point) {
-        return;
-    }
+    // getAdjacent(point) {
+    //     return;
+    // }
 }
 
 exports.RedisRouter = new RedisRouter();
