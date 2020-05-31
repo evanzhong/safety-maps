@@ -70,7 +70,6 @@ MongoClient.connect(dbString, {"useUnifiedTopology": true}, function(err, db) {
 });
 
 app.get('/router_data', function (req, res) {
-  console.log(Router.data);
   res.send(Router.data);
 });
 
@@ -79,9 +78,10 @@ app.get('/router_data', function (req, res) {
 app.get('/directions/safetymaps/:start/:end', async function (req, res) {
   var start_split = req.params.start.split(",");
   var end_split = req.params.end.split(",");
-  var data = Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0]);
+  //var data = Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0]);
   //res.send({coords: data});
-  await process_dirs.safetymaps(data, req.query.access_token, res);
+  Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0], res, req.query.access_token);
+  //await process_dirs.safetymaps(data, req.query.access_token, res);
 });
 
 app.get('/test/:start/:end', function (req, res) {
