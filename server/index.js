@@ -91,6 +91,13 @@ app.get('/test/:start/:end', function (req, res) {
 
 // ------------------ End of new routing API
 
+// Exercise Mode Routing
+app.get('/directions/:start/:exerciseDuration/:exerciseChoice', function (req, res) {
+  const data = Router.generateCircularPath(req.params);
+  res.send({coords: data});
+})
+// ------------------ End of Exercise Mode Routing
+
 //Handle errors
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
