@@ -196,21 +196,39 @@ class Router {
     // return "No route";
   }
 
+  getNearbyCoordinate(start_arr, dist) {
+    // var start_split = start.split(",");
+    // var start_arr = [parseFloat(start_split[0]), parseFloat(start_split[1])];
+    var start_kd_obj = this.closestValidCoord(start_arr)[0];
+    if (start_kd_obj[1]< dist) {
+      return start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
+    } else {
+      return start;
+    }
+  }
+
   // accepts distances in kilometers
   generateCircularPath(start, dist, res, token){
     if (dist > 16.1) {
       this.processOutput("Error: only supports distances within 10 miles for now")
     }
-    var start_split = start.split(",");
-    var start_arr = [parseFloat(start_split[0]), parseFloat(start_split[1])];
-    var start_kd_obj = this.closestValidCoord(start_arr)[0];
     var maxDistanceMatch = 0.1; //km
-    if (start_kd_obj[1]< maxDistanceMatch) {
-      // if we matched a point in our database, set start to that
-      start = start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
-      start_arr = [parseFloat(start_kd_obj[0]["lat"]), parseFloat(start_kd_obj[0]["long"])];
-    }
-    
+
+    // var start_split = start.split(",");
+    // var start_arr = [parseFloat(start_split[0]), parseFloat(start_split[1])];
+    // var start_kd_obj = this.closestValidCoord(start_arr)[0];
+    // if (start_kd_obj[1]< maxDistanceMatch) {
+    //   // if we matched a point in our database, set start to that
+    //   start = start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
+    //   start_arr = [parseFloat(start_kd_obj[0]["lat"]), parseFloat(start_kd_obj[0]["long"])];
+    // }
+
+    var start_arr = start.split[","];
+    start_arr = [parseFloat(start_arr[0]),parseFloat(start_arr[1])];
+    start = this.getNearbyCoordinate(start_arr, maxDistanceMatch);
+    start_arr = start.split[","];
+    start_arr = [parseFloat(start_arr[0]),parseFloat(start_arr[1])];
+
     //Choose random angle to go in
     var angle1 = Math.floor(Math.random() * 360)
     if (Math.random() > 0.5) {
@@ -220,10 +238,13 @@ class Router {
     }
 
     var pt2 = getCoordInDir(start_arr, angle1, dist/4.0);
+    pt2 = this.getNearbyCoordinate(pt2, maxDistanceMatch);
+
     var pt3 = getCoordInDir(start_arr, angle2, dist/4.0);
+    pt3 = this.getNearbyCoordinate(pt3, maxDistanceMatch);
 
     //console.log('spawning fork');
-    var child = fork("navigation/route_generator.js", [start, pt2[0]+","+pt2[1], pt3[0]+","+pt3[1], start]);
+    var child = fork("navigation/route_generator.js", [token, start, pt2[0]+","+pt2[1], pt3[0]+","+pt3[1], start]);
     child.on('message', message => {
       this.processOutput(message, res, token);
     });
