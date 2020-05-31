@@ -203,7 +203,7 @@ class Router {
     if (start_kd_obj[1]< dist) {
       return start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
     } else {
-      return start;
+      return start_arr[0] + "," + start_arr[1];
     }
   }
 
@@ -213,7 +213,6 @@ class Router {
       this.processOutput("Error: only supports distances within 10 miles for now")
     }
     var maxDistanceMatch = 0.1; //km
-
     // var start_split = start.split(",");
     // var start_arr = [parseFloat(start_split[0]), parseFloat(start_split[1])];
     // var start_kd_obj = this.closestValidCoord(start_arr)[0];
@@ -223,12 +222,11 @@ class Router {
     //   start_arr = [parseFloat(start_kd_obj[0]["lat"]), parseFloat(start_kd_obj[0]["long"])];
     // }
 
-    var start_arr = start.split[","];
-    start_arr = [parseFloat(start_arr[0]),parseFloat(start_arr[1])];
+    var start_arr = start.split(",");
+    var start_arr = [parseFloat(start_arr[0]),parseFloat(start_arr[1])];
     start = this.getNearbyCoordinate(start_arr, maxDistanceMatch);
-    start_arr = start.split[","];
+    start_arr = start.split(",");
     start_arr = [parseFloat(start_arr[0]),parseFloat(start_arr[1])];
-
     //Choose random angle to go in
     var angle1 = Math.floor(Math.random() * 360)
     if (Math.random() > 0.5) {
@@ -236,7 +234,6 @@ class Router {
     } else {
       var angle2 = (angle1 + 60) % 360;
     }
-
     var pt2 = getCoordInDir(start_arr, angle1, dist/4.0);
     pt2 = this.getNearbyCoordinate(pt2, maxDistanceMatch);
 
@@ -248,6 +245,10 @@ class Router {
     child.on('message', message => {
       this.processOutput(message, res, token);
     });
+    // console.log(start);
+    // console.log(pt2);
+    // console.log(pt3);
+    // res.send("worked");
   }
 
   // A* heuristic function - will later be optimized using crime data
