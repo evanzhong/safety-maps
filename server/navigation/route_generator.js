@@ -2,6 +2,7 @@ const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const PriorityQueue = require("./priority_queue");
 const request = require('request');
+const process_dirs = require('./process_directions');
 
 // process.argv[2] and [3] are the start and end coordinates, respectively
 // process.send() to give response!
@@ -42,8 +43,8 @@ async function generatePathMultPoints(coords, mapboxAccessToken){
             
             request(url, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log(JSON.parse(body));
-                    accumulatedResults.concat(JSON.parse(body));
+                    console.log(process_dirs.mapbox(JSON.parse(body)).coordinates);
+                    accumulatedResults.concat(process_dirs.mapbox(JSON.parse(body)).coordinates);
                 } else {
                     console.log("Error")
                 }
