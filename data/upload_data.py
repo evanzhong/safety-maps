@@ -7,16 +7,16 @@ import ssl
 
 #data = pd.read_pickle('./pickle_files/May20_data.pkl')
 
-data = pd.read_pickle('./pickle_files/May25_data_merged.pkl')
+data = pd.read_pickle('./pickle_files/May30_data_merged_removed_areas_buildings.pkl')
 
 #connect to the Mongo client and bypasse SSL certificate requirements
-client = MongoClient("mongodb+srv://daviddeng8:SafetyMaps@crimedata-pebxn.mongodb.net/test?retryWrites=true&w=majority", ssl=True, ssl_cert_reqs=ssl.CERT_NONE)
+client = MongoClient("mongodb+srv://daviddeng8:safetymaps@crimedata-pebxn.mongodb.net/test?retryWrites=true&w=majority", ssl=True, ssl_cert_reqs=ssl.CERT_NONE)
 
 #creates? or maybe just accesses the database 
 db = client['data']
 
 #creates collection from the database 
-crime_data = db["bigger_and_badder_crime_data"]
+crime_data = db["cleaned_bigger_and_badder_crime_data"]
 
 #converts dataframe into a dictionary
 data_dict = data.to_dict(orient='records')

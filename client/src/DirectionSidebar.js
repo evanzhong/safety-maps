@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { faMapPin, faMapMarkerAlt/*, faWalking, faRunning, faBiking*/ } from "@fortawesome/free-solid-svg-icons";
+import { faMapPin, faMapMarkerAlt, faWalking, faBiking, faRunning } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Toggle from 'react-toggle'
 
@@ -20,6 +20,9 @@ class DirectionSidebar extends Component {
             toFilled: false,
             fromFilled: false,
             isDisplayTrip: true,
+
+            exerciseDuration: null,
+            exerciseChoice: null,
 
             from_address1: null,
             from_address2: null,
@@ -84,6 +87,32 @@ class DirectionSidebar extends Component {
         })
     }
 
+    // EXERCISE MODE:
+    handleExerciseInputChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        if (target.name === "choice") {
+            this.setState({exerciseChoice: value});
+        }
+        else{
+            this.setState({exerciseDuration: value});
+        }
+    }
+    
+    sendExercise = () => {
+        if (this.state.exerciseChoice === null || this.state.exerciseDuration === null) {
+            console.log("Error! You must select both a duration of exercise and a choice of exercise")
+            return;
+        }
+        const obj = {
+            start: this.state.from,
+            exerciseDuration: this.state.exerciseDuration,
+            exerciseChoice: this.state.exerciseChoice,
+            // EVAN TODO: include token or uID here for personalied pace?
+        }
+        this.props.renderExercise(obj)
+    }
+    
     render() {
         return (
             <div className = 'direction-container'>
@@ -99,6 +128,7 @@ class DirectionSidebar extends Component {
                             onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
                         </label>
                     </div>
+                    {/* TRAVEL MODE */}
                     <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
                         <div id="from-wrapper">
                             <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
@@ -110,32 +140,37 @@ class DirectionSidebar extends Component {
                             <Geocoder map = {this.state.map} getAddress={this.getToAddress} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                         </div>
                     </div>
+                     
+                     {/* EXERCISE MODE */}
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
-                        {/* <div>
-                            <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                            <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
-                        </div> */}
-                        <p className="distance-miles">miles</p>
-                        <input className="distance-input"/>
-                        <h3>Goal Distance: </h3>
-                        <div>
-                            <div>
-                                <label>Walk</label>
-                                <input type="radio"/>
+                        <h2>Let SafetyMaps generate an exercise route for you!</h2>
+                        <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
+                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        <div id="movement-mode-wrapper">
+                            <div className="exercise-choice">
+                                <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
+                                <label for="walk">
+                                    Walk
+                                    <FontAwesomeIcon icon={faWalking} className="exercise-icon"/> 
+                                </label>
                             </div>
-                            <div>
-                                <label>Run</label>
-                                <input type="radio"/>
+                            <div className="exercise-choice">
+                                <input type="radio" id="run" name="choice" value="run" onChange={this.handleExerciseInputChange}/>
+                                <label for="run">
+                                    Run
+                                    <FontAwesomeIcon icon={faRunning} className="exercise-icon"/> 
+                                </label>
                             </div>
-                            <div>
-                                <label>Bike</label>
-                                <input type="radio"/>
+                            <div className="exercise-choice">
+                                <input type="radio" id="bike" name="choice" value="bike" onChange={this.handleExerciseInputChange}/>
+                                <label for="bike">
+                                    Bike
+                                    <FontAwesomeIcon icon={faBiking} className="exercise-icon"/> 
+                                </label>
                             </div>
                         </div>
+                        <input id="generate-exercise-route" type="submit" value="Generate Route" onClick={this.sendExercise}/>
                     </div>
-                    {/* <div className="direction-title">
-                        <h2>Direction</h2>
-                    </div> */}
                 </div>
                 {this.props.direction_list !== null ?
                 <div className="direction_list-container">

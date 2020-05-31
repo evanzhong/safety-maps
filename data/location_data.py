@@ -85,6 +85,12 @@ def get_location_data():
         #loop through the elements of this array to gather the name
         for i in range (len(arr)):
             #since the name of the street always follows after 'name' in the list, we add the element after name to the list and break the loop
+
+            #eliminates all buildings and areas
+            if 'building' in arr or 'area' in arr:
+                street_names.append(None)
+                break
+
             if arr[i] == 'name':
                 street_names.append(arr[i + 1])
                 break
