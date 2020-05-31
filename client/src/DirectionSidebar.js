@@ -111,9 +111,13 @@ class DirectionSidebar extends Component {
                         </div>
                     </div>
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
+                        {/* <div>
+                            <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
+                            <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                        </div> */}
                         <p className="distance-miles">miles</p>
                         <input className="distance-input"/>
-                        <h2>Goal Distance: </h2>
+                        <h3>Goal Distance: </h3>
                         <div>
                             <div>
                                 <label>Walk</label>
