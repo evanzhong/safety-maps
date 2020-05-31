@@ -19,6 +19,28 @@ function deg2rad(deg) {
 //   return [parseFloat(tmp[1]), parseFloat(tmp[0])];
 // }
 
+// Assumes flat surface for small distances
+// Gets coordinate a specified distance away, given bearing angle
+function getCoordInDir(coord, angle, dist) {
+  const R = 6371.0; //earth radius in km
+  angle = deg2rad(angle);
+  var lat1 = deg2rad(coord[0]);
+  var long1 = deg2rad(coord[1]);
+
+  var lat = Math.asin( Math.sin(lat1)*Math.cos(dist/R) +
+                      Math.cos(lat1)*Math.sin(dist/R)*Math.cos(angle) );
+  var long = long1 + Math.atan2(Math.sin(angle)*Math.sin(dist/R)*Math.cos(lat1),
+                           Math.cos(dist/R)-Math.sin(lat1)*Math.sin(lat));
+
+  lat = 180/PI*lat;
+  long = 180/PI*long;
+
+  long = (long+540)%360-180;
+  console.log("getCoordInDir( \"" + coord[0]+","+coord[1]+"\" , " + angle + " , " + dist + " )");
+  console.log(lat + " , " + long);
+  return [lat,long];
+}
+
 function kdDistance(a, b) {
   const earthRadiusKm = 6371.0;
 
@@ -174,10 +196,37 @@ class Router {
     // return "No route";
   }
 
-  generateCircularPath(obj){
-    // EVAN TODO: Implement this using the heuristic
-    console.log("generateCircularPath recieved ", obj);
-    return null;
+  // accepts distances in kilometers
+  generateCircularPath(start, dist, res, token){
+    if (dist > 16.1) {
+      this.processOutput("Error: only supports distances within 10 miles for now")
+    }
+    var start_split = start.split(",");
+    var start_arr = [parseFloat(start_split[0]), parseFloat(start_split[1])];
+    var start_kd_obj = this.closestValidCoord(start_arr)[0];
+    var maxDistanceMatch = 0.1; //km
+    if (start_kd_obj[1]< maxDistanceMatch) {
+      // if we matched a point in our database, set start to that
+      start = start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
+      start_arr = [parseFloat(start_kd_obj[0]["lat"]), parseFloat(start_kd_obj[0]["long"])];
+    }
+    
+    //Choose random angle to go in
+    var angle1 = Math.floor(Math.random() * 360)
+    if (Math.random() > 0.5) {
+      var angle2 = (angle1 + 300) % 360;
+    } else {
+      var angle2 = (angle1 + 60) % 360;
+    }
+
+    var pt2 = getCoordInDir(start_arr, angle1, dist/4.0);
+    var pt3 = getCoordInDir(start_arr, angle2, dist/4.0);
+
+    //console.log('spawning fork');
+    var child = fork("navigation/route_generator.js", [start, pt2[0]+","+pt2[1], pt3[0]+","+pt3[1], start]);
+    child.on('message', message => {
+      this.processOutput(message, res, token);
+    });
   }
 
   // A* heuristic function - will later be optimized using crime data
