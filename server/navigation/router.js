@@ -241,7 +241,9 @@ class Router {
     pt3 = this.getNearbyCoordinate(pt3, maxDistanceMatch);
 
     //console.log('spawning fork');
-    var child = fork("navigation/route_generator.js", [token, start, pt2[0]+","+pt2[1], pt3[0]+","+pt3[1], start]);
+    var fork_options = [token, start, pt2, pt3, start];
+    console.log(fork_options);
+    var child = fork("navigation/route_generator.js", fork_options);
     child.on('message', message => {
       this.processOutput(message, res, token);
     });
