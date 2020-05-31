@@ -151,6 +151,12 @@ class Router {
     return "No route";
   }
 
+  generateCircularPath(obj){
+    // EVAN TODO: Implement this using the heuristic
+    console.log("generateCircularPath recieved ", obj);
+    return null;
+  }
+
   // A* heuristic function - will later be optimized using crime data
   // For now, we just use Euclidean Distance in kilometers
   heuristic(coord1, coord2) {
