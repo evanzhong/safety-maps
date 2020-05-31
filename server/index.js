@@ -92,9 +92,14 @@ app.get('/test/:start/:end', function (req, res) {
 // ------------------ End of new routing API
 
 // Exercise Mode Routing
-app.get('/directions/:start/:exerciseDuration/:exerciseChoice', function (req, res) {
-  const data = Router.generateCircularPath(req.params);
-  res.send({coords: data});
+// app.get('/directions/:start/:exerciseDuration/:exerciseChoice', function (req, res) {
+//   const data = Router.generateCircularPath(req.params);
+//   res.send({coords: data});
+// })
+
+app.get('/exercise/:start/:dist', function (req, res) {
+  var start_split = req.params.start.split(",");
+  Router.generateCircularPath(start_split[1] + "," + start_split[0], parseFloat(req.params.dist), res, req.query.access_token);
 })
 // ------------------ End of Exercise Mode Routing
 
