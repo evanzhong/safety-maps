@@ -180,10 +180,25 @@ class Map extends Component {
     req.send();
   }
   
+  renderExercise(obj){
+    console.log(obj)
+
+    const url = `http://localhost:8000/directions/${obj.start}/${obj.exerciseDuration}/${obj.exerciseChoice}`;
+    let req = new XMLHttpRequest();
+    req.open('GET', url, true);
+    req.onload = function () {
+      const json = JSON.parse(req.response);
+      console.log(json);
+      // EVAN TODO: Handle map generation from response data
+    }
+    req.send();
+  }
+
   render() {
     return (
       <div>
-        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute} direction_list={this.state.direction_list} />
+        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
+
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}
