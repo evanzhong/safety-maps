@@ -78,8 +78,13 @@ class DirectionSidebar extends Component {
             console.log("Error! You must select both a duration of exercise and a choice of exercise")
             return;
         }
-        // EVAN TODO: Send request to server
-        console.log(this.state.exerciseDuration, this.state.exerciseChoice);
+        const obj = {
+            start: this.state.from,
+            exerciseDuration: this.state.exerciseDuration,
+            exerciseChoice: this.state.exerciseChoice,
+            // EVAN TODO: include token or uID here for personalied pace?
+        }
+        this.props.renderExercise(obj)
     }
     
     render() {
@@ -113,6 +118,7 @@ class DirectionSidebar extends Component {
                 <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
                     <h2>Let SafetyMaps generate an exercise route for you!</h2>
                     <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
+                    <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
                     <div id="movement-mode-wrapper">
                         <div className="exercise-choice">
                             <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
