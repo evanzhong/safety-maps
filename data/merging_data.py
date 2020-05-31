@@ -8,7 +8,7 @@ import numpy as np
 
 #load all data files 
 #loc_data = pd.read_pickle("./pickle_files/location_data.pkl")
-loc_data = pd.read_pickle("./pickle_files/new_bigger_location_data.pkl")
+loc_data = pd.read_pickle("./pickle_files/buildings_removed_location_data.pkl")
 cleaned_crime_data = pd.read_pickle("./pickle_files/cleaned_crime_data.pkl")
 
 #resets index of crime data
@@ -142,4 +142,4 @@ final_loc_data['dist_from_crime_all_vals'] = scaled_dist_total
 #final_loc_data = final_loc_data.drop(['index'], axis=1)
 print (final_loc_data)
 
-final_loc_data.to_pickle("May25_data_merged.pkl")
+final_loc_data.to_pickle("May30_data_merged_removed_areas_buildings.pkl")
