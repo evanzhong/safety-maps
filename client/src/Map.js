@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 
 import DirectionSidebar from './DirectionSidebar';
 import ProfileSidebar from './ProfileSidebar';
+import WelcomePopup from './WelcomePopup';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
@@ -17,6 +18,8 @@ class Map extends Component {
       lat: 34.0689254,
       zoom: 13,
       direction_list: null,
+      //welcome popup
+      welcome: true,
     };
     //For testing purposes - delete later
     window.map = this;
@@ -24,6 +27,9 @@ class Map extends Component {
   }
 
   componentDidMount() {
+    const open = localStorage.getItem('welcome') === null;
+
+    //const showWelcome;
     const map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -38,7 +44,15 @@ class Map extends Component {
         zoom: map.getZoom().toFixed(2)
       });
     });
-    this.setState({map: map});
+    this.setState({
+      map: map,
+      welcome: open,
+      //welcome: true, //testing only
+    });
+  }
+
+  doNotShowWelcome = () => {
+    localStorage.setItem('welcome', 'false');
   }
 
   //Labels a point on the map at the specified coords
@@ -204,6 +218,9 @@ class Map extends Component {
         </div> */}
 
         <ProfileSidebar />
+        <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
+
+        
 
         <div ref={el => this.mapContainer = el} className='mapContainer' />
       </div>
