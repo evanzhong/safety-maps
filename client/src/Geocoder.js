@@ -28,6 +28,7 @@ class Geocoder extends Component {
                     this.props.filling();
                     if(this.props.to === true && this.props.from === true)
                         this.props.calculate();
+                    this.props.getAddress(geopoint.place_name);
                     return geopoint.place_name;
                 },
                 placeholder: this.props.placeHolder,

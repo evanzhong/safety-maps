@@ -15,7 +15,7 @@ import os
 
 try:
     #create a connection with the Postgres database 
-    connection = psycopg2.connect(user = os.environ.get("DB_USER"), password = os.environ.get("DB_PASS"), host = "localhost", port = 5432, database = "osm")
+    connection = psycopg2.connect(user = os.environ.get("DB_USER"), password = os.environ.get("DB_PASS"), host = "localhost", port = 5432, database = "osm3")
 
     #cursor object allows us to use python to execute Postgres commands 
     cursor = connection.cursor()
@@ -70,10 +70,13 @@ def get_location_data():
     #list to hold all the street names
     street_names = [] 
 
+    n = 0
     #loop through all the ways
     for item in names_in_way.iteritems():
         #array should be the second element of the tuple returned by iteritems, which is what arr is set to
         arr = item[1]
+        print (n)
+        n = n + 1
 
         #checks that there exists a list to iterate through
         if isinstance(arr, list) == False:
@@ -104,11 +107,14 @@ def get_location_data():
     #list to store lists of all lat-longs of nodes 
     node_lists = []
 
+
+    x = 0
     #loop through all the nodes
     for item in nodes_in_way.iteritems():
         #again, the array should be the second item of the tuple returned by iteritems
         arr = item[1]
-
+        print (x)
+        x = x + 1
         #create a list to store the individual lat-longs of a way in 
         cur_way_coords = []
 

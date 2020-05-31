@@ -80,12 +80,17 @@ class Router {
     /*if (!(start in this.dataset && end in this.dataset)) {
       return "Bad coord";
     }*/
-    if (!(start_kd_obj[1]< 0.2) && end_kd_obj[1] < 0.2) {
+    var maxDistanceMatch = 0.1; //km
+    if (!(start_kd_obj[1]< maxDistanceMatch && end_kd_obj[1] < maxDistanceMatch)) {
       return "Bad coord";
     }
 
     start = start_kd_obj[0]["lat"] + "," + start_kd_obj[0]["long"];
     end = end_kd_obj[0]["lat"] + "," + end_kd_obj[0]["long"];
+
+    if (start === end) {
+      return "Bad coord";
+    }
 
     var pq = new PriorityQueue();
 

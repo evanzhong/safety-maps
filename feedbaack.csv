@@ -1,0 +1,43 @@
+,Group 12,Comments .3
+0,8,Algorithmically interesting.  Refreshing to see your project use concepts from project 4 cs 32. Route optimization with A* and simulated annealing is an interesting problem.
+1,6,"The project is good, but I'm marking it down because I see a lot that is similar to project of CS 32 with very little added to it. The part implemented is so far is all CS 32, so I don't know how much they have actually done."
+2,7,great idea and good use of algorithms that we used in CS32
+3,10,Nice idea. Advanced technology. The best so far.
+4,8,"I think that using public crime data will be very illuminating, seems very cool."
+5,9,looks good
+6,10,great idea. UI looks very nice and very easy for user's to understand.
+7,8,"I like how well you have implemented the geo coordinates. I would also want to know if it is possible to get a person's location without them having to enter it in. Also if a person is a frequent user of this app, can they have their home address saved so they do not have to add it every time. I would recommend trying to implement a user's favorites. Like if they tend to go from their home to a specific park often and walk, can they have that saved in the app."
+8,8,I really like how you guys have managed to integrate algorithmic design into your project
+9,10,Cool idea i like it
+10,10,Good idea especially for college students who are unfamiliar with the area surrounding them
+11,8,"pros: Using cs32 ideas is awesome. Reliable APIs.
+cons: maybe need check for the input in register. Otherwise it is great!"
+12,10,I like this idea of finding safe pathways. Is is possible to consider places with construction that may block some sidewalks?
+13,8,"Great job explaining the importance of app, I like the idea of the heuristic for A* being the pulled crime data"
+14,8,"Great idea, but I'm concerned about possible public backlash from this app. Very impressive backend algorithms -- probably something like A* with cost heuristics, which is no joke to implement on a large scale!  The frontend is well styled as well."
+15,8,Reminds me of cs32 project 4! im concerned about the potential discrimination that can be caused by your app since thats what happened to sketchfactor
+16,10,our group 
+17,10,Excellent UI! Also it is cool how you guys made the route finding feature work and is able to plot it on the map. 
+18,9,I thought this was a really unique idea. I just wonder how scalable the project is. I thought it was very well done though. I really liked the UI.
+19,7,Not reviewing my own project
+20,9,"I like how this uses advanced path finding algorithms that the group is building on their own. I think the idea is very practical because a lot of people want to go outside because of the circumstances, so this will help people do so more safely."
+21,10,:))))
+22,8,I really like the circular route for exercising idea. It would be cool if users could set a personalized speed for the route-generation since people run at different speeds.
+23,8,The app has a clear purpose.
+24,8,Good job. The idea is simple yet thoughtful!
+25,10,"I really like this idea, and the integration of safety data coordinate data is impressive. "
+26,6,I like the use of A*. Not sure what the need for this app is.
+27,8,"The UI looks great and has a lot of potential! I personally think you guys should focus more on optimizing routes based on walkability than on crime, since some streets are way too wide/busy or don't have sidewalks or bike lanes which makes them not conducive for walking or biking. Additionally, I feel that crime rates are only defined for large regions so it might not be useful for short trips since the crime rate's gonna be the same for the general area."
+28,6,"Love the maps api you're using, makes app look bouncy and fun. Nice way to double dip with project4  ; >"
+29,9,"I really like this idea and I like how fully-fledged it looks already with the Matchbox API (even though you mentioned it's not done yet, it still looks really advanced!)"
+30,8,"Nice idea and execution. Regarding how a safety rating is essentially assigned to each coordinate, does your app calculate the rating? Not all crimes are the same (e.g. murder vs petty theft), so does this factor into how these ratings are assigned? For exercise mode, will the API work for paths where cars cannot drive on? The form for exercise mode could use some design improvement (units for time?)."
+31,6,"This is our projects. Right now, we still need to get a complete crime data set, and tweak the algorithm behind it. The frontend also needs a lot of improvement."
+32,9,It's a cool project. UI looks great and implementation of features looks like it's coming along well. Can't wait to see final product!
+33,9,UI looks good. Consider adding something like a crime heatmap overlay for easier visualization of optimal routes.
+34,10,Interesting idea and use of maps
+35,7,Awesome premise. Can definitely see this app becoming a real thing and mainstream.
+36,9,The A* algorithm is fancy by using CS32 project 
+37,6,"Good idea, seems like last quarter's CS 32 Project 4 with graphics."
+38,7,"I liked that they clearly outlined the problem their app aims to address and how their solution is superior to similar, already-existing apps. I also thought it was neat that they have an ""exercise mode"". One thing that weirded me out was why they used their own routing algorithm rather than just always use MapBox's API. It seemed to me that they created two approaches to solving the same problem, and some of that time could've been used for developing other features instead."
+39,10,Very advanced!
+40,9,"Good app, useful idea, quite polished."
