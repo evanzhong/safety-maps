@@ -37,16 +37,16 @@ async function generatePathMultPoints(coords, mapboxAccessToken){
     let accumulatedResults = [];
     for (let i = 0; i < coords.length - 1; i++) {
         const response = await generatePath(coords[i], coords[i+1], false);
-        console.log(response);
         if (response === "No route") {
             const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${parseIntoMapboxFormat(coords[i])};${parseIntoMapboxFormat(coords[i+1])}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`;
             
             request(url, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log(process_dirs.mapbox(JSON.parse(body)).coordinates);
+                    // console.log(process_dirs.mapbox(JSON.parse(body)).coordinates);
                     accumulatedResults.concat(process_dirs.mapbox(JSON.parse(body)).coordinates);
                 } else {
-                    console.log("Error")
+                    console.log("Error in routing:", coords[i], "to", coords[i+1]);
+                    process.send("No route");
                 }
             })
         }
