@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './ProfileSidebar.css';
 import Popup from "reactjs-popup";
 
-import { faSignInAlt, faSignOutAlt, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HistoryScreen from "./HistoryScreen"
@@ -250,9 +250,9 @@ class LoginPopup extends Component {
             <Popup
                 modal={true}
                 trigger={open => (
-                    <button className="login_button">Login</button>
+                    // <button className="login_button">Login</button>
                     // Icon Button
-                    //<FontAwesomeIcon icon={faSignInAlt} className="icon"/>
+                    <FontAwesomeIcon icon={faUserCircle} className="icon"/>
                 )}
                 closeOnDocumentClick
                 contentStyle={popupStyle}
