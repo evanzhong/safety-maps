@@ -105,8 +105,8 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             //index will be the element of the array that we are going to request coords up to
 
             var end_index = 0;
-            if (data.length > 99) {
-                end_index = 98;
+            if (data.length > 50) {
+                end_index = 49;
             } else {
                 end_index = data.length-1;
             }
@@ -146,7 +146,8 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                                 res.json(errorReturn("Error in map matching API response"));
                                 return;
                             }
-                            console.log('made it once');
+                            console.log('hi');
+                            console.log(JSON.parse(body));
                             var dirs = extract_directions(JSON.parse(body).matchings[0].legs[0].steps);
                             //console.log(type(dirs));
                             console.log(dirs);
@@ -168,8 +169,8 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                             }
                             else {
                                 let newStart = end_index + 1;
-                                let newEnd = end_index + 99;
-                                if (data.length - 1 - end_index <= 99) {
+                                let newEnd = end_index + 50;
+                                if (data.length - 1 - end_index <= 50) {
                                     newEnd = data.length - 1;
                                 }
                                 console.log("recursion");

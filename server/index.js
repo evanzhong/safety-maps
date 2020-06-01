@@ -62,7 +62,7 @@ var Router = require('./navigation/router').Router;
 MongoClient.connect(dbString, {"useUnifiedTopology": true}, function(err, db) {
     if (err) throw err;
     var dbo = db.db("data");
-    dbo.collection("new_crime_data").find({}).toArray(function(err, result) {
+    dbo.collection("cleaned_bigger_and_badder_crime_data").find({}).toArray(function(err, result) {
         if (err) throw err;
         db.close();
         Router.loadData(result);
