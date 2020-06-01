@@ -2,10 +2,12 @@
     position: absolute;
     top: 15px; /* calc(50% - 200px); */
     bottom: 15px;
-    left: 470px;
+    left: calc(50% - 150px);
 
-    width: calc(2*(50% - 470px));
+    width: 300px !important;
     height: auto;
+    max-height: 530px;
+    overflow: hidden;
 
     border-radius: 5px;
     border-style: inset;
@@ -54,4 +56,5 @@
 
     height: auto;
     width: 80%;
+    background-color:white;
 }

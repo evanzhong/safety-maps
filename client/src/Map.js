@@ -73,7 +73,6 @@ class Map extends Component {
 
   doNotShowWelcome = () => {
     localStorage.setItem('welcome', 'false');
-
   }
 
   //Labels a point on the map at the specified coords
@@ -313,18 +312,12 @@ class Map extends Component {
 
   render() {
     return (
-      <div>
-        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
-
-        {/* <div className='sidebarStyle'>
-          <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
-        </div> */}
-
-        <ProfileSidebar />
-        <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
-
-        
-
+      <div>       
+        <div>
+          <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
+          <ProfileSidebar />
+          <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
+        </div>
         <div ref={el => this.mapContainer = el} className='mapContainer' />
       </div>
     )
