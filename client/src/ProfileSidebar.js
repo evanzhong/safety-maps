@@ -5,6 +5,8 @@ import Popup from "reactjs-popup";
 import { faSignInAlt, faSignOutAlt, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import HistoryScreen from "./HistoryScreen"
+
 class ProfileSidebar extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +16,7 @@ class ProfileSidebar extends Component {
             first_name: null,
             last_name: null,
             email: null,
+            history: null,
         }
     }
 
@@ -28,22 +31,31 @@ class ProfileSidebar extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/auth/secure/", {
+        fetch("http://localhost:8000/auth/secure/account_info", {
             credentials: 'include'
-        }).then(
-                (result) => {
-                    var login = result.status === 200 ? true : false;
-                    this.setState({
-                        loading: false,
-                        logged_in: login,
-                    });
-                    console.log("Debug - Login info loaded");
-                },
-                // Handle error
-                (error) => {
-                    console.error("Failed to connect to auth secure endpoint");
-                }
-            )
+        }).then((result) => {
+                var login = result.status === 200 ? true : false;
+                this.setState({
+                    loading: false,
+                    logged_in: login,
+                });
+                return result;
+            },
+            // Handle error
+            (error) => {
+                console.error("Failed to connect to auth secure endpoint");
+            }
+        ).then((response) => response.json())
+        .then((json) => {
+            if (this.state.logged_in) {
+                this.setState({
+                    first_name: json.userinfo.first_name,
+                    last_name: json.userinfo.last_name,
+                    email: json.userinfo.email,
+                    history: json.history,
+                });
+            }
+        })
     }
 
     render() {
@@ -57,7 +69,7 @@ class ProfileSidebar extends Component {
         }
         return (
             <div className="profile_sidebar_wrapper">
-                {this.state.logged_in ? <UserProfile user={user}/> : <LoginPopup/> }
+                {this.state.logged_in ? <UserProfile user={user} history={this.state.history}/> : <LoginPopup/> }
             </div>
         )
     }
@@ -67,14 +79,12 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null,
             isMainHidden: null,
         }
     }
 
     componentDidMount(){
         this.setState({
-            user: this.props.user,
             isMainHidden: false,
         })
     }
@@ -88,7 +98,7 @@ class UserProfile extends Component {
     }
 
     render() {
-        if(!this.state.user){ //wait for the user object to update
+        if(this.state.isMainHidden == null){ //wait for the user object to update
             return null;
         }
         return (
@@ -99,10 +109,10 @@ class UserProfile extends Component {
                     {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
                 </div>
                 <div id="user-profile-main">
-                    <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
-                    <p>View Recent Routes</p>
-                    <p>My Favorite Routes</p>
-                    <p>Fastest time: </p>
+                    <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
+                    <HistoryPopup history={this.props.history}/>
+                    <button className="profile-button">Favorite Routes</button>
+                    <p>Fastest run speed: 15 mph</p>
                 </div>
                     
             </div>
@@ -128,6 +138,27 @@ class LogoutButton extends Component {
     render() {
         return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
         //<button className="login_button" onClick={this.logout}>Logout</button>
+    }
+}
+
+class HistoryPopup extends Component {
+    render() {
+        const popupStyle = {
+            "width": "350px",
+            "borderRadius": "6px",
+        };
+        return (
+            <Popup
+                modal={true}
+                trigger={open => (
+                    <button className="profile-button">View Saved Routes</button>
+                )}
+                closeOnDocumentClick
+                contentStyle={popupStyle}
+            >
+                <HistoryScreen history={this.props.history}/>
+            </Popup>
+        )
     }
 }
 

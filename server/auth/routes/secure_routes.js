@@ -15,4 +15,77 @@ router.get('/', (req, res) => {
     res.sendStatus(200);
 });
 
+router.get('/account_info', (req, res) => {
+    // TODO : QUERY DATABASE TO GET HISTORY, USING req.user info
+    // req.user: {_id: .., email: .., first_name: .., last_name: ..}
+    res.json({
+        userinfo: req.user,
+        history: [
+            {
+                name: "3.5 mile walk",
+                route: {
+                    "success": true,
+                    "coordinates": [
+                        [-118, 34], [-118.001,34.001]
+                    ],
+                    "turn-by-turn-directions": [
+                        { label: "Instruction 1",
+                        distance: 195 },
+                        { label: "Instruction 2",
+                            distance: 100}
+                    ]
+                },
+                type: "walk",
+                date: "5/31/20",
+                time: '12:15 pm',
+                distance: "11",
+                time: "30.53",
+                favorite: false
+            },
+            {
+                name: "6 mile run",
+                route: {
+                    "success": true,
+                    "coordinates": [
+                        [-118, 34], [-118.001,34.001]
+                    ],
+                    "turn-by-turn-directions": [
+                        { label: "Instruction 1",
+                        distance: 195 },
+                        { label: "Instruction 2",
+                            distance: 100}
+                    ]
+                },
+                type: "run",
+                date: "6/15/20",
+                time: '8:15 am',
+                distance: "15",
+                time: "40",
+                favorite: false
+            },
+            {
+                name: "10 mile bike",
+                route: {
+                    "success": true,
+                    "coordinates": [
+                        [-118, 34], [-118.001,34.001]
+                    ],
+                    "turn-by-turn-directions": [
+                        { label: "Instruction 1",
+                        distance: 195 },
+                        { label: "Instruction 2",
+                            distance: 100}
+                    ]
+                },
+                type: "bike",
+                date: "5/15/20",
+                time: '6:00 pm',
+                distance: "15",
+                time: "35.53",
+                favorite: true
+            }
+        ]
+    });
+});
+
 module.exports = router;
