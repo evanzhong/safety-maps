@@ -111,7 +111,6 @@ class UserProfile extends Component {
                 <div id="user-profile-main">
                     <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
                     <HistoryPopup history={this.props.history}/>
-                    <button className="profile-button">Favorite Routes</button>
                     <p>Fastest run speed: 15 mph</p>
                 </div>
                     
@@ -146,17 +145,21 @@ class HistoryPopup extends Component {
         super(props);
         this.state = {
             popup_open:false,
+            fav_only: false,
         }
-        window.historyeee = this;
         this.openPopup = this.openPopup.bind(this);
         this.closePopup = this.closePopup.bind(this);
+        this.openFavorites = this.openFavorites.bind(this);
     }
 
     openPopup() {
-        this.setState({popup_open: true});
+        this.setState({popup_open: true, fav_only: false});
     }
     closePopup() {
         this.setState({popup_open: false});
+    }
+    openFavorites() {
+        this.setState({popup_open: true, fav_only: true});
     }
 
     render() {
@@ -166,19 +169,20 @@ class HistoryPopup extends Component {
         };
         return (
             <React.Fragment>
-            <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
-            <Popup
-                open={this.state.popup_open}
-                modal={true}
-                onClose={this.closePopup}
-                // trigger={open => (
-                //     <button className="profile-button">View Saved Routes</button>
-                // )}
-                closeOnDocumentClick
-                contentStyle={popupStyle}
-            >
-                <HistoryScreen closePopup={this.closePopup} history={this.props.history}/>
-            </Popup>
+                <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
+                <button className="profile-button favorites" onClick={this.openFavorites}>Favorite Routes</button>
+                <Popup
+                    open={this.state.popup_open}
+                    modal={true}
+                    onClose={this.closePopup}
+                    // trigger={open => (
+                    //     <button className="profile-button">View Saved Routes</button>
+                    // )}
+                    closeOnDocumentClick
+                    contentStyle={popupStyle}
+                >
+                    <HistoryScreen  favoritesOnly={this.state.fav_only} closePopup={this.closePopup} history={this.props.history}/>
+                </Popup>
             </React.Fragment>
         )
     }

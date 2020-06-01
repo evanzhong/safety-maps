@@ -10,8 +10,8 @@ class HistoryScreen extends Component {
     render() {
         return (
             <div className="historyPopup">
-                <h1>Saved Routes</h1>
-                <RouteList closePopup={this.props.closePopup} history={this.props.history} />
+                <h1>{this.props.favoritesOnly ? "Favorite Routes" : "Saved Routes"}</h1>
+                <RouteList favoritesOnly={this.props.favoritesOnly} closePopup={this.props.closePopup} history={this.props.history} />
             </div>
         );
     }
@@ -37,11 +37,17 @@ class RouteList extends Component {
         if (this.props.history == null) {
             return "No route history";
         }
+        var global_index = -1;
         return (
             <div className="route-list">
-            {this.props.history.map((route,index) => 
-                <RouteEntry key={index} closePopup={this.props.closePopup} expanded={index === this.state.expanded_route} expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
-            )}
+            {this.props.history.map((route) => {
+                if ((!this.props.favoritesOnly) || route.favorite) {
+                    global_index++;
+                    var index = global_index;
+                    return <RouteEntry key={index} closePopup={this.props.closePopup} expanded={index === this.state.expanded_route} expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
+                }
+                return null
+            })}
             </div>
         );
     }
@@ -111,8 +117,10 @@ class RouteEntry extends Component {
                     <FontAwesomeIcon icon={faEye} onClick={() => {
                             window.map.drawRouteOnMap(this.props.route.route);
                             const coords = this.props.route.route.coordinates;
-                            window.map.zoomToCoords(coords[0],coords[coords.length-1])
+                            window.map.zoomToCoords(coords[0],coords[coords.length-1]);
                             this.props.closePopup();
+                            document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.start;
+                            document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.end;
                         }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">

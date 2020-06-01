@@ -167,6 +167,9 @@ DEFINED IN ProfileSidebar.js
     border-top: 1px solid #e0e0e0;
     border-radius: 5px;
 }
+.profile-button.favorites {
+    border-bottom: 1px solid #e0e0e0;
+}
 
 .profile-button:hover {
     background-color: #f5f5f5;
