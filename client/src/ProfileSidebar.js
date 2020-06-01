@@ -144,7 +144,7 @@ class LogoutButton extends Component {
 class HistoryPopup extends Component {
     render() {
         const popupStyle = {
-            "width": "350px",
+            "width": "850px",
             "borderRadius": "6px",
         };
         return (

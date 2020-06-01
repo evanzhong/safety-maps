@@ -38,8 +38,8 @@ router.get('/account_info', (req, res) => {
                 type: "walk",
                 date: "5/31/20",
                 time: '12:15 pm',
-                distance: "11",
-                time: "30.53",
+                distance: 11,
+                runtime: 1553,
                 favorite: false
             },
             {
@@ -59,8 +59,8 @@ router.get('/account_info', (req, res) => {
                 type: "run",
                 date: "6/15/20",
                 time: '8:15 am',
-                distance: "15",
-                time: "40",
+                distance: 15,
+                runtime: 1899,
                 favorite: false
             },
             {
@@ -80,8 +80,8 @@ router.get('/account_info', (req, res) => {
                 type: "bike",
                 date: "5/15/20",
                 time: '6:00 pm',
-                distance: "15",
-                time: "35.53",
+                distance: 15,
+                runtime: 1305,
                 favorite: true
             }
         ]
