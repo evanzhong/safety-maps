@@ -141,11 +141,26 @@ class UserProfile extends Component {
                 <div className="new-user-profile-icon-wrapper">
                     <FontAwesomeIcon onClick={() => this.toggleProfileScreen()} icon={faBars} className="minbar-icon"/>
                 </div>
+                {this.props.user.first_name != null ?
                 <div className="new-user-profile-main" style={this.state.opened ? {} : {display: "none"}}>
-                    <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
-                    <HistoryPopup history={this.props.history}/>
-                    <p>Fastest run speed: 15 mph</p>
+                    <div className="new-user-profile-header-wrapper">
+                        <div className="new-user-initials-box">{this.props.user.first_name[0] + this.props.user.last_name[0]}</div>
+                        <div className="new-user-username-box">
+                            <div className="new-user-username-name">
+                                {this.props.user.first_name + " " + this.props.user.last_name}
+                            </div>
+                            <div className="new-user-username-email">
+                                {this.props.user.email}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="new-user-profile-subheader-wrapper">
+                        <HistoryPopup history={this.props.history}/>
+                        <p>Fastest run speed: 15 mph</p>
+                        <LogoutButton/>
+                    </div>
                 </div>
+                : null}
             </div>
         );
     }
@@ -171,8 +186,9 @@ class LogoutButton extends Component {
     }
 
     render() {
-        return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
+        //return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
         //<button className="login_button" onClick={this.logout}>Logout</button>
+        return <button className="new-user-profile-logout-button" onClick={this.logout}>Sign Out</button>
     }
 }
 

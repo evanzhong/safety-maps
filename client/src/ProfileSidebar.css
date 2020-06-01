@@ -184,22 +184,17 @@ NEW PROFILE SIDEBAR DESIGN!
 
 */
 
-
-.new-user-profile-wrapper {
-
-}
-
 .new-user-profile-icon-wrapper {
     float: right;
 }
 
 .new-user-profile-main {
     margin-top: 38px;
-    width: 300px;
     padding: 15px;
     background-color: white;
     border-radius: 5px;
     box-shadow: 0px 0px 4px 2px gainsboro;
+    min-width: 300px;
 }
 
 .minbar-icon {
@@ -209,4 +204,52 @@ NEW PROFILE SIDEBAR DESIGN!
 .minbar-icon:hover {
     color: black;
     cursor: pointer;
+}
+
+.new-user-profile-header-wrapper {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+.new-user-initials-box {
+    color: white;
+    display: inline-block;
+    font-size: 25px;
+    background-color: #3073c9;
+    border-radius: 100%; 
+    padding: 15px;
+    margin-left: 10px;
+}
+
+.new-user-username-box {
+    vertical-align: top;
+    margin-top: 5px;
+    margin-left: 15px;
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.new-user-username-name {
+    font-size: 22px;
+}
+
+.new-user-profile-logout-button {
+    background-color: white;
+    border: 1.4px solid #c9c8c8;
+    border-radius: 5px;
+    outline: none;
+    padding: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+    font-size: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.new-user-profile-logout-button:hover {
+    cursor: pointer;
+    background-color: #f5f5f5
 }
