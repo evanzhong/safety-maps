@@ -55,7 +55,7 @@ class DirectionList extends Component {
                             <li key={index}>
                                 <div className="instruction-wrapper">
                                     <div className="instruction-img-wrapper">
-                                        <img className="instruction-icon" src="https://image.flaticon.com/icons/svg/633/633705.svg"/><br/>
+                                        <img className="instruction-icon" src="https://image.flaticon.com/icons/svg/633/633705.svg" alt="dir-arrow"/><br/>
                                         <span className="instruction-distance">{this.formatDistance(instruction.distance)}</span>
                                     </div>
                                     <div className="instruction-text">
