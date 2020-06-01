@@ -1,0 +1,95 @@
+.historyPopup {
+    height: 80vh;
+    overflow-y: scroll;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.historyPopup h1 {
+    margin-top: 40px;
+}
+
+.route-row {
+    display: inline-block;
+    border-bottom: 1.3px solid #e6e6e6;
+    width:100%;
+    padding-left: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 3px;
+    min-height: 20px;
+}
+
+#first-route-row {
+    border-top: 1.3px solid #e6e6e6;
+}
+
+.route-row:hover {
+    background-color: #fcfafa;
+}
+
+.route-row div {
+    display: inline-block;
+}
+
+.route-date {
+    width: 200px;
+}
+
+.route-runtype {
+    padding-right: 10px;
+    width: 20px;
+}
+
+.route-row svg {
+    height: 15px;
+}
+
+.route-row svg:hover {
+    height: 20px;
+    cursor: pointer;
+}
+
+.route-speed {
+    float: right;
+    padding-right: 15px;
+}
+
+.route-favorite {
+    float: right;
+    padding-right: 15px;
+}
+
+.route-expand {
+    float: right;
+    padding-right: 15px;
+}
+
+.route-navigate {
+    float: right;
+    padding-right: 15px;
+}
+
+.route-expanded-view {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.route-expanded-header {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.route-expanded-description {
+    width: 100%;
+}
+
+.route-try-again {
+    font-size: 15px;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    padding: 15px;
+    padding-left: 0;
+}
