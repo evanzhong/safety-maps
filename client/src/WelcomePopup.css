@@ -1,0 +1,57 @@
+.container {
+    position: absolute;
+    top: 15px; /* calc(50% - 200px); */
+    bottom: 15px;
+    left: 470px;
+
+    width: calc(2*(50% - 470px));
+    height: auto;
+
+    border-radius: 5px;
+    border-style: inset;
+    border: 10px solid aliceblue;
+
+    z-index: 1 !important;
+    
+    display: flex !important;
+    justify-content: center;
+    text-align: center;
+
+    background-color: white;
+}
+
+.text-container {
+    padding: 10%;
+
+    padding-top: 20% !important;
+
+    /* text-align: left;
+    text-indent: 2rem; */
+
+    text-align: middle;
+
+    font-size: 1.1rem;
+}
+
+.logo {
+   position: absolute; 
+   height: 20%;
+}
+
+.close-icon {
+    font-size: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.do-not-show-again-container{
+    position: absolute;
+    
+    bottom: 5%;
+
+    font-weight: bold;
+
+    height: auto;
+    width: 80%;
+}
