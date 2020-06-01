@@ -4,6 +4,9 @@ import mapboxgl from 'mapbox-gl';
 
 import DirectionSidebar from './DirectionSidebar';
 import ProfileSidebar from './ProfileSidebar';
+import WelcomePopup from './WelcomePopup';
+
+import constants from './constants';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
@@ -17,19 +20,28 @@ class Map extends Component {
       lat: 34.0689254,
       zoom: 13,
       direction_list: null,
+      //welcome popup
+      welcome: true,
     };
     //For testing purposes - delete later
     window.map = this;
+    window.profile_popup_open = false;
     this.renderRoute = this.renderRoute.bind(this);
+    this.renderExercise = this.renderExercise.bind(this);
   }
 
   componentDidMount() {
+    const open = localStorage.getItem('welcome') === null;
+
+    //const showWelcome;
     const map = new mapboxgl.Map({
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom
     });
+
+    map.getCanvas().style.cursor = 'default';
 
     map.on('move', () => {
       this.setState({
@@ -38,7 +50,29 @@ class Map extends Component {
         zoom: map.getZoom().toFixed(2)
       });
     });
+
     this.setState({map: map});
+
+    map.on('mousedown',() => {
+      map.getCanvas().style.cursor = 'all-scroll';
+      if (window.profile_popup_open) {
+        window.close_profile_popup();
+      }
+    })
+
+    map.on('mouseup',() => {
+      map.getCanvas().style.cursor = 'default';
+    })
+
+    this.setState({
+      map: map,
+      welcome: open,
+      //welcome: true, //testing only
+    });
+  }
+
+  doNotShowWelcome = () => {
+    localStorage.setItem('welcome', 'false');
   }
 
   //Labels a point on the map at the specified coords
@@ -83,6 +117,71 @@ class Map extends Component {
     }
   }
 
+  drawRouteOnMap(json) {
+    const map = this.state.map;
+    this.setState({direction_list: json["turn-by-turn-directions"]});
+      var route = json.coordinates;
+      var geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: route
+        }
+      };
+      // render the route line
+      if (map.getSource('route')) {
+        map.getSource('route').setData(geojson);
+      } else {
+        map.addLayer({
+          id: 'route',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: route
+              }
+            }
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#3887be',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
+  }
+
+  clearRoute() {
+    const map = this.state.map;
+    if (map.getLayer('route')) {
+      map.removeLayer('route');
+    }
+    if (map.getSource('route')) {
+      map.removeSource('route')
+    }
+    this.setState({direction_list: null});
+    for (var i=0; i < window.geocoder_list.length; ++i) {
+        window.geocoder_list[i].clear();
+    }
+  }
+
+  zoomToCoords(start, end) {
+    const map = this.state.map;
+    //zoom oo the whole route
+    map.fitBounds([start,end],
+      {padding: {left: 500, right: 45, top: 45, bottom: 45}} //container: left margin(15) + width(440) = 455 -> 500-455 = 45px
+    );
+  }
+
   // render route using call to directions API
   // For testing purposes: try in Chrome console:
   // map.renderRoute([-122.1230542,37.4322595],[-122.15,37.45]);
@@ -92,8 +191,8 @@ class Map extends Component {
 
     canvas.style.cursor = '';
 
-    this.labelPoint('start', start);
-    this.labelPoint('end', end);
+    //this.labelPoint('start', start);
+    //this.labelPoint('end', end);
 
     this.requestRoute(start, end, false);
   }
@@ -133,6 +232,41 @@ class Map extends Component {
       if (!useMapbox) {
         console.log("Routing using SafetyMaps router")
       }
+      that.drawRouteOnMap(json);
+      that.zoomToCoords(start, end);
+    };
+    req.send();
+  }
+  
+  renderExercise(obj){
+    console.log(obj)
+
+    let totalDist;
+    // Fall back on average speeds when user is not logged in
+    switch (obj.exerciseChoice) {
+      case "walk":
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+      case "run":
+        totalDist = obj.exerciseDuration * constants.averageRunningSpeed;
+        break;
+      case "bike":
+        totalDist = obj.exerciseDuration * constants.averageBikingSpeed;
+        break;
+      default:
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+    }
+
+    const map = this.state.map;
+    const that = this;
+    const url = `http://localhost:8000/exercise/${obj.start}/${totalDist}?access_token=${mapboxgl.accessToken}`;
+
+    let req = new XMLHttpRequest();
+    req.open('GET', url, true);
+    req.onload = function () {
+      const json = JSON.parse(req.response);
+      console.log(json);
       that.setState({direction_list: json["turn-by-turn-directions"]});
       var route = json.coordinates;
       var geojson = {
@@ -172,39 +306,18 @@ class Map extends Component {
           }
         });
       }
-      //zoom oo the whole route
-      map.fitBounds([start,end],
-        {padding: {left: 500, right: 45, top: 45, bottom: 45}} //container: left margin(15) + width(440) = 455 -> 500-455 = 45px
-      );
-    };
-    req.send();
-  }
-  
-  renderExercise(obj){
-    console.log(obj)
-
-    const url = `http://localhost:8000/directions/${obj.start}/${obj.exerciseDuration}/${obj.exerciseChoice}`;
-    let req = new XMLHttpRequest();
-    req.open('GET', url, true);
-    req.onload = function () {
-      const json = JSON.parse(req.response);
-      console.log(json);
-      // EVAN TODO: Handle map generation from response data
     }
     req.send();
   }
 
   render() {
     return (
-      <div>
-        <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
-
-        {/* <div className='sidebarStyle'>
-          <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
-        </div> */}
-
-        <ProfileSidebar />
-
+      <div>       
+        <div>
+          <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
+          <ProfileSidebar />
+          <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
+        </div>
         <div ref={el => this.mapContainer = el} className='mapContainer' />
       </div>
     )

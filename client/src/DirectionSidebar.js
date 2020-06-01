@@ -51,6 +51,18 @@ class DirectionSidebar extends Component {
         })
     }
 
+    unfillFrom = () => {
+        this.setState({
+            fromFilled: false,
+        })
+    }
+
+    unfillTo = () => {
+        this.setState({
+            toFilled: false,
+        })
+    }
+
     handleFrom = (from) => {
         this.setState({
             from: from,
@@ -125,19 +137,22 @@ class DirectionSidebar extends Component {
                                 checked: "Exercise",
                                 unchecked: "Trip",
                                 }}
-                            onChange={() => this.setState({isDisplayTrip: !this.state.isDisplayTrip})} />
+                            onChange={() => {
+                                    window.map.clearRoute();
+                                    this.setState({isDisplayTrip: !this.state.isDisplayTrip})}
+                                } />
                         </label>
                     </div>
                     {/* TRAVEL MODE */}
                     <div id="travel-mode" style={{display:`${this.state.isDisplayTrip?"block":"none"}`}}>
                         <div id="from-wrapper">
                             <FontAwesomeIcon icon={faMapPin} className="direction-icon"/> 
-                            <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
+                            <Geocoder map = {this.state.map} getAddress={this.getFromAddress} calculate={this.sendGeo} filling={this.fillTo} unfilling={this.unfillTo} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleFrom} geocoder_identifier="geocoder_from" placeHolder="Enter your starting point"/>
                         </div>
                         <hr className="line"/>
                         <div id="to-wrapper">
                             <FontAwesomeIcon icon={faMapMarkerAlt} className="direction-icon"/> 
-                            <Geocoder map = {this.state.map} getAddress={this.getToAddress} calculate={this.sendGeo} filling={this.fillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
+                            <Geocoder map = {this.state.map} getAddress={this.getToAddress} calculate={this.sendGeo} filling={this.fillFrom} unfilling={this.unfillFrom} from={this.state.fromFilled} to={this.state.toFilled} result={this.handleTo} geocoder_identifier="geocoder_to" placeHolder="Enter your destination"/>
                         </div>
                     </div>
                      
@@ -178,7 +193,7 @@ class DirectionSidebar extends Component {
                         <h3 className="main-address">{this.state.from_address1}</h3>
                         {this.state.from_address2}
                     </div>
-                    <DirectionList instructions={this.props.direction_list}/>
+                    <DirectionList instructions={this.props.direction_list} exerciseChoice={this.state.exerciseChoice}/>
                     <div className="address-container">
                         <h3 className="main-address">{this.state.to_address1}</h3>
                         {this.state.to_address2}
