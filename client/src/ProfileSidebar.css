@@ -24,7 +24,7 @@
     box-shadow: 0px 0px 4px 2px gainsboro;
 }
 
-/* .login_button {
+.login_button {
     width: 80px;
     height: 30px;
     border: 0px;
@@ -37,7 +37,7 @@
 
 .login_button:active {
     background-color: #347deb;
-} */
+}
 
 .icon {
     position: absolute;
@@ -173,5 +173,40 @@ DEFINED IN ProfileSidebar.js
 
 .profile-button:hover {
     background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+
+
+/* 
+
+NEW PROFILE SIDEBAR DESIGN!
+
+*/
+
+
+.new-user-profile-wrapper {
+
+}
+
+.new-user-profile-icon-wrapper {
+    float: right;
+}
+
+.new-user-profile-main {
+    margin-top: 38px;
+    width: 300px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 2px gainsboro;
+}
+
+.minbar-icon {
+    color: #292828;
+}
+
+.minbar-icon:hover {
+    color: black;
     cursor: pointer;
 }

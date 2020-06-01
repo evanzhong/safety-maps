@@ -20,6 +20,7 @@ class Map extends Component {
     };
     //For testing purposes - delete later
     window.map = this;
+    window.profile_popup_open = false;
     this.renderRoute = this.renderRoute.bind(this);
   }
 
@@ -31,6 +32,8 @@ class Map extends Component {
       zoom: this.state.zoom
     });
 
+    map.getCanvas().style.cursor = 'default';
+
     map.on('move', () => {
       this.setState({
         lng: map.getCenter().lng.toFixed(4),
@@ -39,6 +42,17 @@ class Map extends Component {
       });
     });
     this.setState({map: map});
+
+    map.on('mousedown',() => {
+      map.getCanvas().style.cursor = 'all-scroll';
+      if (window.profile_popup_open) {
+        window.close_profile_popup();
+      }
+    })
+
+    map.on('mouseup',() => {
+      map.getCanvas().style.cursor = 'default';
+    })
   }
 
   //Labels a point on the map at the specified coords

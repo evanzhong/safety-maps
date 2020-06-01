@@ -75,49 +75,85 @@ class ProfileSidebar extends Component {
     }
 }
 
+// class UserProfile extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             isMainHidden: null,
+//         }
+//     }
+
+//     componentDidMount(){
+//         this.setState({
+//             isMainHidden: false,
+//         })
+//     }
+    
+//     minimizeProfileMain(){
+//         const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
+//         const wrapperDisplayCss = this.state.isMainHidden ? "width:300px;height:20px;" : "";
+//         document.getElementById("user-profile-main").style = mainDisplayCss;
+//         document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
+//         this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
+//     }
+
+//     render() {
+//         if(this.state.isMainHidden == null){ //wait for the user object to update
+//             return null;
+//         }
+//         return (
+//             <div id="user-profile-wrapper">
+//                 <LogoutButton/>
+//                 <div id="user-profile-mini-bar">
+//                     <FontAwesomeIcon onClick={() => this.minimizeProfileMain()} icon={faBars} className="minbar-icon"/>
+//                     {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
+//                 </div>
+//                 <div id="user-profile-main">
+//                     <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
+//                     <HistoryPopup history={this.props.history}/>
+//                     <p>Fastest run speed: 15 mph</p>
+//                 </div>
+                    
+//             </div>
+//         )
+//     }
+// }
+
 class UserProfile extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            isMainHidden: null,
+            opened: false,
         }
+
+        window.close_profile_popup = () => this.toggleProfileScreen();
     }
 
-    componentDidMount(){
-        this.setState({
-            isMainHidden: false,
-        })
-    }
-    
-    minimizeProfileMain(){
-        const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
-        const wrapperDisplayCss = this.state.isMainHidden ? "width:300px;height:20px;" : "";
-        document.getElementById("user-profile-main").style = mainDisplayCss;
-        document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
-        this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
+    toggleProfileScreen() {
+        window.profile_popup_open = !this.state.opened;
+        this.setState({opened: !this.state.opened});
     }
 
     render() {
-        if(this.state.isMainHidden == null){ //wait for the user object to update
-            return null;
-        }
         return (
-            <div id="user-profile-wrapper">
-                <LogoutButton/>
-                <div id="user-profile-mini-bar">
-                    <FontAwesomeIcon onClick={() => this.minimizeProfileMain()} icon={faBars} className="minbar-icon"/>
-                    {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
+            <div className="new-user-profile-wrapper">
+                <div className="new-user-profile-icon-wrapper">
+                    <FontAwesomeIcon onClick={() => this.toggleProfileScreen()} icon={faBars} className="minbar-icon"/>
                 </div>
-                <div id="user-profile-main">
+                <div className="new-user-profile-main" style={this.state.opened ? {} : {display: "none"}}>
                     <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
                     <HistoryPopup history={this.props.history}/>
                     <p>Fastest run speed: 15 mph</p>
                 </div>
-                    
             </div>
-        )
+        );
     }
+
+
 }
+
+
 class LogoutButton extends Component {
     logout() {
         fetch("http://localhost:8000/auth/logout/", {
@@ -198,9 +234,9 @@ class LoginPopup extends Component {
             <Popup
                 modal={true}
                 trigger={open => (
-                    // <button className="login_button">Login</button>
+                    <button className="login_button">Login</button>
                     // Icon Button
-                    <FontAwesomeIcon icon={faSignInAlt} className="icon"/>
+                    //<FontAwesomeIcon icon={faSignInAlt} className="icon"/>
                 )}
                 closeOnDocumentClick
                 contentStyle={popupStyle}
