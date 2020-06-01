@@ -5,6 +5,8 @@ import Popup from "reactjs-popup";
 import { faSignInAlt, faSignOutAlt, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import HistoryScreen from "./HistoryScreen"
+
 class ProfileSidebar extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +16,7 @@ class ProfileSidebar extends Component {
             first_name: null,
             last_name: null,
             email: null,
+            history: null,
         }
     }
 
@@ -28,22 +31,31 @@ class ProfileSidebar extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/auth/secure/", {
+        fetch("http://localhost:8000/auth/secure/account_info", {
             credentials: 'include'
-        }).then(
-                (result) => {
-                    var login = result.status === 200 ? true : false;
-                    this.setState({
-                        loading: false,
-                        logged_in: login,
-                    });
-                    console.log("Debug - Login info loaded");
-                },
-                // Handle error
-                (error) => {
-                    console.error("Failed to connect to auth secure endpoint");
+        }).then((result) => {
+                var login = result.status === 200 ? true : false;
+                this.setState({
+                    loading: false,
+                    logged_in: login,
+                });
+                if (login) {
+                    result.json().then((json) => {
+                        this.setState({
+                            first_name: json.userinfo.first_name,
+                            last_name: json.userinfo.last_name,
+                            email: json.userinfo.email,
+                            history: json.history,
+                        });
+                    })
                 }
-            )
+                return result;
+            },
+            // Handle error
+            (error) => {
+                console.error("Failed to connect to auth secure endpoint");
+            }
+        )
     }
 
     render() {
@@ -57,58 +69,106 @@ class ProfileSidebar extends Component {
         }
         return (
             <div className="profile_sidebar_wrapper">
-                {this.state.logged_in ? <UserProfile user={user}/> : <LoginPopup/> }
+                {this.state.logged_in ? <UserProfile user={user} history={this.state.history}/> : <LoginPopup/> }
             </div>
         )
     }
 }
+
+// class UserProfile extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             isMainHidden: null,
+//         }
+//     }
+
+//     componentDidMount(){
+//         this.setState({
+//             isMainHidden: false,
+//         })
+//     }
+    
+//     minimizeProfileMain(){
+//         const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
+//         const wrapperDisplayCss = this.state.isMainHidden ? "width:300px;height:20px;" : "";
+//         document.getElementById("user-profile-main").style = mainDisplayCss;
+//         document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
+//         this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
+//     }
+
+//     render() {
+//         if(this.state.isMainHidden == null){ //wait for the user object to update
+//             return null;
+//         }
+//         return (
+//             <div id="user-profile-wrapper">
+//                 <LogoutButton/>
+//                 <div id="user-profile-mini-bar">
+//                     <FontAwesomeIcon onClick={() => this.minimizeProfileMain()} icon={faBars} className="minbar-icon"/>
+//                     {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
+//                 </div>
+//                 <div id="user-profile-main">
+//                     <h1>Welcome back{this.props.user.first_name ? " " + this.props.user.first_name : ""}!</h1>
+//                     <HistoryPopup history={this.props.history}/>
+//                     <p>Fastest run speed: 15 mph</p>
+//                 </div>
+                    
+//             </div>
+//         )
+//     }
+// }
 
 class UserProfile extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            user: null,
-            isMainHidden: null,
+            opened: false,
         }
+
+        window.close_profile_popup = () => this.toggleProfileScreen();
     }
 
-    componentDidMount(){
-        this.setState({
-            user: this.props.user,
-            isMainHidden: false,
-        })
-    }
-    
-    minimizeProfileMain(){
-        const mainDisplayCss = this.state.isMainHidden ? "display:none;" : "display:block;";
-        const wrapperDisplayCss = this.state.isMainHidden ? "width:300px;height:20px;" : "";
-        document.getElementById("user-profile-main").style = mainDisplayCss;
-        document.getElementById("user-profile-wrapper").style = wrapperDisplayCss;
-        this.setState({isMainHidden: !this.state.isMainHidden}); //Toggle with boolean flip
+    toggleProfileScreen() {
+        window.profile_popup_open = !this.state.opened;
+        this.setState({opened: !this.state.opened});
     }
 
     render() {
-        if(!this.state.user){ //wait for the user object to update
-            return null;
-        }
         return (
-            <div id="user-profile-wrapper">
-                <LogoutButton/>
-                <div id="user-profile-mini-bar">
-                    <FontAwesomeIcon onClick={() => this.minimizeProfileMain()} icon={faBars} className="minbar-icon"/>
-                    {/* <button onClick={() => this.minimizeProfileMain()}>minimize</button> */}
+            <div className="new-user-profile-wrapper">
+                <div className="new-user-profile-icon-wrapper">
+                    <FontAwesomeIcon onClick={() => this.toggleProfileScreen()} icon={faBars} className="minbar-icon"/>
                 </div>
-                <div id="user-profile-main">
-                    <h1>Welcome back{this.state.user.first_name ? " " + this.state.user.first_name : ""}!</h1>
-                    <p>View Recent Routes</p>
-                    <p>My Favorite Routes</p>
-                    <p>Fastest time: </p>
+                {this.props.user.first_name != null ?
+                <div className="new-user-profile-main" style={this.state.opened ? {} : {display: "none"}}>
+                    <div className="new-user-profile-header-wrapper">
+                        <div className="new-user-initials-box">{this.props.user.first_name[0] + this.props.user.last_name[0]}</div>
+                        <div className="new-user-username-box">
+                            <div className="new-user-username-name">
+                                {this.props.user.first_name + " " + this.props.user.last_name}
+                            </div>
+                            <div className="new-user-username-email">
+                                {this.props.user.email}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="new-user-profile-subheader-wrapper">
+                        <HistoryPopup history={this.props.history}/>
+                        <p>Fastest run speed: 15 mph</p>
+                        <LogoutButton/>
+                    </div>
                 </div>
-                    
+                : null}
             </div>
-        )
+        );
     }
+
+
 }
+
+
 class LogoutButton extends Component {
     logout() {
         fetch("http://localhost:8000/auth/logout/", {
@@ -126,8 +186,57 @@ class LogoutButton extends Component {
     }
 
     render() {
-        return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
+        //return <FontAwesomeIcon onClick={this.logout} icon={faSignOutAlt} className="icon"/>;
         //<button className="login_button" onClick={this.logout}>Logout</button>
+        return <button className="new-user-profile-logout-button" onClick={this.logout}>Sign Out</button>
+    }
+}
+
+class HistoryPopup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popup_open:false,
+            fav_only: false,
+        }
+        this.openPopup = this.openPopup.bind(this);
+        this.closePopup = this.closePopup.bind(this);
+        this.openFavorites = this.openFavorites.bind(this);
+    }
+
+    openPopup() {
+        this.setState({popup_open: true, fav_only: false});
+    }
+    closePopup() {
+        this.setState({popup_open: false});
+    }
+    openFavorites() {
+        this.setState({popup_open: true, fav_only: true});
+    }
+
+    render() {
+        const popupStyle = {
+            "width": "850px",
+            "borderRadius": "6px",
+        };
+        return (
+            <React.Fragment>
+                <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
+                <button className="profile-button favorites" onClick={this.openFavorites}>Favorite Routes</button>
+                <Popup
+                    open={this.state.popup_open}
+                    modal={true}
+                    onClose={this.closePopup}
+                    // trigger={open => (
+                    //     <button className="profile-button">View Saved Routes</button>
+                    // )}
+                    closeOnDocumentClick
+                    contentStyle={popupStyle}
+                >
+                    <HistoryScreen  favoritesOnly={this.state.fav_only} closePopup={this.closePopup} history={this.props.history}/>
+                </Popup>
+            </React.Fragment>
+        )
     }
 }
 
@@ -141,9 +250,9 @@ class LoginPopup extends Component {
             <Popup
                 modal={true}
                 trigger={open => (
-                    // <button className="login_button">Login</button>
+                    <button className="login_button">Login</button>
                     // Icon Button
-                    <FontAwesomeIcon icon={faSignInAlt} className="icon"/>
+                    //<FontAwesomeIcon icon={faSignInAlt} className="icon"/>
                 )}
                 closeOnDocumentClick
                 contentStyle={popupStyle}
