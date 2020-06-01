@@ -10,6 +10,7 @@ class Geocoder extends Component {
         super(props);
         this.state = {
             num: 0,
+            isSet: false,
         }
     }
 
@@ -33,6 +34,27 @@ class Geocoder extends Component {
                 },
                 placeholder: this.props.placeHolder,
             });
+            geocoder.on('clear', () => {
+                if (this.state.isSet) {
+                    this.props.unfilling();
+                    this.setState({isSet: false}, () => {
+                        window.map.clearRoute();
+                    });
+                } else {
+                    return;
+                }
+            })
+
+            geocoder.on('result', () => {
+                console.log('result');
+                this.setState({isSet: true});
+            })
+
+            if (window.geocoder_list == null) {
+                window.geocoder_list = [geocoder];
+            } else; {
+                window.geocoder_list.push(geocoder);
+            }
             document.getElementById(this.props.geocoder_identifier).appendChild(geocoder.onAdd(props.map))
             num++;
             this.setState({num: num});

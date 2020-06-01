@@ -161,6 +161,20 @@ class Map extends Component {
       }
   }
 
+  clearRoute() {
+    const map = this.state.map;
+    if (map.getLayer('route')) {
+      map.removeLayer('route');
+    }
+    if (map.getSource('route')) {
+      map.removeSource('route')
+    }
+    this.setState({direction_list: null});
+    for (var i=0; i < window.geocoder_list.length; ++i) {
+        window.geocoder_list[i].clear();
+    }
+  }
+
   zoomToCoords(start, end) {
     const map = this.state.map;
     //zoom oo the whole route
@@ -178,8 +192,8 @@ class Map extends Component {
 
     canvas.style.cursor = '';
 
-    this.labelPoint('start', start);
-    this.labelPoint('end', end);
+    //this.labelPoint('start', start);
+    //this.labelPoint('end', end);
 
     this.requestRoute(start, end, false);
   }
