@@ -178,7 +178,7 @@ class DirectionSidebar extends Component {
                         <h3 className="main-address">{this.state.from_address1}</h3>
                         {this.state.from_address2}
                     </div>
-                    <DirectionList instructions={this.props.direction_list}/>
+                    <DirectionList instructions={this.props.direction_list} exerciseChoice={this.state.exerciseChoice}/>
                     <div className="address-container">
                         <h3 className="main-address">{this.state.to_address1}</h3>
                         {this.state.to_address2}

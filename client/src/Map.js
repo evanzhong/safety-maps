@@ -5,6 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import DirectionSidebar from './DirectionSidebar';
 import ProfileSidebar from './ProfileSidebar';
 
+import constants from './constants';
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
 class Map extends Component {
@@ -21,6 +23,7 @@ class Map extends Component {
     //For testing purposes - delete later
     window.map = this;
     this.renderRoute = this.renderRoute.bind(this);
+    this.renderExercise = this.renderExercise.bind(this);
   }
 
   componentDidMount() {
@@ -183,13 +186,71 @@ class Map extends Component {
   renderExercise(obj){
     console.log(obj)
 
-    const url = `http://localhost:8000/directions/${obj.start}/${obj.exerciseDuration}/${obj.exerciseChoice}`;
+    let totalDist;
+    // Fall back on average speeds when user is not logged in
+    switch (obj.exerciseChoice) {
+      case "walk":
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+      case "run":
+        totalDist = obj.exerciseDuration * constants.averageRunningSpeed;
+        break;
+      case "bike":
+        totalDist = obj.exerciseDuration * constants.averageBikingSpeed;
+        break;
+      default:
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+    }
+
+    const map = this.state.map;
+    const that = this;
+    const url = `http://localhost:8000/exercise/${obj.start}/${totalDist}?access_token=${mapboxgl.accessToken}`;
+
     let req = new XMLHttpRequest();
     req.open('GET', url, true);
     req.onload = function () {
       const json = JSON.parse(req.response);
       console.log(json);
-      // EVAN TODO: Handle map generation from response data
+      that.setState({direction_list: json["turn-by-turn-directions"]});
+      var route = json.coordinates;
+      var geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: route
+        }
+      };
+      // render the route line
+      if (map.getSource('route')) {
+        map.getSource('route').setData(geojson);
+      } else {
+        map.addLayer({
+          id: 'route',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: route
+              }
+            }
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#3887be',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
     }
     req.send();
   }
