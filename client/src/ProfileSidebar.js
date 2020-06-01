@@ -39,23 +39,23 @@ class ProfileSidebar extends Component {
                     loading: false,
                     logged_in: login,
                 });
+                if (login) {
+                    result.json().then((json) => {
+                        this.setState({
+                            first_name: json.userinfo.first_name,
+                            last_name: json.userinfo.last_name,
+                            email: json.userinfo.email,
+                            history: json.history,
+                        });
+                    })
+                }
                 return result;
             },
             // Handle error
             (error) => {
                 console.error("Failed to connect to auth secure endpoint");
             }
-        ).then((response) => response.json())
-        .then((json) => {
-            if (this.state.logged_in) {
-                this.setState({
-                    first_name: json.userinfo.first_name,
-                    last_name: json.userinfo.last_name,
-                    email: json.userinfo.email,
-                    history: json.history,
-                });
-            }
-        })
+        )
     }
 
     render() {
