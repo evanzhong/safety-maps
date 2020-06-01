@@ -2,7 +2,6 @@ const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const PriorityQueue = require("./priority_queue");
 const request = require('request');
-const process_dirs = require('./process_directions');
 
 // process.argv[2] and [3] are the start and end coordinates, respectively
 // process.send() to give response!
@@ -37,23 +36,34 @@ async function generatePathMultPoints(coords, mapboxAccessToken){
     let accumulatedResults = [];
     for (let i = 0; i < coords.length - 1; i++) {
         const response = await generatePath(coords[i], coords[i+1], false);
-        if (response === "No route") {
+        if (response === "No route") { // If SafetyMaps router cannot generate a route, fall back to mapbox api
             const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${parseIntoMapboxFormat(coords[i])};${parseIntoMapboxFormat(coords[i+1])}?steps=true&geometries=geojson&access_token=${mapboxAccessToken}`;
             
-            request(url, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    // console.log(process_dirs.mapbox(JSON.parse(body)).coordinates);
-                    accumulatedResults.concat(process_dirs.mapbox(JSON.parse(body)).coordinates);
-                } else {
-                    console.log("Error in routing:", coords[i], "to", coords[i+1]);
-                    process.send("No route");
-                }
+            let hasMapboxError = false;
+            await new Promise((resolve, reject) => { //Wraping in a promise to preserve ordering
+                request(url, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        accumulatedResults = accumulatedResults.concat(JSON.parse(body).routes[0].geometry.coordinates);
+                        resolve();
+                    } else {
+                        console.log("Error in routing:", coords[i], "to", coords[i+1]);
+                        hasMapboxError = true;
+                        reject();
+                    }
+                })
             })
+            if (hasMapboxError) {
+                process.send("No route");
+                return;
+            }
         }
         else accumulatedResults = accumulatedResults.concat(response);
     }
-    if (accumulatedResults.length === 0) process.send("No route");
-    process.send(accumulatedResults);
+
+    if (accumulatedResults.length === 0) {
+        process.send("No route")
+    }
+    else process.send(accumulatedResults);
 }
 
 async function generatePath(start, end, shouldHandleProcess = true) {
