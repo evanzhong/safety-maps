@@ -211,6 +211,7 @@ class Router {
   generateCircularPath(start, dist, res, token){
     if (dist > 16.1) {
       this.processOutput("Error: only supports distances within 10 miles for now")
+      return;
     }
     var maxDistanceMatch = 0.1; //km
     // var start_split = start.split(",");

@@ -43,13 +43,14 @@ var process_dirs = require("./navigation/process_directions");
 //Example API Call: (route from [-122.1230542,37.4322595] to [-122.15,37.45])
 // localhost:8000/directions/mapbox/-122.1230542,37.4322595/-122.15,37.45?access_token=...
 app.get('/directions/mapbox/:start/:end', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
   var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + req.params.start + ';' + req.params.end + 
     '?steps=true&geometries=geojson&access_token=' + req.query.access_token;
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      res.json(process_dirs.mapbox(JSON.parse(body)));
+      res.end(process_dirs.mapbox(JSON.parse(body)));
     } else {
-      return res.status(500).json({ type: 'error', message: "Error occurred" });
+      return res.status(500).end(JSON.stringify({ type: 'error', message: "Error occurred" }));
     }
   })
 })
@@ -76,6 +77,7 @@ app.get('/router_data', function (req, res) {
 // Example: http://localhost:8000/directions/safetymaps/34.0699698,-118.4396255/34.0707474,-118.4380684?access_token=...
 // Working Example: http://localhost:8000/directions/safetymaps/34.0699698,-118.4396255/34.0696565,-118.4393282?access_token=...
 app.get('/directions/safetymaps/:start/:end', async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
   var start_split = req.params.start.split(",");
   var end_split = req.params.end.split(",");
   //var data = Router.generatePath(start_split[1] + "," + start_split[0], end_split[1] + "," + end_split[0]);
@@ -93,6 +95,7 @@ app.get('/test/:start/:end', function (req, res) {
 
 // Exercise Mode Routing
 app.get('/exercise/:start/:dist', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
   var start_split = req.params.start.split(",");
   Router.generateCircularPath(start_split[1] + "," + start_split[0], parseFloat(req.params.dist), res, req.query.access_token);
 })

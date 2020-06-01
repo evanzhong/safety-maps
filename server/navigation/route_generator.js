@@ -21,6 +21,7 @@ client.on('connect', function(){
     // If 4 args passed, then route for regular travel mode
     if (process.argv.length === 4) {
         generatePath(process.argv[2], process.argv[3]);
+        return;
     }
 
     const coords = [];
