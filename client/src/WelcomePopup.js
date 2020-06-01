@@ -14,11 +14,11 @@ class Welcome extends Component {
 
             <FontAwesomeIcon icon={faTimesCircle} className="close-icon" onClick={this.props.closeContainer}/>
             <div className="text-container">
-                <p>      To encourage people to walk and exercise more, SafetyMaps will navigate you to your destination with the safest, most efficient route.     
+                <p>To encourage people to walk and exercise more, SafetyMaps will navigate you to your destination with the safest, most efficient route.     
                 </p>
-                <p>Toggle to trip or exercise depended on your goal. <br/> Leave the rest to us!
+                <p>Toggle to trip or exercise depended on your goal. Leave the rest to us!
                 </p> 
-                <p>SafetyMaps is a quarter-long project by TopoPro, <br/> a collaboration between four apprentice engineers for Computer Science 97!
+                <p>SafetyMaps is a quarter-long project by TopoPro, a collaboration between four apprentice engineers for Computer Science 97!
                 </p>
             </div>
             <div className="do-not-show-again-container"> 
@@ -38,14 +38,21 @@ class WelcomePopup extends Component {
         super(props);
         this.state = {
             showWelcome: null,
+            count: 0,
         }
     }
 
     componentWillReceiveProps(props) {
-        // Not sure if it needs to guarantee that this runs only once
-        this.setState({
-            showWelcome: props.open,
-        })
+        // Guarantee that this runs only once
+        var count = this.state.count;
+        if (count === 0)
+        {
+            count++;
+            this.setState({
+                showWelcome: props.open,
+                count: count,
+            })
+        }
     }
 
     closeContainer = () => {
