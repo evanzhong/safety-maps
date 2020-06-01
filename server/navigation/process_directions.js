@@ -20,12 +20,12 @@
 */
 
 function createReturn(success, coordinates, dirs, error=null) {
-    return {
+    return JSON.stringify({
         "success": success,
         "coordinates": coordinates,
         "turn-by-turn-directions": dirs,
         "error": error
-    }
+    })
 }
 
 function errorReturn(err) {
@@ -59,15 +59,17 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
     // https://docs.mapbox.com/api/navigation/
     try {
         if (typeof(data) === 'string' || data instanceof String) {
-            res.json(errorReturn(data));
+            res.end(errorReturn(data));
+            return;
         } else {
             if (data.length > 99) {
-                res.json(createReturn(true, data, [
+                res.end(createReturn(true, data, [
                     {
                         "label": "Long routes not yet supported.",
                         "distance": 0,
                     }
                 ]));
+                return;
             }
             var coordStr = data[0][0] + ',' + data[0][1];
             var rad = 15;
@@ -83,23 +85,27 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                 try {
                     if (!error && response.statusCode == 200) {
                         if (response.err) {
-                            res.json(errorReturn("Error in map matching API response"));
+                            res.end(errorReturn("Error in map matching API response"));
                             return;
                         }
                         var dirs = extract_directions(JSON.parse(body).matchings[0].legs[0].steps);
-                        res.json(createReturn(true, data, dirs));
+                        res.end(createReturn(true, data, dirs));
+                        return;
                     } else {
-                        res.json(errorReturn("Error reaching map matching API"));
+                        res.end(errorReturn("Error reaching map matching API"));
+                        return;
                     } 
                 } catch (error) {
-                    res.json(errorReturn("Unexpected error requesting map matching API"));
+                    res.end(errorReturn("Unexpected error requesting map matching API"));
+                    return;
                 }
             });
 
         }
     } catch (error) {
         console.log(error)
-        res.json(errorReturn("Failed to process safetymaps object"));
+        res.end(errorReturn("Failed to process safetymaps object"));
+        return;
     }
 }
 
