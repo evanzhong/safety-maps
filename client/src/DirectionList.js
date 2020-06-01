@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import './DirectionList.css';
 
+import constants from './constants';
+
 class DirectionList extends Component {
 
     formatDistance(dist) {
@@ -12,6 +14,20 @@ class DirectionList extends Component {
             return Math.round(dist * 10) / 10 + " mi"; //round to one decimal pt
         } else {
             return Math.round(dist) + " ft";
+        }
+    }
+
+    formatTime(dist){
+        dist = dist * 3.281 / 5280;
+        switch (this.props.exerciseChoice) {
+            case "walk":
+                return (dist * 1 / constants.averageWalkingSpeed);
+            case "run":
+                return (dist * 1 / constants.averageRunningSpeed);
+            case "bike":
+                return (dist * 1 / constants.averageBikingSpeed);
+            default:
+                return (dist * 1 / constants.averageWalkingSpeed);
         }
     }
 
@@ -32,7 +48,7 @@ class DirectionList extends Component {
                 <div className="list">
                     <ol>
                         <div className="total-distance"> 
-                            <span className="total-time-value">{Math.round(total * 60.0 / (1000 * 5))} min </span> 
+                            <span className="total-time-value">{Math.round(this.formatTime(total))} min </span> 
                             <span className="total-distance-value">({this.formatDistance(total)})</span>
                         </div>
                         {instr.map((instruction,index) => 
