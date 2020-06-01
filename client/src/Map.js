@@ -5,6 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import DirectionSidebar from './DirectionSidebar';
 import ProfileSidebar from './ProfileSidebar';
 
+import constants from './constants';
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
 class Map extends Component {
@@ -184,10 +186,27 @@ class Map extends Component {
   renderExercise(obj){
     console.log(obj)
 
+    let totalDist;
+    // Fall back on average speeds when user is not logged in
+    switch (obj.exerciseChoice) {
+      case "walk":
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+      case "run":
+        totalDist = obj.exerciseDuration * constants.averageRunningSpeed;
+        break;
+      case "bike":
+        totalDist = obj.exerciseDuration * constants.averageBikingSpeed;
+        break;
+      default:
+        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        break;
+    }
+
     const map = this.state.map;
     const that = this;
-    const url = `http://localhost:8000/exercise/${obj.start}/3?access_token=${mapboxgl.accessToken}`;
-    
+    const url = `http://localhost:8000/exercise/${obj.start}/${totalDist}?access_token=${mapboxgl.accessToken}`;
+
     let req = new XMLHttpRequest();
     req.open('GET', url, true);
     req.onload = function () {
