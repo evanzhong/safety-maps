@@ -142,22 +142,44 @@ class LogoutButton extends Component {
 }
 
 class HistoryPopup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popup_open:false,
+        }
+        window.historyeee = this;
+        this.openPopup = this.openPopup.bind(this);
+        this.closePopup = this.closePopup.bind(this);
+    }
+
+    openPopup() {
+        this.setState({popup_open: true});
+    }
+    closePopup() {
+        this.setState({popup_open: false});
+    }
+
     render() {
         const popupStyle = {
             "width": "850px",
             "borderRadius": "6px",
         };
         return (
+            <React.Fragment>
+            <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
             <Popup
+                open={this.state.popup_open}
                 modal={true}
-                trigger={open => (
-                    <button className="profile-button">View Saved Routes</button>
-                )}
+                onClose={this.closePopup}
+                // trigger={open => (
+                //     <button className="profile-button">View Saved Routes</button>
+                // )}
                 closeOnDocumentClick
                 contentStyle={popupStyle}
             >
-                <HistoryScreen history={this.props.history}/>
+                <HistoryScreen closePopup={this.closePopup} history={this.props.history}/>
             </Popup>
+            </React.Fragment>
         )
     }
 }

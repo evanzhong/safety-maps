@@ -25,18 +25,7 @@ router.get('/account_info', (req, res) => {
                 name: "3.5 mile walk",
                 start: "UCLA",
                 end: "505 Landfair Ave, Apt 606",
-                route: {
-                    "success": true,
-                    "coordinates": [
-                        [-118, 34], [-118.001,34.001]
-                    ],
-                    "turn-by-turn-directions": [
-                        { label: "Instruction 1",
-                        distance: 195 },
-                        { label: "Instruction 2",
-                            distance: 100}
-                    ]
-                },
+                route: {"success":true,"coordinates":[[-118.444572,34.070992],[-118.445618,34.071011],[-118.44648,34.070957],[-118.447983,34.070961],[-118.448608,34.070751],[-118.448936,34.07074],[-118.449234,34.070702],[-118.450729,34.070694],[-118.450897,34.070648],[-118.451195,34.070435],[-118.451782,34.070427],[-118.451866,34.07032],[-118.452415,34.070602],[-118.452644,34.070671],[-118.453064,34.070641],[-118.453255,34.070549],[-118.453133,34.070377]],"turn-by-turn-directions":[{"label":"Head west on Bruin Walk","distance":377.46},{"label":"Keep right onto Bruin Walk","distance":30},{"label":"Keep left onto Bruin Walk","distance":28},{"label":"Continue straight","distance":247},{"label":"Turn left","distance":15},{"label":"Turn right onto Gayley Avenue","distance":142},{"label":"Turn left onto Landfair Avenue","distance":22.178},{"label":"You have arrived at your destination","distance":0}],"error":null},
                 type: "walk",
                 date: "5/31/20",
                 time: '12:15 pm',

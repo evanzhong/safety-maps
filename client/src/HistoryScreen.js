@@ -11,7 +11,7 @@ class HistoryScreen extends Component {
         return (
             <div className="historyPopup">
                 <h1>Saved Routes</h1>
-                <RouteList history={this.props.history} />
+                <RouteList closePopup={this.props.closePopup} history={this.props.history} />
             </div>
         );
     }
@@ -40,7 +40,7 @@ class RouteList extends Component {
         return (
             <div className="route-list">
             {this.props.history.map((route,index) => 
-                <RouteEntry key={index} expanded={index === this.state.expanded_route} expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
+                <RouteEntry key={index} closePopup={this.props.closePopup} expanded={index === this.state.expanded_route} expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
             )}
             </div>
         );
@@ -108,7 +108,12 @@ class RouteEntry extends Component {
                     <FontAwesomeIcon icon={this.props.expanded ? faAngleUp : faAngleDown} onClick={this.props.expand_click} className="route-expand-icon"/> 
                 </div>
                 <div className="route-navigate">
-                    <FontAwesomeIcon icon={faEye} className="route-navigate-icon"/> 
+                    <FontAwesomeIcon icon={faEye} onClick={() => {
+                            window.map.drawRouteOnMap(this.props.route.route);
+                            const coords = this.props.route.route.coordinates;
+                            window.map.zoomToCoords(coords[0],coords[coords.length-1])
+                            this.props.closePopup();
+                        }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">
                     <FontAwesomeIcon icon={route.favorite ? faHeart : heartOutline} className="route-favorite-icon"/> 

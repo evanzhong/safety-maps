@@ -83,6 +83,57 @@ class Map extends Component {
     }
   }
 
+  drawRouteOnMap(json) {
+    const map = this.state.map;
+    this.setState({direction_list: json["turn-by-turn-directions"]});
+      var route = json.coordinates;
+      var geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: route
+        }
+      };
+      // render the route line
+      if (map.getSource('route')) {
+        map.getSource('route').setData(geojson);
+      } else {
+        map.addLayer({
+          id: 'route',
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: route
+              }
+            }
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#3887be',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        });
+      }
+  }
+
+  zoomToCoords(start, end) {
+    const map = this.state.map;
+    //zoom oo the whole route
+    map.fitBounds([start,end],
+      {padding: {left: 500, right: 45, top: 45, bottom: 45}} //container: left margin(15) + width(440) = 455 -> 500-455 = 45px
+    );
+  }
+
   // render route using call to directions API
   // For testing purposes: try in Chrome console:
   // map.renderRoute([-122.1230542,37.4322595],[-122.15,37.45]);
@@ -133,49 +184,8 @@ class Map extends Component {
       if (!useMapbox) {
         console.log("Routing using SafetyMaps router")
       }
-      that.setState({direction_list: json["turn-by-turn-directions"]});
-      var route = json.coordinates;
-      var geojson = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: route
-        }
-      };
-      // render the route line
-      if (map.getSource('route')) {
-        map.getSource('route').setData(geojson);
-      } else {
-        map.addLayer({
-          id: 'route',
-          type: 'line',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'LineString',
-                coordinates: route
-              }
-            }
-          },
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-          },
-          paint: {
-            'line-color': '#3887be',
-            'line-width': 5,
-            'line-opacity': 0.75
-          }
-        });
-      }
-      //zoom oo the whole route
-      map.fitBounds([start,end],
-        {padding: {left: 500, right: 45, top: 45, bottom: 45}} //container: left margin(15) + width(440) = 455 -> 500-455 = 45px
-      );
+      that.drawRouteOnMap(json);
+      that.zoomToCoords(start, end);
     };
     req.send();
   }
