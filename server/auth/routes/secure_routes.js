@@ -23,6 +23,8 @@ router.get('/account_info', (req, res) => {
         history: [
             {
                 name: "3.5 mile walk",
+                start: "UCLA",
+                end: "505 Landfair Ave, Apt 606",
                 route: {
                     "success": true,
                     "coordinates": [
@@ -44,6 +46,8 @@ router.get('/account_info', (req, res) => {
             },
             {
                 name: "6 mile run",
+                start: "UCLA",
+                end: "505 Landfair Ave, Apt 606",
                 route: {
                     "success": true,
                     "coordinates": [
@@ -65,6 +69,8 @@ router.get('/account_info', (req, res) => {
             },
             {
                 name: "10 mile bike",
+                start: "UCLA",
+                end: "505 Landfair Ave, Apt 606",
                 route: {
                     "success": true,
                     "coordinates": [

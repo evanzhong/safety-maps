@@ -1,5 +1,5 @@
 .historyPopup {
-    height: 35vw;
+    height: 80vh;
     overflow-y: scroll;
     padding-left: 50px;
     padding-right: 50px;
@@ -17,7 +17,7 @@
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 3px;
-    height: 20px;
+    min-height: 20px;
 }
 
 #first-route-row {
@@ -38,13 +38,14 @@
 
 .route-runtype {
     padding-right: 10px;
+    width: 20px;
 }
 
-.fa-heart {
+.route-row svg {
     height: 15px;
 }
 
-.fa-heart:hover {
+.route-row svg:hover {
     height: 20px;
     cursor: pointer;
 }
@@ -62,4 +63,33 @@
 .route-expand {
     float: right;
     padding-right: 15px;
+}
+
+.route-navigate {
+    float: right;
+    padding-right: 15px;
+}
+
+.route-expanded-view {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.route-expanded-header {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.route-expanded-description {
+    width: 100%;
+}
+
+.route-try-again {
+    font-size: 15px;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    padding: 15px;
+    padding-left: 0;
 }
