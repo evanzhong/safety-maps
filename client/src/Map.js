@@ -22,6 +22,7 @@ class Map extends Component {
       direction_list: null,
       //welcome popup
       welcome: true,
+      dir_loading: false,
     };
     //For testing purposes - delete later
     window.map = this;
@@ -160,8 +161,11 @@ class Map extends Component {
       }
   }
 
-  clearRoute() {
+  clearRoute(clearGeocoders=true, exercise=false) {
     const map = this.state.map;
+    if (!exercise) {
+      document.getElementById("amount-time").value = "";
+    }
     if (map.getLayer('route')) {
       map.removeLayer('route');
     }
@@ -169,8 +173,10 @@ class Map extends Component {
       map.removeSource('route')
     }
     this.setState({direction_list: null});
-    for (var i=0; i < window.geocoder_list.length; ++i) {
-        window.geocoder_list[i].clear();
+    if (clearGeocoders) {
+      for (var i=0; i < window.geocoder_list.length; ++i) {
+          window.geocoder_list[i].clear();
+      }
     }
   }
 
@@ -189,7 +195,7 @@ class Map extends Component {
     const map = this.state.map;
     var canvas = map.getCanvasContainer();
 
-    canvas.style.cursor = '';
+    //canvas.style.cursor = '';
 
     //this.labelPoint('start', start);
     //this.labelPoint('end', end);
@@ -199,7 +205,9 @@ class Map extends Component {
 
   // make call to directions API - make sure server is running first!
   requestRoute(start, end, useMapbox) {
-    const map = this.state.map;
+    this.clearRoute(false);
+    this.setState({dir_loading: true});
+    //const map = this.state.map;
     var url = 'http://localhost:8000/directions/' + (useMapbox ? "mapbox" : "safetymaps") + '/' + start[0] + ',' 
       + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     var that = this;
@@ -234,12 +242,15 @@ class Map extends Component {
       }
       that.drawRouteOnMap(json);
       that.zoomToCoords(start, end);
+      that.setState({dir_loading: false});
     };
     req.send();
   }
   
   renderExercise(obj){
-    console.log(obj)
+    this.clearRoute(false, true);
+    this.setState({dir_loading: true});
+    //console.log(obj)
 
     let totalDist;
     // Fall back on average speeds when user is not logged in
@@ -306,6 +317,7 @@ class Map extends Component {
           }
         });
       }
+      that.setState({dir_loading: false});
     }
     req.send();
   }
@@ -314,7 +326,8 @@ class Map extends Component {
     return (
       <div>       
         <div>
-          <DirectionSidebar map = {this.state.map} renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
+          <DirectionSidebar dir_loading={this.state.dir_loading} map = {this.state.map} 
+            renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
           <ProfileSidebar />
           <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
         </div>

@@ -26,7 +26,6 @@
 
 .direction_list-container {
   height: auto;
-  max-height: 55vh;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 10px;
@@ -307,3 +306,44 @@ hr.line {
     -moz-box-shadow: 0px 0px 5px 5px #0099E0;
     box-shadow: 0px 0px 5px 5px #0099E0;
   }
+
+.direction-load-block {
+  width: 100%;
+  position: absolute;
+  z-index: 10 !important;
+}
+.direction-load-block:hover {
+  cursor: wait;
+}
+
+.route-loading {
+  color: rgb(46, 46, 46);
+  margin-left: 33%;
+  margin-top: -17px;
+  padding-bottom: 20px;
+  font-size: 18px;
+}
+
+.route-loading:after {
+  content: ' .';
+  animation: dots 1.6s steps(5, end) infinite;}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0,0,0,0);
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  40% {
+    color: black;
+    text-shadow:
+      .25em 0 0 rgba(0,0,0,0),
+      .5em 0 0 rgba(0,0,0,0);}
+  60% {
+    text-shadow:
+      .25em 0 0 black,
+      .5em 0 0 rgba(0,0,0,0);}
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 black,
+      .5em 0 0 black;}}
