@@ -128,6 +128,7 @@ class DirectionSidebar extends Component {
     render() {
         return (
             <div className = 'direction-container'>
+                <div className="direction-load-block" style={this.props.dir_loading ? {height:"100%"} : {height:"0%"}}/>
                 <div className = "user-dir-container">
                     <div className= "toggle-container">
                         <label>
@@ -187,6 +188,7 @@ class DirectionSidebar extends Component {
                         <input id="generate-exercise-route" type="submit" value="Generate Route" onClick={this.sendExercise}/>
                     </div>
                 </div>
+                <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>Loading Route</div>
                 {this.props.direction_list !== null ?
                 <div className="direction_list-container">
                     <div className="address-container">
