@@ -161,9 +161,11 @@ class Map extends Component {
       }
   }
 
-  clearRoute(clearGeocoders=true) {
+  clearRoute(clearGeocoders=true, exercise=false) {
     const map = this.state.map;
-    document.getElementById("amount-time").value = "";
+    if (!exercise) {
+      document.getElementById("amount-time").value = "";
+    }
     if (map.getLayer('route')) {
       map.removeLayer('route');
     }
@@ -246,7 +248,7 @@ class Map extends Component {
   }
   
   renderExercise(obj){
-    this.clearRoute(false);
+    this.clearRoute(false, true);
     this.setState({dir_loading: true});
     //console.log(obj)
 
