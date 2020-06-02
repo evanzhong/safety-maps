@@ -199,7 +199,7 @@ class Map extends Component {
 
   // make call to directions API - make sure server is running first!
   requestRoute(start, end, useMapbox) {
-    const map = this.state.map;
+    //const map = this.state.map;
     var url = 'http://localhost:8000/directions/' + (useMapbox ? "mapbox" : "safetymaps") + '/' + start[0] + ',' 
       + start[1] + '/' + end[0] + ',' + end[1] + '?access_token=' + mapboxgl.accessToken;
     var that = this;

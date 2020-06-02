@@ -52,7 +52,7 @@ class Geocoder extends Component {
 
             if (window.geocoder_list == null) {
                 window.geocoder_list = [geocoder];
-            } else; {
+            } else {
                 window.geocoder_list.push(geocoder);
             }
             document.getElementById(this.props.geocoder_identifier).appendChild(geocoder.onAdd(props.map))
