@@ -163,6 +163,7 @@ class Map extends Component {
 
   clearRoute(clearGeocoders=true) {
     const map = this.state.map;
+    document.getElementById("amount-time").value = "";
     if (map.getLayer('route')) {
       map.removeLayer('route');
     }

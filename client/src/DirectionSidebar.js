@@ -161,7 +161,7 @@ class DirectionSidebar extends Component {
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
                         <h2>Let SafetyMaps generate an exercise route for you!</h2>
                         <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
-                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
                         <div id="movement-mode-wrapper">
                             <div className="exercise-choice">
                                 <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
