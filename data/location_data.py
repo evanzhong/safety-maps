@@ -91,8 +91,19 @@ def get_location_data():
                 street_names.append(None)
                 break
 
+            #eliminates routes that are too fast 
+            if arr[i] == 'maxspeed':
+                if int(arr[i+1][:2]) >= 50:
+                    street_names.append(None)
+                    break
+
             if arr[i] == 'name':
-                street_names.append(arr[i + 1])
+                #filter out all freeways or highways and stuffs
+                actual_name = arr[i+1]
+                if 'Freeway' in actual_name or 'Highway' in actual_name or 'Expressway' in actual_name:
+                    street_names.append(None)
+                    break
+                street_names.append(actual_name)
                 break
 
             #append none if there is no name (the way isn't a street)
