@@ -10,7 +10,7 @@ class Welcome extends Component {
     render() {
         return (
         <div className="container">
-            <img src={Logo} className="logo"/> 
+            <img src={Logo} className="logo" alt="safety maps logo" /> 
 
             <FontAwesomeIcon icon={faTimesCircle} className="close-icon" onClick={this.props.closeContainer}/>
             <div className="text-container">
