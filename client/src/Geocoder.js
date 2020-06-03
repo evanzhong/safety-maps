@@ -20,6 +20,7 @@ class Geocoder extends Component {
         {
             var geocoder = new MapboxGeocoder({
                 accessToken: mapboxgl.accessToken,
+                countries: "us",
                 mapboxgl: mapboxgl,
                 getItemValue: geopoint => {
                     var lat = geopoint.geometry.coordinates[0];
