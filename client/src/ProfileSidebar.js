@@ -30,7 +30,7 @@ class ProfileSidebar extends Component {
         req.send();
     }
 
-    componentDidMount() {
+    refreshSavedRoutes() {
         fetch("http://localhost:8000/auth/secure/account_info", {
             credentials: 'include'
         }).then((result) => {
@@ -57,6 +57,18 @@ class ProfileSidebar extends Component {
             }
         )
     }
+
+    componentDidMount() {
+        this.refreshSavedRoutes();
+        this.refreshInterval = setInterval(() => {
+            this.refreshSavedRoutes();
+        }, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.refreshInterval);
+    }
+
 
     render() {
         if (this.state.loading) {
