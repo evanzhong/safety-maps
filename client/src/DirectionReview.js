@@ -28,7 +28,7 @@ class DirectionReview extends Component {
 
         this.setState({
             instructions: this.props.instructions,
-            exerciseChoice: this.props.exerciseChoice ? this.props.exerciseChoice : 'walk', //Walk is the default exercise
+            exerciseChoice: this.props.exerciseChoice ? this.props.exerciseChoice : null,
             totalDistMiles: total,
         })
     }
@@ -39,11 +39,11 @@ class DirectionReview extends Component {
         let instructionsCopy = Object.assign(this.state.instructions);        
         console.log(instructionsCopy)
         const object = {
-            name: `${this.state.totalDistMiles} mile ${this.state.exerciseChoice}`,
-            start: null, //Will be calculated by the server
-            end: null, //Will be calculated by the server
+            name: `${this.state.totalDistMiles} mile ${this.state.exerciseChoice ? this.state.exerciseChoice : 'walk'}`,
+            start: this.state.exerciseChoice ? this.props.exerciseStart : this.props.start,
+            end: this.state.exerciseChoice ? this.props.exerciseStart : this.props.end,
             route: instructionsCopy,
-            type: this.state.exerciseChoice,
+            type: this.state.exerciseChoice ? this.state.exerciseChoice : 'walk', //Walk is the default exercise
             date: null, //Will be time-stamped by the server
             time: null, //Will be time-stamped by the server
             distance: this.state.totalDistMiles,
