@@ -15,8 +15,7 @@ class Button extends Component {
     }
 
     handleSubmit() {
-        console.log("submit")
-        alert('A num was submitted: ' + this.state.value);
+        this.props.onClickCallback(this.state.value * 60); //Convert to seconds
     }
 
     handleChange(event) {
