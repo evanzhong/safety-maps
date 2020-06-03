@@ -29,6 +29,9 @@ class DirectionSidebar extends Component {
 
             to_address1: null,
             to_address2: null,
+
+            exercise_address1: null,
+            exercise_address2: null
         }
         this.sendGeo = this.sendGeo.bind(this);
     }
@@ -99,6 +102,16 @@ class DirectionSidebar extends Component {
         })
     }
 
+    getExerciseAddress = (address) => {
+        let divided1 = address.split(/,(.+)/)[0];
+        let divided2 = address.split(/,(.+)/)[1];
+
+        this.setState({
+            exercise_address1: divided1,
+            exercise_address2: divided2,
+        })
+    }
+
     // EXERCISE MODE:
     handleExerciseInputChange = (event) => {
         const target = event.target;
@@ -161,7 +174,7 @@ class DirectionSidebar extends Component {
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
                         <h2>Let SafetyMaps generate an exercise route for you!</h2>
                         <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
-                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getExerciseAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
                         <div id="movement-mode-wrapper">
                             <div className="exercise-choice">
                                 <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
@@ -190,15 +203,15 @@ class DirectionSidebar extends Component {
                 </div>
                 <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>Loading Route</div>
                 {this.props.direction_list !== null ?
-                <div className="direction_list-container" style={this.state.isDisplayTrip ? {"max-height": "calc(90vh - 230px)"} : {"max-height": "calc(90vh - 400px)"}}>
+                <div className="direction_list-container" style={this.state.isDisplayTrip ? {"maxHeight": "calc(90vh - 230px)"} : {"maxHeight": "calc(90vh - 400px)"}}>
                     <div className="address-container">
-                        <h3 className="main-address">{this.state.from_address1}</h3>
-                        {this.state.from_address2}
+                        <h3 className="main-address">{this.state.isDisplayTrip ? this.state.from_address1 : this.state.exercise_address1}</h3>
+                        {this.state.isDisplayTrip ? this.state.from_address2 : this.state.exercise_address2}
                     </div>
                     <DirectionList instructions={this.props.direction_list} exerciseChoice={this.state.exerciseChoice}/>
                     <div className="address-container">
-                        <h3 className="main-address">{this.state.to_address1}</h3>
-                        {this.state.to_address2}
+                        <h3 className="main-address">{this.state.isDisplayTrip ? this.state.to_address1 : this.state.exercise_address1}</h3>
+                        {this.state.isDisplayTrip ? this.state.to_address2 : this.state.exercise_address2}
                     </div>
                 </div>
                 :""}
