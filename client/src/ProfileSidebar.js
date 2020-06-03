@@ -30,6 +30,19 @@ class ProfileSidebar extends Component {
         req.send();
     }
 
+    updateFavorite(routeId, fav) {
+        var hist = this.state.history;
+        hist.forEach(element => {
+            if (element["_id"] == routeId) {
+                element["favorite"] = fav;    
+            }
+        });
+        this.setState({history: hist});
+        fetch("http://localhost:8000/auth/secure/favorite_route?routeReq=" + JSON.stringify({route: routeId, favorite: fav}), {
+            credentials: 'include'
+        })
+    }
+
     refreshSavedRoutes() {
         fetch("http://localhost:8000/auth/secure/account_info", {
             credentials: 'include'
@@ -59,6 +72,7 @@ class ProfileSidebar extends Component {
     }
 
     componentDidMount() {
+        window.updateRouteFavorite = (routeId, fav) => this.updateFavorite(routeId, fav);
         this.refreshSavedRoutes();
         this.refreshInterval = setInterval(() => {
             this.refreshSavedRoutes();
