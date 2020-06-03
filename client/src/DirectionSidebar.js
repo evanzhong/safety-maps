@@ -31,7 +31,11 @@ class DirectionSidebar extends Component {
             to_address2: null,
 
             exercise_address1: null,
-            exercise_address2: null
+            exercise_address2: null,
+
+            loading_choices: ["Loading Route", "Optimizing for Safety", "Analyzing Paths", "Generating Directions", "Final Countdown"],
+            loading_current_index: 0,
+            interval_on: false,
         }
         this.sendGeo = this.sendGeo.bind(this);
     }
@@ -40,6 +44,10 @@ class DirectionSidebar extends Component {
         // Not sure if it needs to guarantee that this runs only once
         const map = props.map;
         this.setState({map: map});
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     fillFrom = () => {
@@ -137,8 +145,23 @@ class DirectionSidebar extends Component {
         }
         this.props.renderExercise(obj)
     }
+
+    componentDidUpdate() {
+        if (this.props.dir_loading && (!this.state.interval_on)) {
+            this.interval = setInterval(() => {
+                this.setState({loading_current_index: (this.state.loading_current_index+1)%this.state.loading_choices.length})
+            }, 1650)
+            this.setState({interval_on: true});
+        }
+
+        if (this.state.interval_on && (!this.props.dir_loading)) {
+            clearInterval(this.interval);
+            this.setState({interval_on: false, loading_current_index: 0});
+        }
+    }
     
     render() {
+
         return (
             <div className = 'direction-container'>
                 <div className="direction-load-block" style={this.props.dir_loading ? {height:"100%"} : {height:"0%"}}/>
@@ -201,7 +224,7 @@ class DirectionSidebar extends Component {
                         <input id="generate-exercise-route" type="submit" value="Generate Route" onClick={this.sendExercise}/>
                     </div>
                 </div>
-                <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>Loading Route</div>
+                <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>{this.state.loading_choices[this.state.loading_current_index]}</div>
                 {this.props.direction_list !== null ?
                 <div className="direction_list-container" style={this.state.isDisplayTrip ? {"maxHeight": "calc(90vh - 230px)"} : {"maxHeight": "calc(90vh - 400px)"}}>
                     <div className="address-container">
