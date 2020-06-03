@@ -7,6 +7,7 @@ import './DirectionSidebar.css';
 
 import Geocoder from "./Geocoder"
 import DirectionList from "./DirectionList"
+import DirectionReview from "./DirectionReview"
 
 class DirectionSidebar extends Component {
     constructor(props) {
@@ -159,9 +160,12 @@ class DirectionSidebar extends Component {
                      
                      {/* EXERCISE MODE */}
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
-                        <h2>Let SafetyMaps generate an exercise route for you!</h2>
-                        <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
-                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        <div className="exercise-title">
+                        <h3>Generate an Exercise Route</h3>
+                        </div>
+                        <input id="amount-time" placeholder="Set Time Limit (min)" type="number" onChange={this.handleExerciseInputChange}/>
+                        <div className="exercise-geocoder-container"><Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        </div>
                         <div id="movement-mode-wrapper">
                             <div className="exercise-choice">
                                 <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
@@ -200,6 +204,7 @@ class DirectionSidebar extends Component {
                         <h3 className="main-address">{this.state.to_address1}</h3>
                         {this.state.to_address2}
                     </div>
+                    <DirectionReview/>
                 </div>
                 :""}
             </div>   
