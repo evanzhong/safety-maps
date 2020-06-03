@@ -178,21 +178,21 @@ class DirectionSidebar extends Component {
                         <div id="movement-mode-wrapper">
                             <div className="exercise-choice">
                                 <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
-                                <label for="walk">
+                                <label htmlFor="walk">
                                     Walk
                                     <FontAwesomeIcon icon={faWalking} className="exercise-icon"/> 
                                 </label>
                             </div>
                             <div className="exercise-choice">
                                 <input type="radio" id="run" name="choice" value="run" onChange={this.handleExerciseInputChange}/>
-                                <label for="run">
+                                <label htmlFor="run">
                                     Run
                                     <FontAwesomeIcon icon={faRunning} className="exercise-icon"/> 
                                 </label>
                             </div>
                             <div className="exercise-choice">
                                 <input type="radio" id="bike" name="choice" value="bike" onChange={this.handleExerciseInputChange}/>
-                                <label for="bike">
+                                <label htmlFor="bike">
                                     Bike
                                     <FontAwesomeIcon icon={faBiking} className="exercise-icon"/> 
                                 </label>

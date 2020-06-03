@@ -47,7 +47,7 @@ class Geocoder extends Component {
             })
 
             geocoder.on('result', () => {
-                console.log('result');
+                //console.log('result');
                 this.setState({isSet: true});
             })
 

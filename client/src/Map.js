@@ -192,8 +192,8 @@ class Map extends Component {
   // For testing purposes: try in Chrome console:
   // map.renderRoute([-122.1230542,37.4322595],[-122.15,37.45]);
   renderRoute(start, end) {
-    const map = this.state.map;
-    var canvas = map.getCanvasContainer();
+    //const map = this.state.map;
+    //var canvas = map.getCanvasContainer();
 
     //canvas.style.cursor = '';
 
@@ -244,6 +244,9 @@ class Map extends Component {
       that.zoomToCoords(start, end);
       that.setState({dir_loading: false});
     };
+    req.onerror = function() {
+      that.setState({dir_loading: false});
+    }
     req.send();
   }
   
@@ -317,6 +320,9 @@ class Map extends Component {
           }
         });
       }
+      that.setState({dir_loading: false});
+    }
+    req.onerror = function() {
       that.setState({dir_loading: false});
     }
     req.send();
