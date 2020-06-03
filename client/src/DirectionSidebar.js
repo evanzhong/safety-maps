@@ -193,7 +193,7 @@ class DirectionSidebar extends Component {
                     </div>
                 </div>
                 <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>Loading Route</div>
-                {this.props.direction_list !== null ?
+                {this.props.direction_list !== null && this.props.json_full !== null?
                 <div className="direction_list-container" style={this.state.isDisplayTrip ? {"max-height": "calc(90vh - 230px)"} : {"max-height": "calc(90vh - 400px)"}}>
                     <div className="address-container">
                         <h3 className="main-address">{this.state.from_address1}</h3>
@@ -204,7 +204,7 @@ class DirectionSidebar extends Component {
                         <h3 className="main-address">{this.state.to_address1}</h3>
                         {this.state.to_address2}
                     </div>
-                    <DirectionReview/>
+                    <DirectionReview instructions={this.props.json_full} exerciseChoice={this.state.exerciseChoice}/>
                 </div>
                 :""}
             </div>   

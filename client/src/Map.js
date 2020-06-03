@@ -23,6 +23,7 @@ class Map extends Component {
       //welcome popup
       welcome: true,
       dir_loading: false,
+      json_full: null,
     };
     //For testing purposes - delete later
     window.map = this;
@@ -121,6 +122,7 @@ class Map extends Component {
   drawRouteOnMap(json) {
     const map = this.state.map;
     this.setState({direction_list: json["turn-by-turn-directions"]});
+    this.setState({json_full: json});
       var route = json.coordinates;
       var geojson = {
         type: 'Feature',
@@ -173,6 +175,7 @@ class Map extends Component {
       map.removeSource('route')
     }
     this.setState({direction_list: null});
+    this.setState({json_full: null});
     if (clearGeocoders) {
       for (var i=0; i < window.geocoder_list.length; ++i) {
           window.geocoder_list[i].clear();
@@ -279,6 +282,7 @@ class Map extends Component {
       const json = JSON.parse(req.response);
       console.log(json);
       that.setState({direction_list: json["turn-by-turn-directions"]});
+      that.setState({json_full: json});
       var route = json.coordinates;
       var geojson = {
         type: 'Feature',
@@ -327,7 +331,7 @@ class Map extends Component {
       <div>       
         <div>
           <DirectionSidebar dir_loading={this.state.dir_loading} map = {this.state.map} 
-            renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} />
+            renderRoute={this.renderRoute}renderExercise={this.renderExercise} direction_list={this.state.direction_list} json_full={this.state.json_full}/>
           <ProfileSidebar />
           <WelcomePopup doNotShowWelcome={this.doNotShowWelcome} open={this.state.welcome}/>
         </div>
