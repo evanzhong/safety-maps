@@ -57,14 +57,13 @@ router.get('/save_route', (req, res) => {
     }
     const object = JSON.parse(req.query.object);
     const user = req.user;
-    console.log(object)
-    console.log(user);
 
     // Modify object with calculated information
     object["userId"] = ObjectId(user._id);
     let currDate = Date().toString().split(' ')
-    object["date"] = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
-    object["time"] = currDate[4];
+    object.date = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
+    object.time = currDate[4];
+    console.log(object)
 
     // Insert into db
     const dbString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@crimedata-pebxn.mongodb.net/`;
