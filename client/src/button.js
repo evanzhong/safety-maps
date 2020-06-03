@@ -21,7 +21,7 @@ class Button extends Component {
         console.log(this.state.minute);
         console.log(this.state.second);
         let totalSeconds = parseInt(this.state.minute*60) + parseInt(this.state.second);
-        this.props.onClickCallback(totalSeconds); //Convert to seconds
+        this.props.onClickCallback(totalSeconds);
     }
 
     handleChange(event) {
