@@ -35,6 +35,9 @@ class Geocoder extends Component {
                 },
                 placeholder: this.props.placeHolder,
             });
+            geocoder.on('result', () => {
+                this.props.onResult();
+            })
             geocoder.on('clear', () => {
                 if (this.state.isSet) {
                     this.props.unfilling();

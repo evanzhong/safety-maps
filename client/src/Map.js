@@ -164,7 +164,7 @@ class Map extends Component {
   clearRoute(clearGeocoders=true, exercise=false) {
     const map = this.state.map;
     if (!exercise) {
-      document.getElementById("amount-time").value = "";
+      window.clearExerciseAmountTime();
     }
     if (map.getLayer('route')) {
       map.removeLayer('route');
