@@ -128,6 +128,7 @@ class DirectionSidebar extends Component {
     render() {
         return (
             <div className = 'direction-container'>
+                <div className="direction-load-block" style={this.props.dir_loading ? {height:"100%"} : {height:"0%"}}/>
                 <div className = "user-dir-container">
                     <div className= "toggle-container">
                         <label>
@@ -160,7 +161,7 @@ class DirectionSidebar extends Component {
                     <div id="exercise-mode" style={{display:`${this.state.isDisplayTrip?"none":"block"}`}}>
                         <h2>Let SafetyMaps generate an exercise route for you!</h2>
                         <input id="amount-time" placeholder="How much time do you have? (minutes)" type="number" onChange={this.handleExerciseInputChange}/>
-                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
+                        <Geocoder map = {this.state.map} result={this.handleFrom} filling={()=>{}} calculate={() => {}} unfilling={() => {}} getAddress={this.getFromAddress} geocoder_identifier="geocoder_start" placeHolder="Enter your starting point"/>
                         <div id="movement-mode-wrapper">
                             <div className="exercise-choice">
                                 <input type="radio" id="walk" name="choice" value="walk" onChange={this.handleExerciseInputChange}/>
@@ -187,8 +188,9 @@ class DirectionSidebar extends Component {
                         <input id="generate-exercise-route" type="submit" value="Generate Route" onClick={this.sendExercise}/>
                     </div>
                 </div>
+                <div className="route-loading" style={this.props.dir_loading ? {display:"inherit"} : {display: "none"}}>Loading Route</div>
                 {this.props.direction_list !== null ?
-                <div className="direction_list-container">
+                <div className="direction_list-container" style={this.state.isDisplayTrip ? {"max-height": "calc(90vh - 230px)"} : {"max-height": "calc(90vh - 400px)"}}>
                     <div className="address-container">
                         <h3 className="main-address">{this.state.from_address1}</h3>
                         {this.state.from_address2}
