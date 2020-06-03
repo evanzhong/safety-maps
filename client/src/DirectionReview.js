@@ -53,28 +53,15 @@ class DirectionReview extends Component {
         console.log(object)
 
         //Start server call
-        // const url = "http://localhost:8000/auth/secure/save_route";
+        const url = `http://localhost:8000/auth/secure/save_route/?object=${JSON.stringify(object)}`;
 
-        // let req = new XMLHttpRequest();
-        // req.open('POST', url, true);
-        // req.withCredentials = true;
-        // req.setRequestHeader('Content-Type', 'application/json')
-        // req.onreadystatechange = function() {
-        //     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        //         // Request finished. Do processing here.
-        //     }
-        // }
-        // req.send(object)
-    
-        fetch("http://localhost:8000/auth/secure/save_route", {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // body: JSON.stringify(object),
-            body: {'test': 'test'}
-        });
+        let req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.withCredentials = true;
+        req.onload = function() {
+            
+        }
+        req.send();
     }
     
     render() {

@@ -44,38 +44,50 @@ router.get('/account_info', (req, res) => {
     });
 });
 
-router.post('/save_route', (req, res) => {
+// Evan Note: This was originally going to be done through POST request but we ran into CORS errors that were hard to debug
+// GET requests work just as well for this (functionally) as we are not sending any potentially confidential data.
+// The only downside is the byte limit for GET requests, but this feature should be nowhere near exceeding that limit
+router.get('/save_route', (req, res) => {
     const MongoClient = require('mongodb').MongoClient;
     const ObjectId = require('mongodb').ObjectID; //We need this because we are saving a field as ObjectId
     console.log("reached /save_route")
-    console.log(req);
-    console.log(req.user);
-    console.log(req.body);
-    body = req.body
+    if (!req.query.object) {
+        res.error("No object sent")
+        return;
+    }
+    const object = JSON.parse(req.query.object);
+    const user = req.user;
+    console.log(object)
+    console.log(user);
 
-    // // Insert into db
-    // const dbString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@crimedata-pebxn.mongodb.net/`;
-    // MongoClient.connect(dbString, {"useUnifiedTopology": true}, (error, db) => {
-    //     if (error) {
-    //         console.log("Error in connecting to db to save route for user", req.user)
-    //         throw error;
-    //     }
+    // Modify object with calculated information
+    object["userId"] = ObjectId(user._id);
+    let currDate = Date().toString().split(' ')
+    object["date"] = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
+    object["time"] = currDate[4];
 
-    //     body["userId"] = ObjectId(user._id);
-    //     const routesDb = db.db("routes");
-    //     routesDb.collection("user_routes").insertOne(body, (error, document) => {
-    //         if (error) {
-    //             console.log("Error in inserting new saved route to db for user", req.user)
-    //             throw error;
-    //         }
-    //         console.log("Successfully inserted", document._id);
-    //         db.close();
-    //         // res.json({
-    //         //     userinfo: req.user,
-    //         //     history: userRouteHistory,
-    //         // });
-    //     });
-    // });
+    // Insert into db
+    const dbString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@crimedata-pebxn.mongodb.net/`;
+    MongoClient.connect(dbString, {"useUnifiedTopology": true}, (error, db) => {
+        if (error) {
+            console.log("Error in connecting to db to save route for user", req.user)
+            throw error;
+        }
+
+        const routesDb = db.db("routes");
+        routesDb.collection("user_routes").insertOne(object, (error, document) => {
+            if (error) {
+                console.log("Error in inserting new saved route to db for user", req.user)
+                throw error;
+            }
+            console.log("Successfully inserted", document._id);
+            db.close();
+            // res.json({
+            //     userinfo: req.user,
+            //     history: userRouteHistory,
+            // });
+        });
+    });
 });
 
 module.exports = router;
