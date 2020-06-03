@@ -20,6 +20,7 @@ class Geocoder extends Component {
         {
             var geocoder = new MapboxGeocoder({
                 accessToken: mapboxgl.accessToken,
+                countries: "us",
                 mapboxgl: mapboxgl,
                 getItemValue: geopoint => {
                     var lat = geopoint.geometry.coordinates[0];
@@ -34,6 +35,9 @@ class Geocoder extends Component {
                 },
                 placeholder: this.props.placeHolder,
             });
+            geocoder.on('result', () => {
+                this.props.onResult();
+            })
             geocoder.on('clear', () => {
                 if (this.state.isSet) {
                     this.props.unfilling();
@@ -46,7 +50,7 @@ class Geocoder extends Component {
             })
 
             geocoder.on('result', () => {
-                console.log('result');
+                //console.log('result');
                 this.setState({isSet: true});
             })
 
