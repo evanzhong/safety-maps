@@ -2,11 +2,13 @@ const redis = require('redis');
 const client = redis.createClient(process.env.REDIS_URL);
 const PriorityQueue = require("./priority_queue");
 const request = require('request');
+//const { PerformanceObserver, performance } = require('perf_hooks');
 
 // process.argv[2] and [3] are the start and end coordinates, respectively
 // process.send() to give response!
 
 const PI = 3.1415926535;
+const earthRadiusKm = 6371.0;
 
 function deg2rad(deg) {
     return deg * PI / 180;
@@ -70,16 +72,17 @@ async function generatePathMultPoints(coords, mapboxAccessToken){
 async function generatePath(start, end, shouldHandleProcess = true) {
     /*
     For now, use strings for coordinates.
-    Later, implement function to find closest matching coordinate in dataset,
+    Find closest matching coordinate in dataset,
     then use Mapbox api to direct from start to closest matching coordinate
-    Implemented using A* (will optimize for crime data in the future)
+    Implemented using A*, optimized for crime data
     Algorithm described here: https://www.redblobgames.com/pathfinding/a-star/introduction.html
     */
 
+    //var t0 = performance.now();
     var pq = new PriorityQueue();
 
     pq.enqueue(start, 0.0);
-
+    var closed_set = new Set();
     var came_from = {};
     var cost_so_far = {};
 
@@ -87,7 +90,10 @@ async function generatePath(start, end, shouldHandleProcess = true) {
 
     while(!pq.isEmpty()) {
         var current = pq.dequeue()["element"];
-
+        if (closed_set.has(current)) {
+            continue;
+        }
+        closed_set.add(current);
         //If reached end coord
         if (current === end) {
             //Semi colon-separated string (for Mapbox Map Matching API)
@@ -100,15 +106,18 @@ async function generatePath(start, end, shouldHandleProcess = true) {
             }
             result.unshift(parseIntoMapboxFormat(start));
             if (shouldHandleProcess) process.send(result);
+            //console.log("PERFORMANCE: " + (performance.now() - t0) + " milliseconds");
             return result;
         }
 
         //Process neighbors of current coord
-        var neighbors = await getNeighbors(current);
+        var neighborsAndCrime = await getCrimeAndNeighbors(current);
+        var crime = neighborsAndCrime[0];
+        var neighbors = neighborsAndCrime[1];
         var i;
         for (i = 0; i < neighbors.length; ++i) {
             var neighbor = neighbors[i];
-            var new_cost = cost_so_far[current] + heuristic(current, neighbor);
+            var new_cost = cost_so_far[current] + g(current, neighbor, crime);
             if ((!(neighbor in cost_so_far)) || new_cost < cost_so_far[neighbor]) {
                 cost_so_far[neighbor] = new_cost;
                 pq.enqueue(neighbor, new_cost + heuristic(neighbor, end));
@@ -120,10 +129,19 @@ async function generatePath(start, end, shouldHandleProcess = true) {
     return "No route";
 }
 
+function heuristic(coord1, end) {
+    return 4 * distanceKm(coord1, end);
+}
+
+function g(coord1, coord2, crime) {
+    //1 is least crime, 0 is most crime
+    // Factor in crime coefficient as 20% weighting in cost function
+    return distanceKm(coord1, coord2) * (0.8 + 0.2*(1-crime));
+}
+
 // A* heuristic function - will later be optimized using crime data
 // For now, we just use Euclidean Distance in kilometers
-function heuristic(coord1, coord2) {
-    const earthRadiusKm = 6371.0;
+function distanceKm(coord1, coord2) {
     var coord1split = coord1.split(",");
     var coord2split = coord2.split(",");
     var c1lat = parseFloat(coord1split[0]);
@@ -142,6 +160,7 @@ function heuristic(coord1, coord2) {
     return 2.0 * earthRadiusKm * Math.asin(Math.sqrt(u * u + Math.cos(lat1r) * Math.cos(lat2r) * v * v));
 }
 
+/*
 function getNeighbors(point) {
     return new Promise((resolve, reject) => {
         client.smembers(point + ",adj", function(err,reply) {
@@ -152,5 +171,38 @@ function getNeighbors(point) {
             }
         });
     });
+}
+*/
+
+function getCrimeAndNeighbors(point) {
+    return new Promise((resolve, reject) => {
+        var receivedResponse = false;
+        var crime;
+        var adj;
+        client.smembers(point + ",adj", function(err,reply) {
+            if (err) {
+                console.log(err);
+                reply = [];
+            }
+            adj = reply;
+            if (receivedResponse) {
+                resolve([crime,adj]);
+            } else {
+                receivedResponse = true;
+            }
+        });
+        client.get(point + ",crime", function(err,reply) {
+            if (err) {
+                console.log(err);
+                reply = "0.5";
+            }
+            crime = parseFloat(reply);
+            if (receivedResponse) {
+                resolve([crime,adj]);
+            } else {
+                receivedResponse = true;
+            }
+        });
+    })
 }
 
