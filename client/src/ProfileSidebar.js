@@ -36,7 +36,7 @@ class ProfileSidebar extends Component {
     updateFavorite(routeId, fav) {
         var hist = this.state.history;
         hist.forEach(element => {
-            if (element["_id"] == routeId) {
+            if (element["_id"] === routeId) {
                 element["favorite"] = fav;    
             }
         });
@@ -65,11 +65,11 @@ class ProfileSidebar extends Component {
                         });
                         this.state.history.forEach(element => {
                             let speed = element.distance * 0.621371 * 3600 / element.runtime;
-                            if (element.type == 'walk' && speed > this.state.fastestWalkSpeed) {
+                            if (element.type === 'walk' && speed > this.state.fastestWalkSpeed) {
                                 this.setState({fastestWalkSpeed: speed});
-                            } else if (element.type == 'run' && speed > this.state.fastestRunSpeed) {
+                            } else if (element.type === 'run' && speed > this.state.fastestRunSpeed) {
                                 this.setState({fastestRunSpeed: speed});
-                            } else if (element.type == 'bike' && speed > this.state.fastestBikeSpeed) {
+                            } else if (element.type === 'bike' && speed > this.state.fastestBikeSpeed) {
                                 this.setState({fastestBikeSpeed: speed});
                             }
                         });

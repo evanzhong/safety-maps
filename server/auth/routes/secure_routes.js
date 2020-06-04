@@ -73,6 +73,7 @@ router.get('/save_route', (req, res) => {
         //     history: userRouteHistory,
         // });
     });
+    res.sendStatus(200);
 });
 
 router.get('/favorite_route', (req, res) => {

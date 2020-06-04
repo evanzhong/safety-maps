@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { faMapPin, faMapMarkerAlt, faWalking, faBiking, faRunning } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Toggle from 'react-toggle'
+//import { faMapPin, faMapMarkerAlt, faWalking, faBiking, faRunning } from "@fortawesome/free-solid-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import Toggle from 'react-toggle'
 
 import './DirectionReview.css';
 
-import Geocoder from "./Geocoder"
-import DirectionList from "./DirectionList"
+//import Geocoder from "./Geocoder"
+//import DirectionList from "./DirectionList"
 import Button from "./button"
 
 class DirectionReview extends Component {
@@ -47,7 +47,7 @@ class DirectionReview extends Component {
             hr -= 12;
             setting = " pm";
         }
-        if (hr == 0) hr = 12;
+        if (hr === 0) hr = 12;
         var min = today.getMinutes() >= 10 ? today.getMinutes() : "0" + today.getMinutes();
         return hr + ":" + min + setting;
     }
