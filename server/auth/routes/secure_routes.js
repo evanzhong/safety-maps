@@ -58,7 +58,7 @@ router.get('/save_route', (req, res) => {
     // let currDate = Date().toString().split(' ')
     // object.date = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
     // object.time = currDate[4];
-    console.log(object)
+   // console.log(object)
 
     // Insert into db
     routesDb.collection("user_routes").insertOne(object, (error, document) => {
@@ -66,7 +66,7 @@ router.get('/save_route', (req, res) => {
             console.log("Error in inserting new saved route to db for user", req.user)
             throw error;
         }
-        console.log("Successfully inserted", document._id);
+       // console.log("Successfully inserted", document._id);
         //db.close();
         // res.json({
         //     userinfo: req.user,
