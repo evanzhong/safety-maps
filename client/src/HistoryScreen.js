@@ -10,7 +10,7 @@ class HistoryScreen extends Component {
     render() {
         return (
             <div className="historyPopup">
-                <h1>{this.props.favoritesOnly ? "Favorite Routes" : "Saved Routes"}</h1>
+                <h1>{this.props.favoritesOnly ? "Favorite Routes" : "Recent Routes"}</h1>
                 <RouteList favoritesOnly={this.props.favoritesOnly} closePopup={this.props.closePopup} history={this.props.history} />
             </div>
         );
@@ -40,7 +40,7 @@ class RouteList extends Component {
         var global_index = -1;
         return (
             <div className="route-list">
-            {this.props.history.map((route) => {
+            {this.props.history.slice(0).reverse().map((route) => {
                 if ((!this.props.favoritesOnly) || route.favorite) {
                     global_index++;
                     var index = global_index;
@@ -94,7 +94,6 @@ class RouteEntry extends Component {
 
     render() {
         const route = this.props.route;
-
         var icon;
         if (route.type === "walk") {
             icon = faWalking;
