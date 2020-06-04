@@ -94,7 +94,6 @@ class RouteEntry extends Component {
 
     render() {
         const route = this.props.route;
-        console.log(route)
         var icon;
         if (route.type === "walk") {
             icon = faWalking;
