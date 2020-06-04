@@ -55,9 +55,9 @@ router.get('/save_route', (req, res) => {
 
     // Modify object with calculated information
     object["userId"] = ObjectId(user._id);
-    let currDate = Date().toString().split(' ')
-    object.date = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
-    object.time = currDate[4];
+    // let currDate = Date().toString().split(' ')
+    // object.date = `${currDate[1]} ${currDate[2]}, ${currDate[3]}`;
+    // object.time = currDate[4];
     console.log(object)
 
     // Insert into db
