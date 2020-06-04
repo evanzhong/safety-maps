@@ -301,8 +301,8 @@ class DirectionSidebar extends Component {
                         {this.state.isDisplayTrip ? this.state.to_address2 : this.state.exercise_address2}
                     </div>
                     {
-                        ((this.state.from_address1 !== null && this.state.to_address1 !== null) || this.state.exercise_address1 !== null) 
-                        ? <DirectionReview instructions={this.props.json_full} exerciseChoice={this.state.exerciseChoice} start={this.state.from_address1} end={this.state.to_address1} exerciseStart={this.state.exercise_address1}/>
+                        ((this.state.from_address1 !== null && this.state.from_address2 !== null && this.state.to_address1 !== null && this.state.to_address2 !== null) || (this.state.exercise_address1 !== null && this.state.exercise_address2 !== null)) 
+                        ? <DirectionReview instructions={this.props.json_full} exerciseChoice={this.state.exerciseChoice} start={[this.state.from_address1, this.state.from_address2]} end={[this.state.to_address1, this.state.to_address2]} exerciseStart={[this.state.exercise_address1, this.state.exercise_address2]}/>
                         : ""
                     }
                 </div>
