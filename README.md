@@ -28,7 +28,7 @@ DB_NAME=mydatabase
 JWT_SECRET_KEY=secret_string
 COOKIE_PARSER_SECRET_KEY=secret_string_2
 ```
-Replace myusername, mypassword, mydatabase with MongoDB database account information for the database where you want your account data to be stored. secret_string and secret_string_2 should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
+Replace `myusername`, `mypassword`, `mydatabase` with MongoDB database account information for the database where you want your account data to be stored. `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
 
 Next, to run the server, use the command:
 ```
