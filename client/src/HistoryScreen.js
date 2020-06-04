@@ -62,7 +62,7 @@ class RouteEntry extends Component {
     }
     formatDistance() {
         //dist starts off in m;
-        var dist = this.props.route.distance * 3.281; //convert to ft
+        var dist = this.props.route.distance * 1000 * 3.281; //convert km -> ft
         if (dist >= 528) { //0.1 miles
             dist /= 5280; //convert to miles
             return Math.round(dist * 10) / 10 + " mi"; //round to one decimal pt
@@ -121,20 +121,26 @@ class RouteEntry extends Component {
                     <FontAwesomeIcon icon={faEye} onClick={() => {
                             window.map.drawRouteOnMap(this.props.route.route);
                             const coords = this.props.route.route.coordinates;
-                            window.map.zoomToCoords(coords[0],coords[coords.length-1]);
+                            if (!route.isExerciseMode) window.map.zoomToCoords(coords[0],coords[coords.length-1]);
                             this.props.closePopup();
 
                             if(route.isExerciseMode) {
                                 window.setIsDisplayTrip(false);
+                                document.querySelector("#amount-time").value = Math.round(route.runtime/60);
                                 document.querySelector("#geocoder_start .mapboxgl-ctrl-geocoder--input").value = route.startName;
-                                document.querySelector(`input#${route.type}`).checked = true
+                                document.querySelector(`input#${route.type}`).checked = true;
                                 window.setExerFullAddr(`${route.startName},${route.startAddr}`)
+                                window.setExerciseChoice(route.type)
                             }
                             else {
                                 window.setIsDisplayTrip(true);
                                 document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.startName;
                                 document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.endName;
-                                window.setToFullAddr(`${route.endName},${route.endAddr}`)
+                                window.setFromFullAddr(`${route.startName},${route.startAddr}`);
+                                window.setToFullAddr(`${route.endName},${route.endAddr}`);
+                            }
+                            if (window.profile_popup_open) {
+                                window.close_profile_popup();
                             }
                         }} className="route-navigate-icon"/> 
                 </div>
@@ -147,7 +153,8 @@ class RouteEntry extends Component {
                 {this.props.expanded ? 
                     <div className="route-expanded-view">
                         <div className="route-expanded-header">
-                            {route.startName} to {route.endName}
+                            {route.isExerciseMode ? `Exercise Mode: ${route.startName}`
+                                : `Trip Mode: ${route.startName} to ${route.endName}`}
                         </div>
                         <div className="route-expanded-description">
                             <i>Total Time:</i> {this.formatRuntime()} <br/>

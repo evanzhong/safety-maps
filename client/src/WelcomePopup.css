@@ -1,6 +1,6 @@
 .container {
     position: absolute;
-    top: 15px; /* calc(50% - 200px); */
+    top: 50px; /* calc(50% - 200px); */
     bottom: 15px;
     left: calc(50% - 150px);
 

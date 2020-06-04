@@ -14,6 +14,7 @@ To run this project, you'll need the following programs installed. To install Do
 * Node Package Manager (NPM): v16.14.5
 * Docker v19.03.9
 * Docker-compose v1.25.5
+Note: the above versions have been tested by us to work. However, our project will likely work on similar versions as well.
 
 ### Running the Server
 To run our server, first navigate into the server directory.
@@ -30,11 +31,13 @@ COOKIE_PARSER_SECRET_KEY=secret_string_2
 ```
 Replace `myusername`, `mypassword`, `mydatabase` with MongoDB database account information for the database where you want your account data to be stored. `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
 
-Next, to run the server, use the command:
+To CS97 graders: we will include a working .env file in our tarball submission, so you may skip the above step.
+
+Next, to run the server, run the following command in the server directory:
 ```
 docker-compose up
 ```
-We use Docker to containerize our Node.js and Redis instances. Docker will handle all NPM package installation and Redis database configuration for you. To confirm the server is up and running, wait until you see the following log messages from the safety-maps-backend container:
+We use Docker to containerize our Node.js and Redis instances. Docker will handle all NPM package installation and Redis database configuration for you. To confirm the server is fully up and running, wait until you see the following log messages from the safety-maps-backend container:
 ```
 safety-maps-backend_1  | [SafetyMaps] Server started!
 safety-maps-backend_1  | [Redis] Connected!
@@ -53,7 +56,7 @@ Then, to install the necessary packages and run the client,
 npm install
 npm start
 ```
-Note: ensure that the server is running (and all five above long messages have been outputted), or most client functionality will not work.
+Note: ensure that the server is running first (and all five above long messages have been outputted), or most client functionality will not work.
 
 ### Accessing Map Data
 

@@ -14,16 +14,16 @@ class Welcome extends Component {
 
             <FontAwesomeIcon icon={faTimesCircle} className="close-icon" onClick={this.props.closeContainer}/>
             <div className="text-container">
-                <p>To encourage people to walk and exercise more, SafetyMaps will generate the safest, most efficient route to your destination.     
+                <p>To encourage people to walk and exercise more, SafetyMaps will generate a safe, efficient exercise route for you.     
                 </p>
-                <p>Toggle to trip mode (Point A to Point B) or exercise mode (Point A back to Point A), depending on your goal. Leave the rest to us!
+                <p>Toggle between our Trip Mode (Point A to Point B) or Exercise Mode (Point A back to Point A), depending on your goal. Leave the rest to us!
                 </p> 
                 <p>SafetyMaps is a quarter-long project by TopoPro, a collaboration between four apprentice engineers for Computer Science 97!
                 </p>
             </div>
             <div className="do-not-show-again-container"> 
                 <input type="radio" id="show" value="show" onChange={this.props.doNotShowWelcome}/>
-                <label for="show">
+                <label htmlFor="show">
                     Do Not Show This Again
                 </label>
                 {/* </input><button className="do-not-show-but" onClick={this.props.doNotShowWelcome}>Do Not Show Again</button> */}

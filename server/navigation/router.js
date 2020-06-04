@@ -36,8 +36,8 @@ function getCoordInDir(coord, angle, dist) {
   long = 180/PI*long;
 
   long = (long+540)%360-180;
-  console.log("getCoordInDir( \"" + coord[0]+","+coord[1]+"\" , " + angle + " , " + dist + " )");
-  console.log(lat + " , " + long);
+  //console.log("getCoordInDir( \"" + coord[0]+","+coord[1]+"\" , " + angle + " , " + dist + " )");
+  //console.log(lat + " , " + long);
   return [lat,long];
 }
 
@@ -243,7 +243,7 @@ class Router {
 
     //console.log('spawning fork');
     var fork_options = [token, start, pt2, pt3, start];
-    console.log(fork_options);
+    //console.log(fork_options);
     var child = fork("navigation/route_generator.js", fork_options);
     child.on('message', message => {
       this.processOutput(message, res, token);

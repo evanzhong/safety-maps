@@ -57,6 +57,9 @@ class DirectionSidebar extends Component {
         window.setIsDisplayTrip = (boolean) => {
             this.setState({isDisplayTrip: boolean});
         }
+        window.setExerciseChoice = (choice) => {
+            this.setState({exerciseChoice: choice});
+        }
     }
 
     componentWillReceiveProps(props) {
