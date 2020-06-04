@@ -40,7 +40,7 @@ class DirectionReview extends Component {
         console.log(instructionsCopy)
         const object = {
             name: `${this.state.totalDistMiles} mile ${this.state.exerciseChoice ? this.state.exerciseChoice : 'walk'}`,
-            isExerciseMode: !!exerciseChoice,
+            isExerciseMode: !!this.state.exerciseChoice,
             startName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.start[0],
             startAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.start[1],
             endName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.end[0],
