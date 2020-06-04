@@ -14,6 +14,7 @@ To run this project, you'll need the following programs installed. To install Do
 * Node Package Manager (NPM): v16.14.5
 * Docker v19.03.9
 * Docker-compose v1.25.5
+
 Note: the above versions have been tested by us to work. However, our project will likely work on similar versions as well.
 
 ### Running the Server
