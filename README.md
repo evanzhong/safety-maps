@@ -38,6 +38,7 @@ We use Docker to containerize our Node.js and Redis instances. Docker will handl
 ```
 safety-maps-backend_1  | [SafetyMaps] Server started!
 safety-maps-backend_1  | [Redis] Connected!
+safety-maps-backend_1  | [MongoDB] Connected to route database!
 safety-maps-backend_1  | [Router] Data processed!
 safety-maps-backend_1  | [Redis Router] Data Loaded into Redis Memory!
 ```
@@ -52,7 +53,7 @@ Then, to install the necessary packages and run the client,
 npm install
 npm start
 ```
-Note: ensure that the server is running (and all four above long messages have been outputted), or most client functionality will not work.
+Note: ensure that the server is running (and all five above long messages have been outputted), or most client functionality will not work.
 
 ### Accessing Map Data
 
