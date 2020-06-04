@@ -45,7 +45,7 @@
     height: 15px;
 }
 
-.fa-heart:hover,.fa-eye:hover,.fa-angle-down:hover {
+.fa-heart:hover,.fa-eye:hover,.fa-angle-down:hover,.fa-angle-up:hover {
     height: 20px;
     cursor: pointer;
 }
