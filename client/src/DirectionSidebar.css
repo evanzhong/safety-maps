@@ -109,14 +109,34 @@ hr.line {
     margin-bottom: 1rem;
 }
 
-#amount-time, #generate-exercise-route{
-  width: 100%;
+.exercise-title {
+  text-align: center;
+}
+
+#exercise-mode {  
+  align-items: center;
+  /* text-align: center; */
+}
+
+#amount-time {
+  margin-left: 100px; /* centered */
+  width: 50%;
   height: 30px;
-  margin: 0;
+  background-color: transparent;
+
+  border: 0;
+  box-shadow: 0 0 10px 2px rgba(0,0,0,.1);
+
+  font-size: larger;
+}
+
+#generate-exercise-route{
+  width: 80%;
+  margin-left: 40px; /* centered */
+  height: 30px;
   background-color: transparent;
   
   border: 0;
-  border-radius: 5px;
   box-shadow: 0 0 10px 2px rgba(0,0,0,.1);
 
   font-size: larger;
@@ -127,6 +147,11 @@ hr.line {
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: 10px;
+}
+
+.exercise-geocoder-container {
+  width: auto;
+  margin-left: 25px; /* centered */
 }
 
 .exercise-choice{
@@ -318,10 +343,10 @@ hr.line {
 
 .route-loading {
   color: rgb(46, 46, 46);
-  margin-left: 33%;
   margin-top: -17px;
   padding-bottom: 20px;
   font-size: 18px;
+  text-align: center;
 }
 
 .route-loading:after {
@@ -347,3 +372,10 @@ hr.line {
     text-shadow:
       .25em 0 0 black,
       .5em 0 0 black;}}
+
+
+.generate-exercise-error {
+  text-align: center;
+  color: rgb(243, 120, 120);
+  font-size: 12px;
+}

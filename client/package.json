@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@mapbox/mapbox-gl-geocoder": "^4.5.1",
     "mapbox-gl": "^1.10.0",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",

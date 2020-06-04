@@ -253,3 +253,7 @@ NEW PROFILE SIDEBAR DESIGN!
     cursor: pointer;
     background-color: #f5f5f5
 }
+
+.icon:hover {
+    cursor: pointer;
+}

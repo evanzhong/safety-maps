@@ -44,7 +44,8 @@ class RouteList extends Component {
                 if ((!this.props.favoritesOnly) || route.favorite) {
                     global_index++;
                     var index = global_index;
-                    return <RouteEntry key={index} closePopup={this.props.closePopup} expanded={index === this.state.expanded_route} expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
+                    return <RouteEntry key={index} closePopup={this.props.closePopup} expanded={index === this.state.expanded_route} 
+                        expand_click={() => this.setExpanded(index)} row_id={index} route={route}/>
                 }
                 return null
             })}
@@ -87,6 +88,10 @@ class RouteEntry extends Component {
         return formatted;
     }
 
+    onFavorite(routeId, fav) {
+        window.updateRouteFavorite(routeId, fav);
+    }
+
     render() {
         const route = this.props.route;
 
@@ -124,7 +129,7 @@ class RouteEntry extends Component {
                         }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">
-                    <FontAwesomeIcon icon={route.favorite ? faHeart : heartOutline} className="route-favorite-icon"/> 
+                    <FontAwesomeIcon icon={route.favorite ? faHeart : heartOutline} onClick={() => this.onFavorite(route._id, !route.favorite)} className="route-favorite-icon"/> 
                 </div>
                 <div className="route-speed">
                     {this.calculateSpeed() + " mph"}

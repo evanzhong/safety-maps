@@ -17,7 +17,7 @@
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 3px;
-    min-height: 20px;
+    min-height: 22px;
 }
 
 #first-route-row {
@@ -45,7 +45,7 @@
     height: 15px;
 }
 
-.route-row svg:hover {
+.fa-heart:hover,.fa-eye:hover,.fa-angle-down:hover,.fa-angle-up:hover {
     height: 20px;
     cursor: pointer;
 }
