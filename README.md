@@ -25,13 +25,16 @@ Next, you will need to set up the Node environment variables. Create a file call
 ```
 DB_USER=myusername
 DB_PASS=mypassword
-DB_NAME=mydatabase
+DB_HOST=myhost
+DB_DATA_COLLECTION=mycollection
 JWT_SECRET_KEY=secret_string
 COOKIE_PARSER_SECRET_KEY=secret_string_2
 ```
-Replace `myusername`, `mypassword`, `mydatabase` with MongoDB database account information for the database where you want your account data to be stored. `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
+* Replace `myusername`, `mypassword`, `myhost` with MongoDB Atlas account information for the databases where all your data is stored. 
+* Your data should be in a collection inside a database named data - replace `mycollection` with the name of that collection. 
+* Finally, `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
 
-To CS97 graders: we will include a working .env file in our tarball submission, so you may skip the above step.
+**Note to CS97 graders: we will include a working .env file in our tarball submission, so you may skip the above step.**
 
 Next, to run the server, run the following command in the server directory:
 ```

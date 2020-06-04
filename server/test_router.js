@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 var MongoClient = require('mongodb').MongoClient;
-const dbString = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@crimedata-pebxn.mongodb.net/";
+const dbString = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@" + process.env.DB_HOST + "/";
 
 var Router = require('./navigation/router').Router;
 
