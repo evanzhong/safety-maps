@@ -40,8 +40,11 @@ class DirectionReview extends Component {
         console.log(instructionsCopy)
         const object = {
             name: `${this.state.totalDistMiles} mile ${this.state.exerciseChoice ? this.state.exerciseChoice : 'walk'}`,
-            start: this.state.exerciseChoice ? this.props.exerciseStart : this.props.start,
-            end: this.state.exerciseChoice ? this.props.exerciseStart : this.props.end,
+            isExerciseMode: !!exerciseChoice,
+            startName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.start[0],
+            startAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.start[1],
+            endName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.end[0],
+            endAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.end[1],
             route: instructionsCopy,
             type: this.state.exerciseChoice ? this.state.exerciseChoice : 'walk', //Walk is the default exercise
             date: null, //Will be time-stamped by the server
