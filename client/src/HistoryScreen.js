@@ -124,8 +124,11 @@ class RouteEntry extends Component {
                             const coords = this.props.route.route.coordinates;
                             window.map.zoomToCoords(coords[0],coords[coords.length-1]);
                             this.props.closePopup();
-                            document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.start;
-                            document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.end;
+                            document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.startName;
+                            document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.endName;
+
+                            document.querySelector(".address-container:nth-child(1)").innerHTML = `<h3 class="main-address">${route.startName}</h3> ${route.startAddr}`;
+                            document.querySelector(".address-container:nth-child(3)").innerHTML = `<h3 class="main-address">${route.endName}</h3> ${route.endAddr}`;
                         }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">
