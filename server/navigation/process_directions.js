@@ -78,7 +78,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             res.end(errorReturn(data));
             return;
         } else {
-            console.log('hello');
+       //     console.log('hello');
             /*
             if (data.length > 99) {
                 res.end(createReturn(true, data, [
@@ -153,13 +153,13 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
 
             
             for (let i = 0; i < loop_times; ++i) {
-                console.log(index);
+           //     console.log(index);
                 let coordStr = data[index][0] + ',' + data[index][1];
                 filledradStr = "" + rad;
                 let final_index = (i+1)*max_num;
                 index++;
                 for (; index < final_index; ++index) {
-                    console.log(index);
+                //    console.log(index);
                     coordStr = coordStr + ';' + data[index][0] + ',' + data[index][1];
                     filledradStr = filledradStr + ";" + rad;
                 }
@@ -169,7 +169,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             let remainderradStr = ""; 
             var remaindercoordStr;
             for (; index < datalength; ++index) {
-                console.log(index);
+             //   console.log(index);
                 if (index === remainder_start) {
                     remaindercoordStr = data[index][0] + ',' + data[index][1];
                     remainderradStr = "" + rad;
@@ -182,12 +182,12 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
 
             new_return_list.push(`https://api.mapbox.com/matching/v5/mapbox/walking/${remaindercoordStr}?access_token=${access_token}&steps=true&waypoints=0;${remainder-1}&tidy=true&radiuses=${remainderradStr}`);
 
-            console.log(new_return_list);
+           // console.log(new_return_list);
             var return_list = [];
             function makeRequest(input_list, return_list, index) {
                 //let url = input_list[index];
                 //console.log("url now" + url);
-                console.log("entered");
+             //   console.log("entered");
                 request(input_list[index], function (error, response, body) {
                     try {
                         if (!error && response.statusCode == 200) {
@@ -209,7 +209,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                                     }
                                     combined_dirs = combined_dirs.concat(return_list[j]);
                                 }
-                                console.log(combined_dirs);
+                             //   console.log(combined_dirs);
                                 res.end(createReturn(true, data, combined_dirs));
                                 return;
                             }
