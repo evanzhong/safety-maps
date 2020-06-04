@@ -78,6 +78,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             res.end(errorReturn(data));
             return;
         } else {
+            console.log('hello');
             /*
             if (data.length > 99) {
                 res.end(createReturn(true, data, [
@@ -123,7 +124,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             });*/
 
             //index will be the element of the array that we are going to request coords up to
-
+/*
             var end_index = 0;
             if (data.length > 99) {
                 end_index = 98;
@@ -137,22 +138,57 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
             console.log(end_index);
 
             console.log('datalength');
-            console.log(data.length);
+            console.log(data.length);*/
 
-            var return_list = [];
-            function makeRequest(return_list, start_index, end_index) {
-                var coordStr = data[start_index][0] + ',' + data[start_index][1];
-                var rad = 15;
-                var radStr = "" + rad;
-                for (let i = start_index+1; i <= end_index; ++i) {
-                    coordStr = coordStr + ';' + data[i][0] + ',' + data[i][1];
-                    radStr = radStr + ";" + rad;
+            let max_num = 99;
+            let datalength = data.length;
+            let loop_times = Math.floor(datalength / max_num);
+            let remainder = datalength % max_num;
+            let index = 0;
+            let remainder_start = loop_times * max_num;
+            let rad = 15;
+
+            let new_return_list = [];
+            let filledradStr = "";
+
+            
+            for (let i = 0; i < loop_times; ++i) {
+                console.log(index);
+                let coordStr = data[index][0] + ',' + data[index][1];
+                filledradStr = "" + rad;
+                let final_index = (i+1)*max_num;
+                index++;
+                for (; index < final_index; ++index) {
+                    console.log(index);
+                    coordStr = coordStr + ';' + data[index][0] + ',' + data[index][1];
+                    filledradStr = filledradStr + ";" + rad;
                 }
-                var url = `https://api.mapbox.com/matching/v5/mapbox/walking/${coordStr}?access_token=${access_token}&steps=true&waypoints=0;${end_index-start_index}&tidy=true&radiuses=${radStr}`;
-                
-                console.log('url now');
-                console.log(url);
-                request(url, function (error, response, body) {
+                new_return_list.push(`https://api.mapbox.com/matching/v5/mapbox/walking/${coordStr}?access_token=${access_token}&steps=true&waypoints=0;${max_num-1}&tidy=true&radiuses=${filledradStr}`);
+            }
+
+            let remainderradStr = ""; 
+            var remaindercoordStr;
+            for (; index < datalength; ++index) {
+                console.log(index);
+                if (index === remainder_start) {
+                    remaindercoordStr = data[index][0] + ',' + data[index][1];
+                    remainderradStr = "" + rad;
+                }
+                else {
+                    remaindercoordStr = remaindercoordStr + ';' + data[index][0] + ',' + data[index][1];
+                    remainderradStr = remainderradStr + ";" + rad;
+                }
+            }
+
+            new_return_list.push(`https://api.mapbox.com/matching/v5/mapbox/walking/${remaindercoordStr}?access_token=${access_token}&steps=true&waypoints=0;${remainder-1}&tidy=true&radiuses=${remainderradStr}`);
+
+            console.log(new_return_list);
+            var return_list = [];
+            function makeRequest(input_list, return_list, index) {
+                //let url = input_list[index];
+                //console.log("url now" + url);
+                console.log("entered");
+                request(input_list[index], function (error, response, body) {
                     try {
                         if (!error && response.statusCode == 200) {
                             if (response.err) {
@@ -161,36 +197,27 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                             }
                             //console.log('hi');
                             //console.log(JSON.parse(body));
-                            var dirs = extract_directions(JSON.parse(body).matchings[0].legs[0].steps);
-                            //console.log(type(dirs));
-                            //console.log(dirs);
-                            return_list.push(dirs);
+                            return_list.push(extract_directions(JSON.parse(body).matchings[0].legs[0].steps));
                             //console.log("length return list");
                             //console.log(return_list.length);
-                            if (end_index === data.length - 1) {
+                            if (index === input_list.length - 1) {
                                 let j = 0;
                                 var combined_dirs = [];
                                 for (; j < return_list.length; ++j) {
                                     if (j !== return_list.length - 1) {
                                        return_list[j].pop();
-                                       //console.log(x);
                                     }
                                     combined_dirs = combined_dirs.concat(return_list[j]);
                                 }
-                                //console.log(combined_dirs);
+                                console.log(combined_dirs);
                                 res.end(createReturn(true, data, combined_dirs));
                                 return;
                             }
                             else {
-                                let newStart = end_index + 1;
-                                let newEnd = end_index + 99;
-                                if (data.length - 1 - end_index <= 99) {
-                                    newEnd = data.length - 1;
-                                }
                                 //console.log("recursion");
                                 //console.log("newStart" + newStart);
                                 //console.log("newEnd" + newEnd);
-                                makeRequest(return_list, newStart, newEnd);
+                                makeRequest(input_list, return_list, index+1);
                             }
                             //res.json(createReturn(true, data, dirs));
                         } else {
@@ -203,7 +230,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                     }
                 });
             }
-            makeRequest(return_list, 0, end_index);
+            makeRequest(new_return_list, return_list, 0);
         }
     } catch (error) {
         console.log(error)

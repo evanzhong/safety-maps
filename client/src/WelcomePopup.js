@@ -14,9 +14,9 @@ class Welcome extends Component {
 
             <FontAwesomeIcon icon={faTimesCircle} className="close-icon" onClick={this.props.closeContainer}/>
             <div className="text-container">
-                <p>To encourage people to walk and exercise more, SafetyMaps will navigate you to your destination with the safest, most efficient route.     
+                <p>To encourage people to walk and exercise more, SafetyMaps will generate the safest, most efficient route to your destination.     
                 </p>
-                <p>Toggle to trip or exercise depended on your goal. Leave the rest to us!
+                <p>Toggle to trip mode (Point A to Point B) or exercise mode (Point A back to Point A), depending on your goal. Leave the rest to us!
                 </p> 
                 <p>SafetyMaps is a quarter-long project by TopoPro, a collaboration between four apprentice engineers for Computer Science 97!
                 </p>
