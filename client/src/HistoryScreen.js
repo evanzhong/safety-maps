@@ -137,7 +137,7 @@ class RouteEntry extends Component {
                 {this.props.expanded ? 
                     <div className="route-expanded-view">
                         <div className="route-expanded-header">
-                            {route.start} to {route.end}
+                            {route.startName} to {route.endName}
                         </div>
                         <div className="route-expanded-description">
                             <i>Total Time:</i> {this.formatRuntime()} <br/>
