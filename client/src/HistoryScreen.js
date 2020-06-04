@@ -123,14 +123,17 @@ class RouteEntry extends Component {
                             const coords = this.props.route.route.coordinates;
                             window.map.zoomToCoords(coords[0],coords[coords.length-1]);
                             this.props.closePopup();
-                            document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.startName;
-                            document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.endName;
 
-                            if (route.isExerciseMode) {
+                            if(route.isExerciseMode) {
+                                window.setIsDisplayTrip(false);
+                                document.querySelector("#geocoder_start .mapboxgl-ctrl-geocoder--input").value = route.startName;
+                                document.querySelector(`input#${route.type}`).checked = true
                                 window.setExerFullAddr(`${route.startName},${route.startAddr}`)
                             }
                             else {
-                                window.setFromFullAddr(`${route.startName},${route.startAddr}`)
+                                window.setIsDisplayTrip(true);
+                                document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.startName;
+                                document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.endName;
                                 window.setToFullAddr(`${route.endName},${route.endAddr}`)
                             }
                         }} className="route-navigate-icon"/> 

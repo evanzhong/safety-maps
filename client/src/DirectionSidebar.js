@@ -54,6 +54,9 @@ class DirectionSidebar extends Component {
         window.setExerFullAddr = (fullAddr) => {
             this.getExerciseAddress(fullAddr);
         }
+        window.setIsDisplayTrip = (boolean) => {
+            this.setState({isDisplayTrip: boolean});
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -226,6 +229,7 @@ class DirectionSidebar extends Component {
                                 checked: "Exercise",
                                 unchecked: "Trip",
                                 }}
+                                checked={!this.state.isDisplayTrip}
                             onChange={() => {
                                     window.map.clearRoute();
                                     this.setState({isDisplayTrip: !this.state.isDisplayTrip})}
