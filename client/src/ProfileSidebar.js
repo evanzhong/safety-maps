@@ -247,7 +247,7 @@ class HistoryPopup extends Component {
         };
         return (
             <React.Fragment>
-                <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
+                <button className="profile-button" onClick={this.openPopup}>View Recent Routes</button>
                 <button className="profile-button favorites" onClick={this.openFavorites}>Favorite Routes</button>
                 <Popup
                     open={this.state.popup_open}
