@@ -45,6 +45,15 @@ class DirectionSidebar extends Component {
             this.setState({exerciseDuration: null});
             document.getElementById("amount-time").value = "";
         }
+        window.setFromFullAddr = (fullAddr) => {
+            this.getFromAddress(fullAddr);
+        }
+        window.setToFullAddr = (fullAddr) => {
+            this.getToAddress(fullAddr);
+        }
+        window.setExerFullAddr = (fullAddr) => {
+            this.getExerciseAddress(fullAddr);
+        }
     }
 
     componentWillReceiveProps(props) {

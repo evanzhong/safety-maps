@@ -126,8 +126,13 @@ class RouteEntry extends Component {
                             document.querySelector("#geocoder_from .mapboxgl-ctrl-geocoder--input").value = route.startName;
                             document.querySelector("#geocoder_to .mapboxgl-ctrl-geocoder--input").value = route.endName;
 
-                            document.querySelector(".address-container:nth-child(1)").innerHTML = `<h3 class="main-address">${route.startName}</h3> ${route.startAddr}`;
-                            document.querySelector(".address-container:nth-child(3)").innerHTML = `<h3 class="main-address">${route.endName}</h3> ${route.endAddr}`;
+                            if (route.isExerciseMode) {
+                                window.setExerFullAddr(`${route.startName},${route.startAddr}`)
+                            }
+                            else {
+                                window.setFromFullAddr(`${route.startName},${route.startAddr}`)
+                                window.setToFullAddr(`${route.endName},${route.endAddr}`)
+                            }
                         }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">
