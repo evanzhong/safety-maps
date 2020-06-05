@@ -28,19 +28,49 @@ class DirectionReview extends Component {
         })
     }
 
+    getFormattedDate() {
+        var today = new Date();
+        var yr = today.getFullYear().toString().substring(2,4);
+        return (today.getMonth()+1) + "/" + today.getDate() + "/" + yr
+    }
+
+    getFormattedTime() {
+        var today = new Date();
+        var hr = today.getHours();
+        var setting = " am";
+        if (hr >= 12) {
+            hr -= 12;
+            setting = " pm";
+        }
+        if (hr === 0) hr = 12;
+        var min = today.getMinutes() >= 10 ? today.getMinutes() : "0" + today.getMinutes();
+        return hr + ":" + min + setting;
+    }
+
+    makeName() {
+        if (this.state.exerciseChoice) {
+            return `${this.state.totalDistMiles} mile ${this.state.exerciseChoice} near ${this.props.exerciseStart[0]}`
+        } else {
+            return `${this.props.start[0]} to ${this.props.end[0]}`
+        }
+    }
+
     saveRouteForUser(numSeconds){
         // Build up the package to be sent to server
         // Make a copy of this.state.instructions in case state changes during function call
         let instructionsCopy = Object.assign(this.state.instructions);        
         console.log(instructionsCopy)
         const object = {
-            name: `${this.state.totalDistMiles} mile ${this.state.exerciseChoice ? this.state.exerciseChoice : 'walk'}`,
-            start: this.state.exerciseChoice ? this.props.exerciseStart : this.props.start,
-            end: this.state.exerciseChoice ? this.props.exerciseStart : this.props.end,
+            name: this.makeName(),
+            isExerciseMode: !!this.state.exerciseChoice,
+            startName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.start[0],
+            startAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.start[1],
+            endName: this.state.exerciseChoice ? this.props.exerciseStart[0] : this.props.end[0],
+            endAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.end[1],
             route: instructionsCopy,
             type: this.state.exerciseChoice ? this.state.exerciseChoice : 'walk', //Walk is the default exercise
-            date: null, //Will be time-stamped by the server
-            time: null, //Will be time-stamped by the server
+            date: this.getFormattedDate(), //Will be time-stamped by the server
+            time: this.getFormattedTime(), //Will be time-stamped by the server
             distance: this.state.totalDistMiles,
             runtime: numSeconds,
             favorite: false, //default to false
