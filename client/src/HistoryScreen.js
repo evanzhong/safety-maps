@@ -56,13 +56,13 @@ class RouteList extends Component {
 
 class RouteEntry extends Component {
     calculateSpeed() {
-        const dist = this.props.route.distance * 0.621371; // km -> mi
+        const dist = this.props.route.distance;
         const time = this.props.route.runtime/3600; // sec -> hrs
         return Math.round(dist/time*10)/10; //mph to one decimal pt
     }
     formatDistance() {
         //dist starts off in m;
-        var dist = this.props.route.distance * 1000 * 3.281; //convert km -> ft
+        var dist = this.props.route.distance * 5280; //convert mi -> ft
         if (dist >= 528) { //0.1 miles
             dist /= 5280; //convert to miles
             return Math.round(dist * 10) / 10 + " mi"; //round to one decimal pt
