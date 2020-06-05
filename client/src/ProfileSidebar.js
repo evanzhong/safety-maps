@@ -64,7 +64,7 @@ class ProfileSidebar extends Component {
                             history: json.history,
                         });
                         this.state.history.forEach(element => {
-                            let speed = element.distance * 0.621371 * 3600 / element.runtime;
+                            let speed = element.distance * 3600 / element.runtime;
                             if (element.type === 'walk' && speed > this.state.fastestWalkSpeed) {
                                 this.setState({fastestWalkSpeed: speed});
                             } else if (element.type === 'run' && speed > this.state.fastestRunSpeed) {
