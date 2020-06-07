@@ -7,7 +7,7 @@ SafetyMaps is an innovative web-based map application that lets a user generate 
 
 ## Running the Code
 
-Follow these instructions to get our project running on your local machine.
+Follow these instructions to get our project running on your local machine. If you run into any issues while setting up the project, feel free to email our team at SafetyMapsTopoPro@gmail.com.
 
 ### Prerequisites
 To run this project, you'll need the following programs installed. To install Docker, we recommend you install [Docker Desktop Community Edition](https://www.docker.com/products/docker-desktop).
