@@ -19,6 +19,8 @@
 
 */
 
+//const { PerformanceObserver, performance } = require('perf_hooks');
+
 function createReturn(success, coordinates, dirs, error=null) {
     return JSON.stringify({
         "success": success,
@@ -70,14 +72,116 @@ function parse_data(error, response, body) {
     }
 }
 
-var safetymaps = async function process_safetymaps_object(data, access_token, res) {
+function combine_dirs(res_list) {
+    var combined = []
+    for (var i = 0; i < res_list.length; ++i) {
+        if (i !== res_list.length - 1) {
+            if (res_list[i].length > 1) {
+                res_list[i].pop()
+            }
+        }
+        combined = combined.concat(res_list[i]);
+    }
+    return combined;
+}
+
+var safetymaps = function process_safetymaps_object(data, access_token, res) {
     // current idea - use map matching for sake of turn by turn
     // https://docs.mapbox.com/api/navigation/
+    //console.log("Starting map matching process");
+    //var t0 = performance.now();
     try {
         if (typeof(data) === 'string' || data instanceof String) {
             res.end(errorReturn(data));
             return;
         } else {
+            //console.log("Request data has length", data.length);
+            var request = require('request');
+            const max_num = 99;
+            const rad = 15;
+            const failed_match_scale = max_num * 37.9079584;
+            var result_count = Math.ceil(data.length / max_num);
+            var load_count = 0;
+            //console.log(result_count);
+            var return_list = new Array(result_count);
+            var reqStr = "";
+            var radStr = "";
+
+            function makeRequest(i, url) {
+                //console.log("Starting request", i)
+                //console.log(url);
+                request(url, function (error, response, body) {
+                    try {
+                        if (!error && response.statusCode == 200) {
+                            if (response.err) {
+                                res.end(errorReturn("Error in map matching API response"));
+                                return;
+                            }
+                            let json = JSON.parse(body);
+                            if (json.code === "NoMatch")  {
+                                return_list[i] = [{
+                                    label: "Mapbox MapMatching API failed to match this segment of direction list",
+                                    distance: failed_match_scale
+                                }];
+                            } else {
+                                return_list[i] = extract_directions(JSON.parse(body).matchings[0].legs[0].steps);
+                            }
+                            //console.log("PROCESS OF INDEX " + i + " COMPLETED, LOAD COUNT " + load_count);
+                            if (++load_count == result_count) {
+                                res.end(createReturn(true, data, combine_dirs(return_list)));
+                                //console.log("PERFORMANCE: " + (performance.now() - t0) + " milliseconds");
+                                //console.log(combine_dirs(return_list));
+                                return;
+                            }
+                        } else {
+                            res.end(errorReturn("Error reaching map matching API"));
+                            return;
+                        } 
+                    } catch (error) {
+                        console.log(error)
+                        res.end(errorReturn("Unexpected error requesting map matching API"));
+                        return;
+                    }
+                });
+            }
+
+            var index = 0;
+            for (var i = 0; i < data.length; ++i) {
+                reqStr += data[i][0] + ',' + data[i][1] + ';';
+                radStr += rad + ';';
+                if ((i+1) % max_num === 0 || i === data.length - 1) {
+                    // Trim hanging semicolon from both request and radius strings
+                    let formattedReq = reqStr.substring(0, reqStr.length - 1);
+                    let formattedRad = radStr.substring(0, radStr.length - 1);
+                    let waypt = ((i+1)%max_num !== 0) ? (data.length%max_num) -1 : max_num-1;
+                    var url = `https://api.mapbox.com/matching/v5/mapbox/walking/${formattedReq}?access_token=${access_token}&steps=true&waypoints=0;${waypt}&tidy=true&radiuses=${formattedRad}`;
+                    makeRequest(index, url);
+                    index++;
+                    reqStr = "";
+                    radStr = "";
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        res.end(errorReturn("Failed to process safetymaps object"));
+        return;
+    }
+}
+
+
+var safetymaps_DEPRECATED = async function process_safetymaps_object(data, access_token, res) {
+    console.log(data);
+    // current idea - use map matching for sake of turn by turn
+    // https://docs.mapbox.com/api/navigation/
+    var t0 = performance.now();
+    console.log("hi")
+    try {
+        if (typeof(data) === 'string' || data instanceof String) {
+            res.end(errorReturn(data));
+            return;
+        } else {
+            console.log("attempting to make request", data.length)
        //     console.log('hello');
             /*
             if (data.length > 99) {
@@ -211,6 +315,7 @@ var safetymaps = async function process_safetymaps_object(data, access_token, re
                                 }
                              //   console.log(combined_dirs);
                                 res.end(createReturn(true, data, combined_dirs));
+                                console.log("PERFORMANCE: " + (performance.now() - t0) + " milliseconds");
                                 return;
                             }
                             else {

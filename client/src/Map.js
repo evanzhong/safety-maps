@@ -284,46 +284,50 @@ class Map extends Component {
     req.open('GET', url, true);
     req.onload = function () {
       const json = JSON.parse(req.response);
-      console.log(json);
-      that.setState({direction_list: json["turn-by-turn-directions"]});
-      that.setState({json_full: json});
-      var route = json.coordinates;
-      var geojson = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: route
-        }
-      };
-      // render the route line
-      if (map.getSource('route')) {
-        map.getSource('route').setData(geojson);
+      //console.log(json);
+      if (json.success === false) {
+        alert("Error generating route - please try again! Error: " + json.error);
       } else {
-        map.addLayer({
-          id: 'route',
-          type: 'line',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'LineString',
-                coordinates: route
-              }
-            }
-          },
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-          },
-          paint: {
-            'line-color': '#3887be',
-            'line-width': 5,
-            'line-opacity': 0.75
+        that.setState({direction_list: json["turn-by-turn-directions"]});
+        that.setState({json_full: json});
+        var route = json.coordinates;
+        var geojson = {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: route
           }
-        });
+        };
+        // render the route line
+        if (map.getSource('route')) {
+          map.getSource('route').setData(geojson);
+        } else {
+          map.addLayer({
+            id: 'route',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: route
+                }
+              }
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#3887be',
+              'line-width': 5,
+              'line-opacity': 0.75
+            }
+          });
+        }
       }
       that.setState({dir_loading: false});
     }
