@@ -88,13 +88,14 @@ class ProfileSidebar extends Component {
         window.updateRouteFavorite = (routeId, fav) => this.updateFavorite(routeId, fav);
         window.isUserLoggedIn = () => {return this.state.logged_in};
         this.refreshSavedRoutes();
-        this.refreshInterval = setInterval(() => {
+        window.refreshSavedRoutes = () => this.refreshSavedRoutes();
+       /* this.refreshInterval = setInterval(() => {
             this.refreshSavedRoutes();
-        }, 5000);
+        }, 5000);*/
     }
 
     componentWillUnmount() {
-        clearInterval(this.refreshInterval);
+       // clearInterval(this.refreshInterval);
     }
 
 
