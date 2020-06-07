@@ -75,18 +75,19 @@ class DirectionReview extends Component {
             runtime: numSeconds,
             favorite: false, //default to false
         }
-        console.log(object)
+        //console.log(object)
 
         //Start server call
-        const url = `http://localhost:8000/auth/secure/save_route/?object=${JSON.stringify(object)}`;
+        const url = "http://localhost:8000/auth/secure/save_route";
 
         let req = new XMLHttpRequest();
-        req.open('GET', url, true);
+        req.open('POST', url, true);
         req.withCredentials = true;
+        req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         req.onload = function() {
-            
+            window.refreshSavedRoutes();
         }
-        req.send();
+        req.send(JSON.stringify(object));
     }
     
     render() {

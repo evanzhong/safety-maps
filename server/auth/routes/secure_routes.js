@@ -49,8 +49,9 @@ router.get('/account_info', (req, res) => {
 // Evan Note: This was originally going to be done through POST request but we ran into CORS errors that were hard to debug
 // GET requests work just as well for this (functionally) as we are not sending any potentially confidential data.
 // The only downside is the byte limit for GET requests, but this feature should be nowhere near exceeding that limit
-router.get('/save_route', (req, res) => {
-    const object = JSON.parse(req.query.object);
+router.post('/save_route', (req, res) => {
+    //console.log(req.body);
+    const object = req.body;
     const user = req.user;
 
     // Modify object with calculated information
@@ -64,8 +65,10 @@ router.get('/save_route', (req, res) => {
     routesDb.collection("user_routes").insertOne(object, (error, document) => {
         if (error) {
             console.log("Error in inserting new saved route to db for user", req.user)
+            res.sendStatus(500);
             throw error;
         }
+        res.sendStatus(200);
        // console.log("Successfully inserted", document._id);
         //db.close();
         // res.json({
@@ -73,7 +76,6 @@ router.get('/save_route', (req, res) => {
         //     history: userRouteHistory,
         // });
     });
-    res.sendStatus(200);
 });
 
 router.get('/favorite_route', (req, res) => {
