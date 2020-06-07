@@ -8,7 +8,8 @@ import WelcomePopup from './WelcomePopup';
 
 import constants from './constants';
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+// Sample free access token
+mapboxgl.accessToken = "pk.eyJ1IjoicnNhbmthcjExMTIiLCJhIjoiY2thMDV1YzRjMGp4MjNmcWl2NWwxb3I2bSJ9.lZiavibUpq8l-OWt2e3V8g"
 
 class Map extends Component {
   constructor(props) {

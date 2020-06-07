@@ -17,6 +17,9 @@ class ProfileSidebar extends Component {
             last_name: null,
             email: null,
             history: null,
+            fastestWalkSpeed: 0,
+            fastestRunSpeed: 0,
+            fastestBikeSpeed: 0,
         }
     }
 
@@ -33,7 +36,7 @@ class ProfileSidebar extends Component {
     updateFavorite(routeId, fav) {
         var hist = this.state.history;
         hist.forEach(element => {
-            if (element["_id"] == routeId) {
+            if (element["_id"] === routeId) {
                 element["favorite"] = fav;    
             }
         });
@@ -60,6 +63,16 @@ class ProfileSidebar extends Component {
                             email: json.userinfo.email,
                             history: json.history,
                         });
+                        this.state.history.forEach(element => {
+                            let speed = element.distance * 3600 / element.runtime;
+                            if (element.type === 'walk' && speed > this.state.fastestWalkSpeed) {
+                                this.setState({fastestWalkSpeed: speed});
+                            } else if (element.type === 'run' && speed > this.state.fastestRunSpeed) {
+                                this.setState({fastestRunSpeed: speed});
+                            } else if (element.type === 'bike' && speed > this.state.fastestBikeSpeed) {
+                                this.setState({fastestBikeSpeed: speed});
+                            }
+                        });
                     })
                 }
                 return result;
@@ -73,6 +86,7 @@ class ProfileSidebar extends Component {
 
     componentDidMount() {
         window.updateRouteFavorite = (routeId, fav) => this.updateFavorite(routeId, fav);
+        window.isUserLoggedIn = () => {return this.state.logged_in};
         this.refreshSavedRoutes();
         this.refreshInterval = setInterval(() => {
             this.refreshSavedRoutes();
@@ -95,7 +109,8 @@ class ProfileSidebar extends Component {
         }
         return (
             <div className="profile_sidebar_wrapper">
-                {this.state.logged_in ? <UserProfile user={user} history={this.state.history}/> : <LoginPopup/> }
+                {this.state.logged_in ? <UserProfile user={user} history={this.state.history} fastestWalkSpeed={this.state.fastestWalkSpeed}
+                    fastestRunSpeed={this.state.fastestRunSpeed} fastestBikeSpeed={this.state.fastestBikeSpeed} /> : <LoginPopup/> }
             </div>
         )
     }
@@ -181,8 +196,10 @@ class UserProfile extends Component {
                         </div>
                     </div>
                     <div className="new-user-profile-subheader-wrapper">
-                        <HistoryPopup history={this.props.history}/>
-                        <p>Fastest run speed: 15 mph</p>
+                        <HistoryPopup history={this.props.history} />
+                        <p>Fastest walk speed: {this.props.fastestWalkSpeed === 0 ? "---" : Math.round(this.props.fastestWalkSpeed*10)/10 + " mph"}</p>
+                        <p>Fastest run speed: {this.props.fastestRunSpeed === 0 ? "---" : Math.round(this.props.fastestRunSpeed*10)/10 + " mph"}</p>
+                        <p>Fastest bike speed: {this.props.fastestBikeSpeed === 0 ? "---" : Math.round(this.props.fastestBikeSpeed*10)/10 + " mph"}</p>
                         <LogoutButton/>
                     </div>
                 </div>
@@ -247,7 +264,7 @@ class HistoryPopup extends Component {
         };
         return (
             <React.Fragment>
-                <button className="profile-button" onClick={this.openPopup}>View Saved Routes</button>
+                <button className="profile-button" onClick={this.openPopup}>View Recent Routes</button>
                 <button className="profile-button favorites" onClick={this.openFavorites}>Favorite Routes</button>
                 <Popup
                     open={this.state.popup_open}
@@ -259,7 +276,7 @@ class HistoryPopup extends Component {
                     closeOnDocumentClick
                     contentStyle={popupStyle}
                 >
-                    <HistoryScreen  favoritesOnly={this.state.fav_only} closePopup={this.closePopup} history={this.props.history}/>
+                    <HistoryScreen favoritesOnly={this.state.fav_only} closePopup={this.closePopup} history={this.props.history}/>
                 </Popup>
             </React.Fragment>
         )
