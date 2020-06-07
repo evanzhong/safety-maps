@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HistoryScreen from "./HistoryScreen"
 
+import './Global';
+
 class ProfileSidebar extends Component {
     constructor(props) {
         super(props);
@@ -63,8 +65,31 @@ class ProfileSidebar extends Component {
                             email: json.userinfo.email,
                             history: json.history,
                         });
+                        global.totwalkDist = 0;
+                        global.totwalkTime = 0;
+                        global.totrunDist = 0;
+                        global.totrunTime = 0;
+                        global.totbikeDist = 0;
+                        global.totbikeTime = 0;
+
                         this.state.history.forEach(element => {
                             let speed = element.distance * 3600 / element.runtime;
+
+                            if (element.type === 'walk') {
+                                global.totwalkDist += element.distance;
+                                global.totwalkTime += (element.runtime / 60); //increment the global counter in miles per minute
+                            }
+
+                            if (element.type === 'run') {
+                                global.totrunDist += element.distance;
+                                global.totrunTime += (element.runtime / 60); //increment the global counter in miles per minute
+                            }
+
+                            if (element.type === 'bike') {
+                                global.totbikeDist += element.distance;
+                                global.totbikeTime += (element.runtime / 60);
+                            }
+
                             if (element.type === 'walk' && speed > this.state.fastestWalkSpeed) {
                                 this.setState({fastestWalkSpeed: speed});
                             } else if (element.type === 'run' && speed > this.state.fastestRunSpeed) {
@@ -72,7 +97,34 @@ class ProfileSidebar extends Component {
                             } else if (element.type === 'bike' && speed > this.state.fastestBikeSpeed) {
                                 this.setState({fastestBikeSpeed: speed});
                             }
+
                         });
+
+                        /*
+                        console.log("numwalks: " + global.numWalks);
+                        console.log("numruns: " + global.numRuns);
+                        console.log("numbikes: " + global.numBikes);
+                        */
+
+                        if (global.totwalkTime !== 0) {
+                            global.avgwalkSpeed = global.totwalkDist / global.totwalkTime;
+                        }
+                        else {
+                            global.avgwalkSpeed = 3.1/60.0; 
+                        }
+                        if (global.totrunTime !== 0) {
+                            global.avgrunSpeed = global.totrunDist / global.totrunTime;
+                        }
+                        else {
+                            global.avgrunSpeed = 6.12245/60.0;
+                        }
+                        if (global.totrunTime !== 0) {
+                            global.avgbikeSpeed = global.totbikeDist / global.totbikeTime;
+                        }
+                        else {
+                            global.avgbikeSpeed = 12/60.0;
+                        }
+                        
                     })
                 }
                 return result;

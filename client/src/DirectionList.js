@@ -4,6 +4,10 @@ import './DirectionList.css';
 
 import constants from './constants';
 
+import './Global';
+
+//console.log(window.xvalue);
+
 class DirectionList extends Component {
 
     formatDistance(dist) {
@@ -21,13 +25,20 @@ class DirectionList extends Component {
         dist = dist * 3.281 / 5280;
         switch (this.props.exerciseChoice) {
             case "walk":
-                return (dist * 1 / constants.averageWalkingSpeed);
+                console.log(global.avgwalkSpeed);
+                //global.walkSpeed = global.walkSpeed + 0.5;
+                return (dist * 1 / global.avgwalkSpeed);
             case "run":
-                return (dist * 1 / constants.averageRunningSpeed);
+                console.log(global.avgrunSpeed);
+                return (dist * 1 / global.avgrunSpeed);
             case "bike":
-                return (dist * 1 / constants.averageBikingSpeed);
+                console.log(global.avgbikeSpeed);
+                return (dist * 1 / global.avgbikeSpeed);
             default:
-                return (dist * 1 / constants.averageWalkingSpeed);
+                console.log(global.avgwalkSpeed);
+                
+                //global.walkSpeed = global.walkSpeed + 0.00005;
+                return (dist * 1 / global.avgwalkSpeed);
         }
     }
 
