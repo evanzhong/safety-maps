@@ -91,7 +91,7 @@
     padding: 25px;
 }
 
-.fa-times-circle {
+.delete-popup .fa-times-circle {
     color: #f16362;
     height: 100px !important;
     width: 100px !important;
