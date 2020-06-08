@@ -209,8 +209,8 @@ class Router {
 
   // accepts distances in kilometers
   generateCircularPath(start, dist, res, token){
-    if (dist > 16.1) {
-      this.processOutput("Error: only supports distances within 10 miles for now")
+    if (dist > 60.1) {
+      this.processOutput("Error: distance too long", res, token)
       return;
     }
     var maxDistanceMatch = 0.1; //km

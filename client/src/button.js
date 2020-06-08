@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-//import { faMapPin, faMapMarkerAlt, faWalking, faBiking, faRunning } from "@fortawesome/free-solid-svg-icons";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import Toggle from 'react-toggle'
 
 import './button.scss';
 

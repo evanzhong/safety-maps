@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Popup from "reactjs-popup";
 
 import { faWalking, faBiking, faRunning, faHeart, faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as heartOutline, faEye } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as heartOutline, faEye, faTrashAlt, faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './HistoryScreen.css';
@@ -55,6 +56,21 @@ class RouteList extends Component {
 }
 
 class RouteEntry extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            deletePopupOpen: false
+        }
+    }
+
+    openDeletePopup() {
+        this.setState({deletePopupOpen: true})
+    }
+
+    closeDeletePopup() {
+        this.setState({deletePopupOpen: false})
+    }
+
     calculateSpeed() {
         const dist = this.props.route.distance;
         const time = this.props.route.runtime/3600; // sec -> hrs
@@ -117,6 +133,12 @@ class RouteEntry extends Component {
                 <div className="route-expand">
                     <FontAwesomeIcon icon={this.props.expanded ? faAngleUp : faAngleDown} onClick={this.props.expand_click} className="route-expand-icon"/> 
                 </div>
+                <div className="route-delete">
+                    <FontAwesomeIcon icon={faTrashAlt} className="route-delete-icon" onClick={
+                        () => this.openDeletePopup()   
+                    } />
+                </div>
+                <DeletePopup open={this.state.deletePopupOpen} closePopup={()=>this.closeDeletePopup()} routeId={route._id}/>
                 <div className="route-navigate">
                     <FontAwesomeIcon icon={faEye} onClick={() => {
                             window.map.drawRouteOnMap(this.props.route.route);
@@ -145,7 +167,9 @@ class RouteEntry extends Component {
                         }} className="route-navigate-icon"/> 
                 </div>
                 <div className="route-favorite">
-                    <FontAwesomeIcon icon={route.favorite ? faHeart : heartOutline} onClick={() => this.onFavorite(route._id, !route.favorite)} className="route-favorite-icon"/> 
+                    <FontAwesomeIcon icon={route.favorite ? faHeart : heartOutline} 
+                        onClick={() => this.onFavorite(route._id, !route.favorite)} className="route-favorite-icon"
+                        style={route.favorite ? {color: "#d64040"} : null} /> 
                 </div>
                 <div className="route-speed">
                     {this.calculateSpeed() + " mph"}
@@ -167,5 +191,38 @@ class RouteEntry extends Component {
         )
     }
 }
+
+class DeletePopup extends Component {
+      render() {
+        const popupStyle = {
+            "width": "350px",
+            "borderRadius": "6px",
+        };
+        return (
+            <Popup
+              open={this.props.open}
+              closeOnDocumentClick
+              onClose={this.props.closePopup}
+              contentStyle={popupStyle}
+            >
+                <div className="delete-popup">
+                    <FontAwesomeIcon icon={faTimesCircle} className="deleteCircle" />
+                    <h1>Are you sure?</h1>
+                    <h2>
+                        Once you delete a route, it cannot be recovered. The route will also be 
+                        removed from your speed data.
+                    </h2>
+                    <button className="delete-confirm-button" onClick={() => {
+                        window.deleteRoute(this.props.routeId);
+                        this.props.closePopup();
+                    }}>
+                        Delete
+                    </button>
+                    <button className="delete-cancel-button" onClick={this.props.closePopup}>Cancel</button>
+                </div>
+            </Popup>
+        );
+      }
+    }
 
 export default HistoryScreen;
