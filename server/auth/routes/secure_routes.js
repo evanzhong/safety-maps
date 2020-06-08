@@ -10,7 +10,7 @@ var routesDb = null;
 
 MongoClient.connect(dbString, {"useUnifiedTopology": true}, (error, db) => {
     if (error) {
-        console.log("Error in connecting to db for user account route info", req.user)
+        //console.log("Error in connecting to db for user account route info", req.user)
         throw error;
     }
     routesDb = db.db("routes");
