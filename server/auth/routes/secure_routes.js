@@ -91,4 +91,20 @@ router.get('/favorite_route', (req, res) => {
     res.sendStatus(200);
 });
 
+router.get('/delete_route', (req, res) => {
+    const user = req.user;
+    var removeId = req.query.removeId;
+    if (removeId === "" || removeId == null) {
+        res.sendStatus(500);
+    }
+    routesDb.collection("user_routes").deleteOne({"_id": ObjectId(removeId), "userId": ObjectId(user._id)}, (err, result) => {
+        if (err) {
+            console.log("Error deleting route");
+            console.log(err);
+        }
+        res.sendStatus(200);
+    }); 
+    
+});
+
 module.exports = router;
