@@ -79,7 +79,7 @@ class ProfileSidebar extends Component {
                             email: json.userinfo.email,
                             history: json.history,
                         });
-                        
+
                         global.totwalkDist = 0;
                         global.totwalkTime = 0;
                         global.totrunDist = 0;
@@ -109,16 +109,14 @@ class ProfileSidebar extends Component {
                                 global.totbikeTime += (element.runtime / 60);
                             }
 
-                            this.state.history.forEach(element => {
-                                let speed = element.distance * 3600 / element.runtime;
-                                if (element.type === 'walk' && speed > fws) {
-                                    fws = speed;
-                                } else if (element.type === 'run' && speed > frs) {
-                                    frs = speed;
-                                } else if (element.type === 'bike' && speed > fbs) {
-                                    fbs = speed;
-                                }
-                                this.setState({fastestWalkSpeed: fws, fastestRunSpeed: frs, fastestBikeSpeed: fbs});
+                            if (element.type === 'walk' && speed > fws) {
+                                fws = speed;
+                            } else if (element.type === 'run' && speed > frs) {
+                                frs = speed;
+                            } else if (element.type === 'bike' && speed > fbs) {
+                                fbs = speed;
+                            }
+                            this.setState({fastestWalkSpeed: fws, fastestRunSpeed: frs, fastestBikeSpeed: fbs});
                         });
 
                         /*
