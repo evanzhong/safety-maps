@@ -46,6 +46,20 @@ class ProfileSidebar extends Component {
         })
     }
 
+    deleteRoute(routeId) {
+        var hist = this.state.history;
+        for (var i = 0; i < hist.length; ++i) {
+            if (hist[i]["_id"] === routeId) {
+                hist.splice(i, 1);
+                this.setState({history: hist});
+                break;
+            }
+        }
+        fetch("http://localhost:8000/auth/secure/delete_route?removeId=" + routeId, {
+            credentials: 'include'
+        }).then(response => window.refreshSavedRoutes())
+    }
+
     refreshSavedRoutes() {
         fetch("http://localhost:8000/auth/secure/account_info", {
             credentials: 'include'
@@ -63,15 +77,19 @@ class ProfileSidebar extends Component {
                             email: json.userinfo.email,
                             history: json.history,
                         });
+                        let fws = 0;
+                        let frs = 0;
+                        let fbs = 0;
                         this.state.history.forEach(element => {
                             let speed = element.distance * 3600 / element.runtime;
-                            if (element.type === 'walk' && speed > this.state.fastestWalkSpeed) {
-                                this.setState({fastestWalkSpeed: speed});
-                            } else if (element.type === 'run' && speed > this.state.fastestRunSpeed) {
-                                this.setState({fastestRunSpeed: speed});
-                            } else if (element.type === 'bike' && speed > this.state.fastestBikeSpeed) {
-                                this.setState({fastestBikeSpeed: speed});
+                            if (element.type === 'walk' && speed > fws) {
+                                fws = speed;
+                            } else if (element.type === 'run' && speed > frs) {
+                                frs = speed;
+                            } else if (element.type === 'bike' && speed > fbs) {
+                                fbs = speed;
                             }
+                            this.setState({fastestWalkSpeed: fws, fastestRunSpeed: frs, fastestBikeSpeed: fbs});
                         });
                     })
                 }
@@ -86,6 +104,7 @@ class ProfileSidebar extends Component {
 
     componentDidMount() {
         window.updateRouteFavorite = (routeId, fav) => this.updateFavorite(routeId, fav);
+        window.deleteRoute = (routeId) => this.deleteRoute(routeId);
         window.isUserLoggedIn = () => {return this.state.logged_in};
         this.refreshSavedRoutes();
         window.refreshSavedRoutes = () => this.refreshSavedRoutes();
@@ -260,7 +279,7 @@ class HistoryPopup extends Component {
 
     render() {
         const popupStyle = {
-            "width": "850px",
+            "width": "950px",
             "borderRadius": "6px",
         };
         return (

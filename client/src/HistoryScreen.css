@@ -52,27 +52,12 @@
     height: 15px;
 }
 
-.fa-heart:hover,.fa-eye:hover,.fa-angle-down:hover,.fa-angle-up:hover {
+.fa-heart:hover,.fa-eye:hover,.fa-angle-down:hover,.fa-angle-up:hover,.fa-trash-alt:hover {
     height: 20px;
     cursor: pointer;
 }
 
-.route-speed {
-    float: right;
-    padding-right: 15px;
-}
-
-.route-favorite {
-    float: right;
-    padding-right: 15px;
-}
-
-.route-expand {
-    float: right;
-    padding-right: 15px;
-}
-
-.route-navigate {
+.route-speed,.route-favorite,.route-expand,.route-navigate,.route-delete {
     float: right;
     padding-right: 15px;
 }
@@ -99,4 +84,62 @@
     border: none;
     padding: 15px;
     padding-left: 0;
+}
+
+.delete-popup {
+    text-align: center;
+    padding: 25px;
+}
+
+.fa-times-circle {
+    color: #f16362;
+    height: 100px !important;
+    width: 100px !important;
+    padding-top: 20px;
+    margin-bottom: -15px;
+}
+
+.delete-popup h1 {
+    color: #6c6669;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.delete-popup h2 {
+    color: #636363;
+    font-weight: normal;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.delete-confirm-button, .delete-cancel-button {
+    background-color: white;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    width: 120px;
+    height: 38px;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.delete-confirm-button {
+    background-color: #f15f5e;
+}
+
+.delete-confirm-button:hover {
+    cursor: pointer;
+    background-color: #c24c4c;
+}
+
+.delete-cancel-button {
+    background-color: #c1c1c1;
+}
+
+.delete-cancel-button:hover {
+    cursor: pointer;
+    background-color: #a5a5a5;
 }
