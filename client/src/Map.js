@@ -261,7 +261,7 @@ class Map extends Component {
     //console.log(obj)
 
     let totalDist;
-    // Fall back on average speeds when user is not logged in
+    // Use user's average times for exercise mode durations 
     switch (obj.exerciseChoice) {
       case "walk":
         totalDist = obj.exerciseDuration * global.avgwalkSpeed;
