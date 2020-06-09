@@ -64,7 +64,7 @@ Note: ensure that the server is running first (and all five above long messages 
 
 ### Accessing Map Data
 
-We have created and provided a dataset of map data comprised of the greater Los Angeles area, with included safety information sourced from [LA Open Data](https://data.lacity.org/A-Safe-City/Crime-Data-from-2010-to-2019/63jg-8b9z). For navigation within Los Angeles, this dataset should be sufficient. However, if you wish to configure this project for a different region, see the Data Generation section for instructions on generating a new dataset. 
+We have created and provided a dataset of map data comprised of the Los Angeles area, including Westwood, Santa Monica, West LA and Hollywood, with included safety information sourced from [LA Open Data](https://data.lacity.org/A-Safe-City/Crime-Data-from-2010-to-2019/63jg-8b9z). For navigation within Los Angeles, this dataset should be sufficient. However, if you wish to configure this project for a different region, see the Data Generation section for instructions on generating a new dataset. 
 
 ### Data Generation
 
