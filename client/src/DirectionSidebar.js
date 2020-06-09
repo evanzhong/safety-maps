@@ -235,7 +235,8 @@ class DirectionSidebar extends Component {
                                 checked={!this.state.isDisplayTrip}
                             onChange={() => {
                                     window.map.clearRoute();
-                                    this.setState({isDisplayTrip: !this.state.isDisplayTrip})}
+                                    this.setState({isDisplayTrip: !this.state.isDisplayTrip});
+                                }
                                 } />
                         </label>
                     </div>
@@ -311,7 +312,7 @@ class DirectionSidebar extends Component {
                         <h3 className="main-address">{this.state.isDisplayTrip ? this.state.from_address1 : this.state.exercise_address1}</h3>
                         {this.state.isDisplayTrip ? this.state.from_address2 : this.state.exercise_address2}
                     </div>
-                    <DirectionList instructions={this.props.direction_list} exerciseChoice={this.state.exerciseChoice}/>
+                    <DirectionList instructions={this.props.direction_list} exerciseChoice={this.state.exerciseChoice} isDisplayTrip={this.state.isDisplayTrip} />
                     <div className="address-container">
                         <h3 className="main-address">{this.state.isDisplayTrip ? this.state.to_address1 : this.state.exercise_address1}</h3>
                         {this.state.isDisplayTrip ? this.state.to_address2 : this.state.exercise_address2}
