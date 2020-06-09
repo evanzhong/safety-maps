@@ -125,6 +125,7 @@ class ProfileSidebar extends Component {
                         console.log("numbikes: " + global.numBikes);
                         */
 
+                        //checks for 
                         if (global.totwalkTime !== 0) {
                             global.avgwalkSpeed = global.totwalkDist / global.totwalkTime;
                         }
@@ -137,7 +138,7 @@ class ProfileSidebar extends Component {
                         else {
                             global.avgrunSpeed = 6.12245/60.0;
                         }
-                        if (global.totrunTime !== 0) {
+                        if (global.totbikeTime !== 0) {
                             global.avgbikeSpeed = global.totbikeDist / global.totbikeTime;
                         }
                         else {
