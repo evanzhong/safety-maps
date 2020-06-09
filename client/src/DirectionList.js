@@ -23,23 +23,31 @@ class DirectionList extends Component {
 
     formatTime(dist){
         dist = dist * 3.281 / 5280;
-        switch (this.props.exerciseChoice) {
-            case "walk":
-                console.log(global.avgwalkSpeed);
-                //global.walkSpeed = global.walkSpeed + 0.5;
-                return (dist * 1 / global.avgwalkSpeed);
-            case "run":
-                console.log(global.avgrunSpeed);
-                return (dist * 1 / global.avgrunSpeed);
-            case "bike":
-                console.log(global.avgbikeSpeed);
-                return (dist * 1 / global.avgbikeSpeed);
-            default:
-                console.log(global.avgwalkSpeed);
-                
-                //global.walkSpeed = global.walkSpeed + 0.00005;
-                return (dist * 1 / global.avgwalkSpeed);
+        //if it's in trip mode, automatically go for walk mode
+        if (this.props.isDisplayTrip) {
+            console.log(global.avgwalkSpeed);
+            return (dist * 1 / global.avgwalkSpeed);
         }
+        else {
+            switch (this.props.exerciseChoice) {
+                case "walk":
+                    console.log(global.avgwalkSpeed);
+                    //global.walkSpeed = global.walkSpeed + 0.5;
+                    return (dist * 1 / global.avgwalkSpeed);
+                case "run":
+                    console.log(global.avgrunSpeed);
+                    return (dist * 1 / global.avgrunSpeed);
+                case "bike":
+                    console.log(global.avgbikeSpeed);
+                    return (dist * 1 / global.avgbikeSpeed);
+                default:
+                    console.log(global.avgwalkSpeed);
+                    
+                    //global.walkSpeed = global.walkSpeed + 0.00005;
+                    return (dist * 1 / global.avgwalkSpeed);
+            }
+        }
+        
     }
 
     formattedInstructions() {
