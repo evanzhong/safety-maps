@@ -7,6 +7,7 @@ import ProfileSidebar from './ProfileSidebar';
 import WelcomePopup from './WelcomePopup';
 
 import constants from './constants';
+import './Global';
 
 // Sample free access token
 mapboxgl.accessToken = "pk.eyJ1IjoicnNhbmthcjExMTIiLCJhIjoiY2thMDV1YzRjMGp4MjNmcWl2NWwxb3I2bSJ9.lZiavibUpq8l-OWt2e3V8g"
@@ -263,16 +264,16 @@ class Map extends Component {
     // Fall back on average speeds when user is not logged in
     switch (obj.exerciseChoice) {
       case "walk":
-        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        totalDist = obj.exerciseDuration * global.avgwalkSpeed;
         break;
       case "run":
-        totalDist = obj.exerciseDuration * constants.averageRunningSpeed;
+        totalDist = obj.exerciseDuration * global.avgrunSpeed;
         break;
       case "bike":
-        totalDist = obj.exerciseDuration * constants.averageBikingSpeed;
+        totalDist = obj.exerciseDuration * global.avgbikeSpeed;
         break;
       default:
-        totalDist = obj.exerciseDuration * constants.averageWalkingSpeed;
+        totalDist = obj.exerciseDuration * global.avgwalkSpeed;
         break;
     }
 
