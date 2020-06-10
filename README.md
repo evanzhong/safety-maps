@@ -75,7 +75,7 @@ Note the login icon on the upper righthand corner of the screen. If this is miss
 
 ## Loading Routing Geo-coordinates
 
-All of the scripts related to data generation can be found in the `/data` subdirectory, which is separate from the `/client` and `/server`. The python scripts in `/data` are not invoked when running the client nor the server but are useful in generating the data to load into MongoDB
+All of the scripts related to data generation can be found in the `/data` subdirectory, which is separate from the `/client` and `/server`. The python scripts in `/data` are not invoked when running the client nor the server but are useful in generating the data to load into MongoDB.
 
 ### Accessing Map Data
 
@@ -83,7 +83,7 @@ We have created and provided a dataset of map data comprised of regions in the L
 
 ### Data Generation
 
-The data we used for custom routing combines the LA Open Data and the Open Street Map data 
+The data we used for custom routing combines the LA Open Data and the Open Street Map data. 
 
 If you want to try using a different set of data, the first step would be to use [OpenStreetMap](openstreetmap.org) and export data directly, if the dataset is small. If not, then the [Overpass API](http://www.overpass-api.de/query_form.html) would be a good tool to extract larger blocks of Open Street Mapdata in XML form, given a query with bounds on latitude and longitude. The first OpenStreetMap link will still serve as a valuable resource to find the bounding coordinates for the region you wish to test. 
 
