@@ -1,5 +1,5 @@
 # Safety Maps
-SafetyMaps is an innovative web-based map application that lets a user generate routes optimized for both distance and safety. We provide two routing options: trip mode, which allows the user to choose a start and end point, and exercise mode, which allows the user to generate a circular path that takes them back to their start point. For their convenience, users may save their favorite routes, view recent routes, and recreate a route they went on before. They can also save their exercise times to keep track of their current and best walking, running, and biking speeds.
+[SafetyMaps](https://github.com/evazhog/safety-maps) is an innovative web-based map application that lets a user generate routes optimized for both distance and safety. We provide two routing options: trip mode, which allows the user to choose a start and end point, and exercise mode, which allows the user to generate a circular path that takes them back to their start point. For their convenience, users may save their favorite routes, view recent routes, and recreate a route they went on before. They can also save their exercise times to keep track of their current and best walking, running, and biking speeds.
 
 ## Authors
 
