@@ -58,7 +58,7 @@ class WelcomePopup extends Component {
     closeContainer = () => {
         this.setState({showWelcome: false})
         this.forceUpdate();
-        console.log(this.state.showWelcome)
+        //console.log(this.state.showWelcome)
     }
 
     render() {

@@ -59,7 +59,7 @@ class DirectionReview extends Component {
         // Build up the package to be sent to server
         // Make a copy of this.state.instructions in case state changes during function call
         let instructionsCopy = Object.assign(this.state.instructions);        
-        console.log(instructionsCopy)
+        //console.log(instructionsCopy)
         const object = {
             name: this.makeName(),
             isExerciseMode: !!this.state.exerciseChoice,

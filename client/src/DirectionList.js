@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './DirectionList.css';
 
-import constants from './constants';
+//import constants from './constants';
 
 import './Global';
 

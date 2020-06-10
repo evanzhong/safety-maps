@@ -15,7 +15,7 @@ class Button extends Component {
     }
 
     handleSubmit() {
-        console.log("asdf");
+        //console.log("asdf");
         let totalSeconds = parseInt(this.state.minute*60) + parseInt(this.state.second);
         this.props.onClickCallback(totalSeconds);
     }

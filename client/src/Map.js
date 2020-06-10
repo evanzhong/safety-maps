@@ -6,7 +6,7 @@ import DirectionSidebar from './DirectionSidebar';
 import ProfileSidebar from './ProfileSidebar';
 import WelcomePopup from './WelcomePopup';
 
-import constants from './constants';
+//import constants from './constants';
 import './Global';
 
 // Sample free access token

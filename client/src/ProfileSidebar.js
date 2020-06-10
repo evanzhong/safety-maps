@@ -566,9 +566,9 @@ class RegisterScreen extends Component {
                     // users is now our actual variable parsed from the json, so we can use it
                     if ("error" in jsonResponse) {
                         var errMsg = jsonResponse["error"];
-                        console.log(jsonResponse);
+                        //console.log(jsonResponse);
                         window.array.push(jsonResponse);
-                        console.log(jsonResponse["error"]);
+                        //console.log(jsonResponse["error"]);
                         if (typeof errMsg === 'string' || errMsg instanceof String) {
                             that.generateErrorMsg(errMsg);
                             return null;
