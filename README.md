@@ -5,7 +5,7 @@ SafetyMaps is an innovative web-based map application that lets a user generate 
 
 [Rishi Sankar](https://github.com/rishisankar), [David Deng](https://github.com/daviddeng8), [Evan Zhong](https://github.com/evazhog), [Ray Huang](https://github.com/ray-cj-huang)
 
-## Running the Code
+## Running the Application
 
 Follow these instructions to get our project running on your local machine. If you run into any issues while setting up the project, feel free to email our team at SafetyMapsTopoPro@gmail.com.
 
@@ -35,7 +35,12 @@ COOKIE_PARSER_SECRET_KEY=secret_string_2
 * Your data should be in a collection inside a database named data - replace `mycollection` with the name of that collection. 
 * Finally, `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
 
-**Note to CS97 graders: we will include a working .env file in our tarball submission, so you may skip the above step.**
+**Note to CS97 graders: we will include a working `.env` file in our tarball submission, so you may skip the above step.**  
+**In addition, we have created the following demo user with some saved route history in the database the `.env` file we include:**
+```
+Username: CS97SafetyMapsDemo@gmail.com
+Password: gitgoodatsoftware
+```
 
 Next, to run the server, run the following command in the server directory:
 ```
@@ -62,6 +67,10 @@ npm start
 ```
 Note: ensure that the server is running first (and all five above long messages have been outputted), or most client functionality will not work.
 
+## Loading Routing Geo-coordinates
+
+All of the scripts related to data generation can be found in the `/data` subdirectory, which is separate from the `/client` and `/server`. The python scripts in `/data` are not invoked when running the client nor the server but are useful in generating the data to load into MongoDB
+
 ### Accessing Map Data
 
 We have created and provided a dataset of map data comprised of regions in the Los Angeles area centered around UCLA, including Westwood, Bel-Air, Santa Monica, West LA and Hollywood, with included safety information sourced from [LA Open Data](https://data.lacity.org/A-Safe-City/Crime-Data-from-2010-to-2019/63jg-8b9z). For navigation within Los Angeles, this dataset should be sufficient. However, if you wish to configure this project for a different region, see the Data Generation section for instructions on generating a new dataset. 
@@ -80,9 +89,9 @@ osm2pgsql -cGs -d osm map.osm
 
 In the above, osm is the name of the database, the -c means to overwrite existing entries in the database, the -G creates geomtric objects, and the -s stores data within the database throughout the upload process as opposed to one atomic store (helpful if you lack RAM). 
 
-Unfortunately, there is no central repository for open source crime data, but whatever method you choose to get the data should return the data in a Pandas dataframe. For the location data, make sure to change the database locations in location_data.py in order for the script to work. 
+Unfortunately, there is no central repository for open source crime data, but whatever method you choose to get the data should return the data in a Pandas dataframe. For the location data, make sure to change the database locations in `location_data.py` in order for the script to work. 
 
-The script "pickling.py" should generate two pickle files, one of the crime data, and one of the location data. You may want to comment out part of the code for the file, since it would take a decent amount of time to run otherwise. The script "merging_data.py" will merge the two resulting pickle files and return another Pandas dataframe– again, make sure to configure the script to local destinations on your computer. Afterwards, "upload_data.py" will suffice to adding the combined location and crime data to MongoDB for usage in the application. 
+The script `pickling.py` should generate two pickle files, one of the crime data, and one of the location data. You may want to comment out part of the code for the file, since it would take a decent amount of time to run otherwise. The script `merging_data.py` will merge the two resulting pickle files and return another Pandas dataframe– again, make sure to configure the script to local destinations on your computer. Afterwards, `upload_data.py` will suffice to adding the combined location and crime data to MongoDB for usage in the application. 
 
 ## Acknowledgments
 
