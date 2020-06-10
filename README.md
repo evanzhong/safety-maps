@@ -36,7 +36,7 @@ COOKIE_PARSER_SECRET_KEY=secret_string_2
 * Finally, `secret_string` and `secret_string_2` should be randomly-generated strings containing letters, numbers, and special characters that will be used in encrypting account authorization tokens.
 
 **Note to CS97 graders: we will include a working `.env` file in our tarball submission, so you may skip the above step.**  
-**In addition, we have created the following demo user with some saved route history in the database the `.env` file we include:**
+**In addition, we have created the following demo user with some saved route history in the database our included `.env` references:**
 ```
 Username: CS97SafetyMapsDemo@gmail.com
 Password: gitgoodatsoftware
@@ -66,6 +66,12 @@ npm install
 npm start
 ```
 Note: ensure that the server is running first (and all five above long messages have been outputted), or most client functionality will not work.
+
+If you succesfully start both the server and client and this is your first time running the app, you should see the following UI:
+![WelcomeScreen](client/public/WelcomeScreen.png)
+The Map should be centered on the UCLA campus:
+![Initial Map](client/public/InitalMap.png)
+Note the login icon on the upper righthand corner of the screen. If this is missing, it is likely a problem with you server, as the login components will no render unless the client successfully connects to the server.
 
 ## Loading Routing Geo-coordinates
 
