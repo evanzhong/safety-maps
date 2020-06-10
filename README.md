@@ -71,7 +71,7 @@ If you succesfully start both the server and client and this is your first time 
 ![WelcomeScreen](client/public/WelcomeScreen.png)
 The Map should be centered on the UCLA campus:
 ![Initial Map](client/public/InitalMap.png)
-Note the login icon on the upper righthand corner of the screen. If this is missing, it is likely a problem with you server, as the login components will no render unless the client successfully connects to the server.
+Note the login icon on the upper righthand corner of the screen. If this is missing, it is likely a problem with your server, as the login components will not render unless the client successfully connects to the server.
 
 ## Loading Routing Geo-coordinates
 
