@@ -194,7 +194,6 @@ class DirectionSidebar extends Component {
             start: this.state.from,
             exerciseDuration: this.state.exerciseDuration,
             exerciseChoice: this.state.exerciseChoice,
-            // EVAN TODO: include token or uID here for personalied pace?
         }
         this.props.renderExercise(obj)
     }

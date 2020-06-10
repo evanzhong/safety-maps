@@ -46,9 +46,6 @@ router.get('/account_info', (req, res) => {
     });
 });
 
-// Evan Note: This was originally going to be done through POST request but we ran into CORS errors that were hard to debug
-// GET requests work just as well for this (functionally) as we are not sending any potentially confidential data.
-// The only downside is the byte limit for GET requests, but this feature should be nowhere near exceeding that limit
 router.post('/save_route', (req, res) => {
     //console.log(req.body);
     const object = req.body;

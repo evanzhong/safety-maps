@@ -69,8 +69,8 @@ class DirectionReview extends Component {
             endAddr: this.state.exerciseChoice ? this.props.exerciseStart[1] : this.props.end[1],
             route: instructionsCopy,
             type: this.state.exerciseChoice ? this.state.exerciseChoice : 'walk', //Walk is the default exercise
-            date: this.getFormattedDate(), //Will be time-stamped by the server
-            time: this.getFormattedTime(), //Will be time-stamped by the server
+            date: this.getFormattedDate(), 
+            time: this.getFormattedTime(), 
             distance: this.state.totalDistMiles,
             runtime: numSeconds,
             favorite: false, //default to false
